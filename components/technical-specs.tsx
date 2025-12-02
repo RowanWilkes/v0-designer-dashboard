@@ -81,7 +81,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Server className="size-5 text-emerald-600" />
+              <Server className="size-5 text-blue-600" />
               Hosting Information
             </CardTitle>
             <CardDescription>Current and proposed hosting details</CardDescription>
@@ -170,7 +170,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Link2 className="size-5 text-purple-600" />
+              <Link2 className="size-5 text-blue-600" />
               Integrations & APIs
             </CardTitle>
             <CardDescription>Third-party services and connections</CardDescription>
@@ -209,7 +209,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Shield className="size-5 text-red-600" />
+              <Shield className="size-5 text-blue-600" />
               Security & Compliance
             </CardTitle>
             <CardDescription>Security requirements and compliance needs</CardDescription>
@@ -237,7 +237,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Zap className="size-5 text-yellow-600" />
+              <Zap className="size-5 text-blue-600" />
               Performance & Compatibility
             </CardTitle>
             <CardDescription>Performance targets and browser requirements</CardDescription>
@@ -276,7 +276,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Globe className="size-5 text-green-600" />
+              <Globe className="size-5 text-blue-600" />
               SEO & Additional Requirements
             </CardTitle>
             <CardDescription>Search optimization and other technical needs</CardDescription>

@@ -106,7 +106,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
             id="overview-complete"
             checked={isComplete}
             onCheckedChange={toggleComplete}
-            className="size-6 data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+            className="size-6 data-[state=checked]:bg-black data-[state=checked]:border-black"
           />
           <Label htmlFor="overview-complete" className="text-sm font-medium cursor-pointer">
             Mark Overview as Complete

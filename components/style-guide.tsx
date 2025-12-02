@@ -83,7 +83,7 @@ const defaultTypography: Typography[] = [
     size: "28",
     weight: "600",
     description: "Used for subsections and card headings",
-    color: "#000000",
+    color: "#374151",
   },
   {
     id: "h4",
@@ -266,7 +266,7 @@ export function StyleGuide({ projectId }: StyleGuideProps) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900">Style Guide</h2>
+        <h2 className="text-2xl font-bold text-pink-600">Style Guide</h2>
         <p className="text-sm text-gray-600 mt-1 mb-3">
           Define your design system colors, typography, and button styles
         </p>
@@ -281,7 +281,7 @@ export function StyleGuide({ projectId }: StyleGuideProps) {
             id="styleguide-complete"
             checked={isCompleted}
             onCheckedChange={handleCompletionToggle}
-            className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+            className="size-6 data-[state=checked]:bg-black data-[state=checked]:border-black"
           />
           <Label htmlFor="styleguide-complete" className="text-sm font-medium cursor-pointer">
             Mark Style Guide as Complete
@@ -294,7 +294,7 @@ export function StyleGuide({ projectId }: StyleGuideProps) {
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900 text-lg">
-              <PaletteIcon className="size-4 text-pink-600" />
+              <PaletteIcon className="size-5 text-pink-600" />
               Colors
             </CardTitle>
             <CardDescription className="text-xs text-gray-600">Choose colors for your palette</CardDescription>
@@ -370,7 +370,7 @@ export function StyleGuide({ projectId }: StyleGuideProps) {
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900 text-lg">
-              <Type className="size-4 text-pink-600" />
+              <Type className="size-5 text-pink-600" />
               Typography
             </CardTitle>
             <CardDescription className="text-xs text-gray-600">Define text styles</CardDescription>
@@ -379,7 +379,7 @@ export function StyleGuide({ projectId }: StyleGuideProps) {
             {typography.map((typo) => (
               <div key={typo.id} className="p-3 rounded-lg border space-y-2">
                 <div className="flex items-center justify-between">
-                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-800">
+                  <Badge variant="secondary" className="bg-pink-100 text-pink-800">
                     {typo.level}
                   </Badge>
                   <Button
@@ -510,7 +510,7 @@ export function StyleGuide({ projectId }: StyleGuideProps) {
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900 text-lg">
-              <Pencil className="size-4 text-pink-600" />
+              <Pencil className="size-5 text-pink-600" />
               Buttons
             </CardTitle>
             <CardDescription className="text-xs text-gray-600">Style button elements</CardDescription>

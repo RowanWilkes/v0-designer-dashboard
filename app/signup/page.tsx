@@ -50,7 +50,7 @@ export default function SignupPage() {
       <div className="w-full max-w-md space-y-6 relative z-10">
         {/* Logo */}
         <Link href="/" className="flex items-center justify-center gap-2 hover:opacity-80 transition-opacity">
-          <img src="/troov-studio-logo.png" alt="Troov Studio" className="h-16 object-contain" />
+          <img src="/troov-studio-black-text.png" alt="Troov Studio" className="h-16 object-contain" />
         </Link>
 
         {/* Signup Card */}

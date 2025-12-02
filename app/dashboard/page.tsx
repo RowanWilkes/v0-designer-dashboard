@@ -30,6 +30,11 @@ import {
   Bell,
   Shield,
   CreditCard,
+  Download,
+  Sparkles,
+  CheckCircle2,
+  AlertCircle,
+  Zap,
 } from "lucide-react"
 import { ProjectOverview } from "@/components/project-overview"
 import { MoodBoard } from "@/components/mood-board"
@@ -57,6 +62,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { checkSectionCompletion, setSectionCompletion } from "@/lib/completion-tracker"
+import React from "react"
 
 type UserServiceUser = {
   id: string
@@ -70,6 +77,9 @@ export type Project = {
   name: string
   createdAt: string
   lastModified: string
+  lastActivity?: { section: string; timestamp: string }
+  deadline?: string
+  lastExportDate?: string
   overviewCompleted?: boolean
   moodBoardCompleted?: boolean
   styleGuideCompleted?: boolean
@@ -80,9 +90,47 @@ export type Project = {
   tasksCompleted?: boolean
 }
 
+type DownloadedSummary = {
+  projectId: string
+  projectName: string
+  downloadedAt: string
+}
+
+type Notification = {
+  id: string
+  projectId: string
+  projectName: string
+  message: string
+  type: "deadline-warning" | "deadline-overdue"
+  date: string
+}
+
+type NavItemProps = {
+  icon: any
+  label: string
+  view: string
+  badge?: string
+}
+
 function DashboardContent() {
   const router = useRouter()
-  const [activeView, setActiveView] = useState("home")
+  const [activeView, setActiveView] = useState<
+    | "home"
+    | "overview"
+    | "moodboard"
+    | "styleguide"
+    | "sitemap"
+    | "technical"
+    | "content"
+    | "assets"
+    | "tasks"
+    | "summary"
+    | "account-profile"
+    | "account-preferences"
+    | "account-usage"
+    | "account-help"
+    | "admin-settings"
+  >("home")
   const [projects, setProjects] = useState<Project[]>([])
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null)
   const [user, setUser] = useState<UserServiceUser | null>(null)
@@ -90,6 +138,47 @@ function DashboardContent() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const projectSelectorRef = useRef<{ openCreateDialog: () => void }>(null)
+
+  const [downloadedSummaries, setDownloadedSummaries] = useState<DownloadedSummary[]>([])
+  const [activeTasks, setActiveTasks] = useState(0)
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [showNotifications, setShowNotifications] = useState(false)
+
+  const [projectCompletionCounts, setProjectCompletionCounts] = React.useState<Record<string, number>>({})
+
+  const [refreshTrigger, setRefreshTrigger] = React.useState(0)
+
+  const [showNewProject, setShowNewProject] = useState(false)
+
+  React.useEffect(() => {
+    if (activeView === "home") {
+      // Trigger re-render to refresh completion counts
+      setRefreshTrigger((prev) => prev + 1)
+    }
+  }, [activeView])
+
+  React.useEffect(() => {
+    if (activeView === "home") {
+      const counts: Record<string, number> = {}
+      projects.forEach((project) => {
+        const projectSections = [
+          { id: "overview", name: "Overview" },
+          { id: "mood", name: "Mood Board" },
+          { id: "styleguide", name: "Style Guide" },
+          { id: "wireframe", name: "Sitemap" },
+          { id: "technical", name: "Technical" },
+          { id: "content", name: "Content" },
+          { id: "assets", name: "Assets" },
+          { id: "tasks", name: "Tasks" },
+        ]
+        const completedCount = projectSections.filter((section) =>
+          checkSectionCompletion(project.id, section.id),
+        ).length
+        counts[project.id] = completedCount
+      })
+      setProjectCompletionCounts(counts)
+    }
+  }, [activeView, projects, refreshTrigger])
 
   useEffect(() => {
     const authData = localStorage.getItem("design-studio-auth")
@@ -110,7 +199,20 @@ function DashboardContent() {
         setProjects(parsedProjects)
         if (parsedProjects.length > 0) {
           setCurrentProjectId(parsedProjects[0].id)
+        } else {
+          // No projects - currentProjectId stays null to show welcome screen
+          setCurrentProjectId(null)
         }
+      } else {
+        // First time user - no projects stored, show welcome screen
+        setProjects([])
+        setCurrentProjectId(null)
+      }
+
+      // Load downloaded summaries from localStorage
+      const storedSummaries = localStorage.getItem("downloadedSummaries")
+      if (storedSummaries) {
+        setDownloadedSummaries(JSON.parse(storedSummaries))
       }
     } catch (error) {
       console.error("Error parsing stored data:", error)
@@ -126,28 +228,123 @@ function DashboardContent() {
     }
   }, [projects])
 
-  const NavItem = ({ icon: Icon, label, view, badge }: { icon: any; label: string; view: string; badge?: string }) => {
+  // Save downloaded summaries to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("downloadedSummaries", JSON.stringify(downloadedSummaries))
+  }, [downloadedSummaries])
+
+  useEffect(() => {
+    if (!currentProjectId) {
+      setActiveTasks(0)
+      return
+    }
+
+    const storageKey = `project-${currentProjectId}-manual-tasks`
+    const savedTasks = localStorage.getItem(storageKey)
+
+    if (savedTasks) {
+      try {
+        const tasks = JSON.parse(savedTasks)
+        const activeCount = tasks.filter((t: any) => !t.completed).length
+        setActiveTasks(activeCount)
+      } catch (e) {
+        console.error("Failed to parse tasks", e)
+        setActiveTasks(0)
+      }
+    } else {
+      setActiveTasks(0)
+    }
+  }, [currentProjectId, activeView])
+
+  useEffect(() => {
+    if (activeView === "home" && currentProjectId) {
+      // Force re-check of task completion when returning to home
+      const storageKey = `project-${currentProjectId}-manual-tasks`
+      const savedTasks = localStorage.getItem(storageKey)
+
+      if (savedTasks) {
+        try {
+          const tasks = JSON.parse(savedTasks)
+          const allCompleted = tasks.length === 0 || tasks.every((t: any) => t.completed)
+          setSectionCompletion(currentProjectId, "tasks", allCompleted)
+        } catch (e) {
+          console.error("Failed to parse tasks for completion check", e)
+        }
+      } else {
+        // No tasks = section is complete
+        setSectionCompletion(currentProjectId, "tasks", true)
+      }
+    }
+  }, [activeView, currentProjectId])
+
+  useEffect(() => {
+    if (!projects.length) {
+      setNotifications([])
+      return
+    }
+
+    const newNotifications: Notification[] = []
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    projects.forEach((project) => {
+      if (project.deadline) {
+        const deadline = new Date(project.deadline)
+        deadline.setHours(0, 0, 0, 0)
+        const daysUntilDeadline = Math.ceil((deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+
+        if (daysUntilDeadline < 0) {
+          // Overdue
+          newNotifications.push({
+            id: `${project.id}-overdue`,
+            projectId: project.id,
+            projectName: project.name,
+            message: `Project deadline passed ${Math.abs(daysUntilDeadline)} day${Math.abs(daysUntilDeadline) === 1 ? "" : "s"} ago`,
+            type: "deadline-overdue",
+            date: project.deadline,
+          })
+        } else if (daysUntilDeadline <= 7) {
+          // Within 7 days
+          newNotifications.push({
+            id: `${project.id}-warning`,
+            projectId: project.id,
+            projectName: project.name,
+            message:
+              daysUntilDeadline === 0
+                ? "Deadline is today!"
+                : `Deadline in ${daysUntilDeadline} day${daysUntilDeadline === 1 ? "" : "s"}`,
+            type: "deadline-warning",
+            date: project.deadline,
+          })
+        }
+      }
+    })
+
+    setNotifications(newNotifications)
+  }, [projects])
+
+  const NavItem = ({ icon: Icon, label, view, badge }: NavItemProps) => {
     const isActive = activeView === view
-    const isDisabled = projects.length === 0 && view !== "home" && !view.startsWith("account")
+    const isDisabled = view !== "home" && !currentProjectId
 
     return (
       <button
         onClick={() => !isDisabled && setActiveView(view)}
         disabled={isDisabled}
         className={cn(
-          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all w-full",
+          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all w-full relative",
           isActive
-            ? "bg-emerald-50 text-emerald-600 font-medium"
+            ? "bg-emerald-50 text-gray-900 font-medium border-l-4 border-emerald-500"
             : isDisabled
               ? "text-gray-400 cursor-not-allowed"
-              : "text-gray-700 hover:bg-gray-100",
+              : "text-gray-700 hover:bg-gray-50",
         )}
       >
         <Icon className={cn("h-4 w-4", isActive && "text-emerald-600")} />
         {!sidebarCollapsed && (
           <>
             <span className="flex-1 text-left">{label}</span>
-            {badge && <span className="bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full">{badge}</span>}
+            {badge && <span className="bg-gray-200 text-gray-700 text-xs px-2 py-0.5 rounded-full">{badge}</span>}
           </>
         )}
       </button>
@@ -165,6 +362,8 @@ function DashboardContent() {
       name: projectName,
       createdAt: new Date().toISOString(),
       lastModified: new Date().toISOString(),
+      lastActivity: { section: "Project Overview", timestamp: new Date().toISOString() },
+      deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
     }
     setProjects([...projects, newProject])
     setCurrentProjectId(newProject.id)
@@ -213,11 +412,25 @@ function DashboardContent() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center space-y-4">
-          <Image src="/troov-studio-logo.png" alt="Troov Studio" width={280} height={80} className="mx-auto" />
+          <Image src="/troov-studio-black-text.png" alt="Troov Studio" width={280} height={80} className="mx-auto" />
           <p className="text-gray-600">Loading your workspace...</p>
         </div>
       </div>
     )
+  }
+
+  const getSectionViewName = (sectionId: string): string => {
+    const viewMap: { [key: string]: string } = {
+      overview: "overview",
+      "mood-board": "moodboard",
+      "style-guide": "styleguide",
+      sitemap: "sitemap",
+      technical: "technical",
+      content: "content",
+      assets: "assets",
+      tasks: "tasks",
+    }
+    return viewMap[sectionId] || sectionId
   }
 
   return (
@@ -231,7 +444,15 @@ function DashboardContent() {
       >
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           {!sidebarCollapsed && (
-            <Image src="/troov-studio-logo.png" alt="Troov Studio" width={180} height={52} className="object-contain" />
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <Image
+                src="/troov-studio-black-text.png"
+                alt="Troov Studio"
+                width={180}
+                height={52}
+                className="object-contain"
+              />
+            </Link>
           )}
           <Button
             variant="ghost"
@@ -243,37 +464,44 @@ function DashboardContent() {
           </Button>
         </div>
 
-        <ScrollArea className="flex-1 px-3 py-4">
-          <nav className="space-y-6">
-            <div>
-              {!sidebarCollapsed && <p className="text-xs font-semibold text-gray-500 mb-2 px-3">NAVIGATION</p>}
-              <div className="space-y-1">
-                <NavItem icon={Home} label="Home" view="home" />
-                <NavItem icon={LayoutDashboard} label="Overview" view="overview" />
-                <NavItem icon={ImageIcon} label="Mood Board" view="moodboard" />
-                <NavItem icon={Palette} label="Style Guide" view="styleguide" />
-                <NavItem icon={Globe} label="Sitemap" view="sitemap" />
-                <NavItem icon={Code} label="Technical" view="technical" />
+        <div className="flex-1 overflow-hidden">
+          <ScrollArea className="h-full px-3 py-4">
+            <nav className="space-y-6">
+              <div>
+                <div className="space-y-1">
+                  <NavItem icon={Home} label="Home" view="home" />
+                </div>
               </div>
-            </div>
 
-            <div>
-              {!sidebarCollapsed && <p className="text-xs font-semibold text-gray-500 mb-2 px-3">CONTENT & ASSETS</p>}
-              <div className="space-y-1">
-                <NavItem icon={FileText} label="Content" view="content" />
-                <NavItem icon={Package} label="Assets" view="assets" />
+              <div>
+                {!sidebarCollapsed && <p className="text-xs font-semibold text-gray-500 mb-2 px-3">NAVIGATION</p>}
+                <div className="space-y-1">
+                  <NavItem icon={LayoutDashboard} label="Overview" view="overview" />
+                  <NavItem icon={ImageIcon} label="Mood Board" view="moodboard" />
+                  <NavItem icon={Palette} label="Style Guide" view="styleguide" />
+                  <NavItem icon={Globe} label="Sitemap" view="sitemap" />
+                  <NavItem icon={Code} label="Technical" view="technical" />
+                </div>
               </div>
-            </div>
 
-            <div>
-              {!sidebarCollapsed && <p className="text-xs font-semibold text-gray-500 mb-2 px-3">MANAGEMENT</p>}
-              <div className="space-y-1">
-                <NavItem icon={CheckSquare} label="Tasks" view="tasks" />
-                <NavItem icon={ClipboardList} label="Summary" view="summary" />
+              <div>
+                {!sidebarCollapsed && <p className="text-xs font-semibold text-gray-500 mb-2 px-3">CONTENT & ASSETS</p>}
+                <div className="space-y-1">
+                  <NavItem icon={FileText} label="Content" view="content" />
+                  <NavItem icon={Package} label="Assets" view="assets" />
+                </div>
               </div>
-            </div>
-          </nav>
-        </ScrollArea>
+
+              <div>
+                {!sidebarCollapsed && <p className="text-xs font-semibold text-gray-500 mb-2 px-3">MANAGEMENT</p>}
+                <div className="space-y-1">
+                  <NavItem icon={CheckSquare} label="Tasks" view="tasks" />
+                  <NavItem icon={ClipboardList} label="Summary" view="summary" />
+                </div>
+              </div>
+            </nav>
+          </ScrollArea>
+        </div>
 
         <div className="border-t border-gray-200 p-3 space-y-2">
           {user?.plan !== "pro" && user?.plan !== "team" && (
@@ -316,10 +544,62 @@ function DashboardContent() {
               userPlan={user?.plan || "free"}
             />
 
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5 text-gray-600" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
-            </Button>
+            <DropdownMenu open={showNotifications} onOpenChange={setShowNotifications}>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative">
+                  <Bell className="h-5 w-5 text-gray-600" />
+                  {notifications.length > 0 && (
+                    <span className="absolute top-1 right-1 min-w-[18px] h-[18px] bg-red-500 rounded-full text-white text-xs flex items-center justify-center px-1">
+                      {notifications.length}
+                    </span>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80">
+                <div className="px-3 py-2 border-b">
+                  <p className="text-sm font-semibold text-gray-900">Notifications</p>
+                </div>
+                {notifications.length === 0 ? (
+                  <div className="px-3 py-8 text-center">
+                    <Bell className="h-8 w-8 text-gray-300 mx-auto mb-2" />
+                    <p className="text-sm text-gray-500">No notifications</p>
+                  </div>
+                ) : (
+                  <ScrollArea className="max-h-[400px]">
+                    {notifications.map((notification) => (
+                      <DropdownMenuItem
+                        key={notification.id}
+                        className="px-3 py-3 cursor-pointer hover:bg-gray-50 flex-col items-start gap-1"
+                        onClick={() => {
+                          // Switch to the project and close notifications
+                          handleSelectProject(notification.projectId)
+                          setShowNotifications(false)
+                        }}
+                      >
+                        <div className="flex items-start gap-2 w-full">
+                          {notification.type === "deadline-overdue" ? (
+                            <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 flex-shrink-0" />
+                          ) : (
+                            <Calendar className="h-4 w-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">{notification.projectName}</p>
+                            <p
+                              className={cn(
+                                "text-sm",
+                                notification.type === "deadline-overdue" ? "text-red-600" : "text-amber-600",
+                              )}
+                            >
+                              {notification.message}
+                            </p>
+                          </div>
+                        </div>
+                      </DropdownMenuItem>
+                    ))}
+                  </ScrollArea>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -418,7 +698,7 @@ function DashboardContent() {
                   {/* Stats Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <Card>
-                      <CardContent className="pt-6">
+                      <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Total Projects</p>
@@ -432,11 +712,11 @@ function DashboardContent() {
                     </Card>
 
                     <Card>
-                      <CardContent className="pt-6">
+                      <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Active Tasks</p>
-                            <p className="text-2xl font-bold text-gray-900">12</p>
+                            <p className="text-2xl font-bold text-gray-900">{activeTasks}</p>
                           </div>
                           <div className="h-12 w-12 rounded-lg bg-blue-100 flex items-center justify-center">
                             <CheckSquare className="h-6 w-6 text-blue-600" />
@@ -446,11 +726,27 @@ function DashboardContent() {
                     </Card>
 
                     <Card>
-                      <CardContent className="pt-6">
+                      <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Completion</p>
-                            <p className="text-2xl font-bold text-gray-900">68%</p>
+                            <p className="text-2xl font-bold text-gray-900">
+                              {(() => {
+                                const sections = [
+                                  checkSectionCompletion(currentProjectId, "overview"),
+                                  checkSectionCompletion(currentProjectId, "mood"),
+                                  checkSectionCompletion(currentProjectId, "styleguide"),
+                                  checkSectionCompletion(currentProjectId, "wireframe"),
+                                  checkSectionCompletion(currentProjectId, "technical"),
+                                  checkSectionCompletion(currentProjectId, "content"),
+                                  checkSectionCompletion(currentProjectId, "assets"),
+                                  checkSectionCompletion(currentProjectId, "tasks"),
+                                ]
+                                const completedCount = sections.filter(Boolean).length
+                                const percentage = Math.round((completedCount / sections.length) * 100)
+                                return `${percentage}%`
+                              })()}
+                            </p>
                           </div>
                           <div className="h-12 w-12 rounded-lg bg-purple-100 flex items-center justify-center">
                             <TrendingUp className="h-6 w-6 text-purple-600" />
@@ -460,7 +756,7 @@ function DashboardContent() {
                     </Card>
 
                     <Card>
-                      <CardContent className="pt-6">
+                      <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Plan Status</p>
@@ -474,153 +770,418 @@ function DashboardContent() {
                     </Card>
                   </div>
 
-                  {/* Recent Projects */}
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-semibold text-gray-900">Recent Projects</h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {projects.slice(0, 6).map((project) => (
-                        <Card
-                          key={project.id}
-                          className={cn(
-                            "cursor-pointer transition-all hover:shadow-md",
-                            currentProjectId === project.id && "ring-2 ring-emerald-500",
-                          )}
-                          onClick={() => handleSelectProject(project.id)}
-                        >
-                          <CardHeader>
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <CardTitle className="text-lg line-clamp-1">{project.name}</CardTitle>
-                                <CardDescription className="mt-1">
-                                  Modified {new Date(project.lastModified).toLocaleDateString()}
-                                </CardDescription>
-                              </div>
-                              {currentProjectId === project.id && (
-                                <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">
-                                  Active
-                                </span>
-                              )}
-                            </div>
-                          </CardHeader>
-                          <CardContent>
-                            <div className="flex items-center gap-4 text-sm text-gray-600">
-                              <div className="flex items-center gap-1">
-                                <CheckSquare className="h-4 w-4" />
-                                <span>4/8</span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Calendar className="h-4 w-4" />
-                                <span>{new Date(project.createdAt).toLocaleDateString()}</span>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-
                   {currentProjectId &&
                     (() => {
                       const currentProject = projects.find((p) => p.id === currentProjectId)
                       if (!currentProject) return null
 
                       const sections = [
-                        { id: "overview", name: "Project Overview", completed: currentProject.overviewCompleted },
-                        { id: "mood-board", name: "Mood Board", completed: currentProject.moodBoardCompleted },
-                        { id: "style-guide", name: "Style Guide", completed: currentProject.styleGuideCompleted },
-                        { id: "sitemap", name: "Sitemap", completed: currentProject.sitemapCompleted },
-                        { id: "technical", name: "Technical Specs", completed: currentProject.technicalCompleted },
-                        { id: "content", name: "Content", completed: currentProject.contentCompleted },
-                        { id: "assets", name: "Assets", completed: currentProject.assetsCompleted },
-                        { id: "tasks", name: "Tasks", completed: currentProject.tasksCompleted },
+                        {
+                          id: "overview",
+                          name: "Project Overview",
+                          completed: checkSectionCompletion(currentProject.id, "overview"),
+                        },
+                        {
+                          id: "mood-board",
+                          name: "Mood Board",
+                          completed: checkSectionCompletion(currentProject.id, "mood"),
+                        },
+                        {
+                          id: "style-guide",
+                          name: "Style Guide",
+                          completed: checkSectionCompletion(currentProject.id, "styleguide"),
+                        },
+                        {
+                          id: "sitemap",
+                          name: "Sitemap",
+                          completed: checkSectionCompletion(currentProject.id, "wireframe"),
+                        },
+                        {
+                          id: "technical",
+                          name: "Technical Specs",
+                          completed: checkSectionCompletion(currentProject.id, "technical"),
+                        },
+                        {
+                          id: "content",
+                          name: "Content",
+                          completed: checkSectionCompletion(currentProject.id, "content"),
+                        },
+                        {
+                          id: "assets",
+                          name: "Assets",
+                          completed: checkSectionCompletion(currentProject.id, "assets"),
+                        },
+                        { id: "tasks", name: "Tasks", completed: checkSectionCompletion(currentProject.id, "tasks") },
                       ]
 
                       const incompleteSections = sections.filter((s) => !s.completed)
-
-                      if (incompleteSections.length === 0) return null
+                      const nextSection = incompleteSections[0]
+                      const allComplete = incompleteSections.length === 0
 
                       return (
-                        <div>
-                          <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-xl font-semibold text-gray-900">Complete Your Project</h2>
-                            <span className="text-sm text-gray-600">
-                              {sections.length - incompleteSections.length} of {sections.length} completed
-                            </span>
-                          </div>
-                          <Card>
-                            <CardContent className="pt-6">
-                              <div className="space-y-3">
-                                {incompleteSections.map((section) => (
-                                  <div
-                                    key={section.id}
-                                    className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-colors"
-                                  >
-                                    <div className="flex items-center gap-3">
-                                      <div className="h-2 w-2 rounded-full bg-orange-500" />
-                                      <span className="font-medium text-gray-900">{section.name}</span>
+                        <div className="space-y-6">
+                          {/* Next Recommended Step or Completion Celebration */}
+                          {allComplete ? (
+                            <Card className="border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
+                              <CardContent className="pt-6">
+                                <div className="flex items-start gap-4">
+                                  <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center flex-shrink-0 shadow-md">
+                                    <svg
+                                      className="h-6 w-6 text-white"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                  </div>
+                                  <div className="flex-1">
+                                    <h3 className="font-bold text-xl text-gray-900 mb-1 flex items-center gap-2">
+                                      Ready to Develop!
+                                      <span className="text-2xl">🚀</span>
+                                    </h3>
+                                    <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+                                      Congratulations! All design sections are complete. Your project is fully planned
+                                      and ready for development. Download your summary to share with your development
+                                      team.
+                                    </p>
+                                    <div className="flex gap-2">
+                                      <Button
+                                        size="sm"
+                                        onClick={() => setActiveView("summary")}
+                                        className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md"
+                                      >
+                                        <Download className="h-4 w-4 mr-2" />
+                                        Download Summary
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => setActiveView("overview")}
+                                        className="border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+                                      >
+                                        Review Project
+                                      </Button>
                                     </div>
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ) : nextSection ? (
+                            <Card className="border-l-4 border-l-emerald-500 bg-gradient-to-r from-emerald-50/50 to-transparent">
+                              <CardContent className="pt-6">
+                                <div className="flex items-start gap-4">
+                                  <div className="h-10 w-10 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                                    <Sparkles className="h-5 w-5 text-emerald-600" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <h3 className="font-semibold text-gray-900 mb-1">Next Recommended Step</h3>
+                                    <p className="text-sm text-gray-600 mb-3">
+                                      Complete your <span className="font-medium">{nextSection.name}</span> to establish{" "}
+                                      {nextSection.id === "overview"
+                                        ? "project goals and direction"
+                                        : nextSection.id === "mood-board"
+                                          ? "visual inspiration and aesthetic"
+                                          : nextSection.id === "style-guide"
+                                            ? "design standards and guidelines"
+                                            : nextSection.id === "sitemap"
+                                              ? "site structure and navigation"
+                                              : nextSection.id === "technical"
+                                                ? "technical requirements and specs"
+                                                : nextSection.id === "content"
+                                                  ? "content strategy and copy"
+                                                  : nextSection.id === "assets"
+                                                    ? "design assets and resources"
+                                                    : "project tasks and milestones"}
+                                    </p>
                                     <Button
                                       size="sm"
-                                      variant="outline"
-                                      onClick={() => setActiveView(section.id as any)}
-                                      className="text-emerald-600 border-emerald-300 hover:bg-emerald-50"
+                                      onClick={() => setActiveView(getSectionViewName(nextSection.id))}
+                                      className="bg-gray-800 hover:bg-gray-900 text-white"
                                     >
-                                      Complete
+                                      Start {nextSection.name}
                                     </Button>
                                   </div>
-                                ))}
-                              </div>
-                            </CardContent>
-                          </Card>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ) : null}
+
+                          {/* Export History */}
+                          {currentProject.lastExportDate && (
+                            <Card>
+                              <CardHeader>
+                                <CardTitle className="text-base flex items-center gap-2">
+                                  <Download className="h-4 w-4 text-orange-600" />
+                                  Export History
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <p className="text-sm text-gray-600">Last summary export</p>
+                                    <p className="font-medium text-gray-900">
+                                      {new Date(currentProject.lastExportDate).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        day: "numeric",
+                                        year: "numeric",
+                                        hour: "numeric",
+                                        minute: "2-digit",
+                                      })}
+                                    </p>
+                                  </div>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => setActiveView("summary")}
+                                    className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                                  >
+                                    <Download className="h-4 w-4 mr-2" />
+                                    Re-export
+                                  </Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          )}
                         </div>
                       )
                     })()}
 
-                  {/* Quick Actions */}
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <Card
-                        className="cursor-pointer hover:shadow-md transition-all hover:border-emerald-200"
-                        onClick={() => setActiveView("overview")}
+                  {/* Recent Projects */}
+                  <div key={refreshTrigger}>
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-xl font-semibold text-gray-900">Recent Projects</h2>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-gray-700 border-gray-300 hover:bg-gray-100 bg-transparent"
+                        onClick={() => {
+                          // Navigate to a project list or similar if it exists, otherwise do nothing
+                          // For now, let's just log this action.
+                          console.log("View All Projects clicked")
+                        }}
                       >
-                        <CardContent className="pt-6">
-                          <div className="h-10 w-10 rounded-lg bg-emerald-100 flex items-center justify-center mb-3">
-                            <LayoutDashboard className="h-5 w-5 text-emerald-600" />
-                          </div>
-                          <h3 className="font-semibold text-gray-900 mb-1">Project Overview</h3>
-                          <p className="text-sm text-gray-600">Define goals, audience, and deliverables</p>
-                        </CardContent>
-                      </Card>
-
-                      <Card
-                        className="cursor-pointer hover:shadow-md transition-all hover:border-purple-200"
-                        onClick={() => setActiveView("moodboard")}
-                      >
-                        <CardContent className="pt-6">
-                          <div className="h-10 w-10 rounded-lg bg-purple-100 flex items-center justify-center mb-3">
-                            <ImageIcon className="h-5 w-5 text-purple-600" />
-                          </div>
-                          <h3 className="font-semibold text-gray-900 mb-1">Build Mood Board</h3>
-                          <p className="text-sm text-gray-600">Collect visual inspiration and references</p>
-                        </CardContent>
-                      </Card>
-
-                      <Card
-                        className="cursor-pointer hover:shadow-md transition-all hover:border-pink-200"
-                        onClick={() => setActiveView("summary")}
-                      >
-                        <CardContent className="pt-6">
-                          <div className="h-10 w-10 rounded-lg bg-pink-100 flex items-center justify-center mb-3">
-                            <ClipboardList className="h-5 w-5 text-pink-600" />
-                          </div>
-                          <h3 className="font-semibold text-gray-900 mb-1">View Summary</h3>
-                          <p className="text-sm text-gray-600">See your complete design specification</p>
-                        </CardContent>
-                      </Card>
+                        View All Projects
+                      </Button>
                     </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {projects.slice(0, 6).map((project) => {
+                        const projectSections = [
+                          { id: "overview", name: "Overview" },
+                          { id: "mood-board", name: "Mood Board" },
+                          { id: "style-guide", name: "Style Guide" },
+                          { id: "sitemap", name: "Sitemap" },
+                          { id: "technical", name: "Technical" },
+                          { id: "content", name: "Content" },
+                          { id: "assets", name: "Assets" },
+                          { id: "tasks", name: "Tasks" },
+                        ]
+                        const completedCount = projectCompletionCounts[project.id] || 0
+
+                        return (
+                          <Card
+                            key={project.id}
+                            className={cn(
+                              "cursor-pointer transition-all hover:shadow-md",
+                              currentProjectId === project.id && "ring-2 ring-emerald-500",
+                            )}
+                            onClick={() => handleSelectProject(project.id)}
+                          >
+                            <CardHeader>
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <CardTitle className="text-lg line-clamp-1">{project.name}</CardTitle>
+                                  <CardDescription className="mt-1">
+                                    Modified {new Date(project.lastModified).toLocaleDateString()}
+                                  </CardDescription>
+                                </div>
+                                {currentProjectId === project.id && (
+                                  <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">
+                                    Active
+                                  </span>
+                                )}
+                              </div>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="flex items-center gap-4 text-sm text-gray-600">
+                                <div className="flex items-center gap-1">
+                                  <CheckSquare className="h-4 w-4" />
+                                  <span>{completedCount}/8</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-4 w-4" />
+                                  <span>{new Date(project.createdAt).toLocaleDateString()}</span>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Project Progress */}
+                  {(() => {
+                    if (!currentProject) return null
+
+                    const sections = [
+                      {
+                        id: "overview",
+                        name: "Project Overview",
+                        completed: checkSectionCompletion(currentProject.id, "overview"),
+                      },
+                      {
+                        id: "mood-board",
+                        name: "Mood Board",
+                        completed: checkSectionCompletion(currentProject.id, "mood"),
+                      },
+                      {
+                        id: "style-guide",
+                        name: "Style Guide",
+                        completed: checkSectionCompletion(currentProject.id, "styleguide"),
+                      },
+                      {
+                        id: "sitemap",
+                        name: "Sitemap",
+                        completed: checkSectionCompletion(currentProject.id, "wireframe"),
+                      },
+                      {
+                        id: "technical",
+                        name: "Technical Specs",
+                        completed: checkSectionCompletion(currentProject.id, "technical"),
+                      },
+                      {
+                        id: "content",
+                        name: "Content",
+                        completed: checkSectionCompletion(currentProject.id, "content"),
+                      },
+                      { id: "assets", name: "Assets", completed: checkSectionCompletion(currentProject.id, "assets") },
+                      { id: "tasks", name: "Tasks", completed: checkSectionCompletion(currentProject.id, "tasks") },
+                    ]
+
+                    const completedCount = sections.filter((s) => s.completed).length
+
+                    return (
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <h2 className="text-xl font-semibold text-gray-900">Project Progress</h2>
+                          <span className="text-sm text-gray-600">
+                            {completedCount} of {sections.length} completed
+                          </span>
+                        </div>
+                        <Card>
+                          <CardContent className="pt-6">
+                            <div className="space-y-2">
+                              {sections.map((section) => (
+                                <div
+                                  key={section.id}
+                                  className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${
+                                    section.completed
+                                      ? "border-emerald-200 bg-emerald-50/30"
+                                      : "border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50"
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-3">
+                                    {section.completed ? (
+                                      <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                                    ) : (
+                                      <AlertCircle className="h-5 w-5 text-amber-500" />
+                                    )}
+                                    <span
+                                      className={`font-medium ${section.completed ? "text-gray-500" : "text-gray-900"}`}
+                                    >
+                                      {section.name}
+                                    </span>
+                                  </div>
+                                  {section.completed ? (
+                                    <span className="text-sm text-emerald-600 font-medium">Completed</span>
+                                  ) : (
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => setActiveView(getSectionViewName(section.id))}
+                                      className="text-emerald-600 border-emerald-300 hover:bg-emerald-50"
+                                    >
+                                      Complete
+                                    </Button>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    )
+                  })()}
+
+                  {/* Downloaded Summaries */}
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Downloaded Summaries</h2>
+                    {downloadedSummaries.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {downloadedSummaries.slice(0, 6).map((summary, index) => (
+                          <Card
+                            key={`${summary.projectId}-${index}`}
+                            className="cursor-pointer hover:shadow-md transition-all hover:border-blue-200"
+                            onClick={() => {
+                              const project = projects.find((p) => p.id === summary.projectId)
+                              if (project) {
+                                setCurrentProjectId(project.id)
+                                setActiveView("summary")
+                              }
+                            }}
+                          >
+                            <CardContent className="pt-6">
+                              <div className="flex items-start gap-3">
+                                <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                  <Download className="h-5 w-5 text-blue-600" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h3 className="font-semibold text-gray-900 mb-1 truncate">{summary.projectName}</h3>
+                                  <p className="text-sm text-gray-600">
+                                    {(() => {
+                                      const downloadDate = new Date(summary.downloadedAt)
+                                      const today = new Date()
+                                      const isToday = downloadDate.toDateString() === today.toDateString()
+                                      if (isToday) {
+                                        return `Today at ${downloadDate.toLocaleTimeString("en-US", {
+                                          hour: "numeric",
+                                          minute: "2-digit",
+                                        })}`
+                                      }
+                                      return downloadDate.toLocaleDateString("en-US", {
+                                        month: "short",
+                                        day: "numeric",
+                                        year: "numeric",
+                                      })
+                                    })()}
+                                  </p>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    ) : (
+                      <Card>
+                        <CardContent className="pt-6">
+                          <div className="text-center py-8">
+                            <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center mx-auto mb-3">
+                              <Download className="h-6 w-6 text-gray-400" />
+                            </div>
+                            <p className="text-sm text-gray-600">No summaries downloaded yet</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Export a summary from any project to see it here
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
                   </div>
                 </div>
               )}
@@ -638,7 +1199,13 @@ function DashboardContent() {
                 <ContentAssets projectId={currentProjectId} showAssetsOnly={true} />
               )}
               {activeView === "tasks" && currentProjectId && <TaskManager projectId={currentProjectId} />}
-              {activeView === "summary" && currentProjectId && <DesignSummary projectId={currentProjectId} />}
+
+              {/* Summary View */}
+              {activeView === "summary" && (
+                <div className="p-6">
+                  <DesignSummary projectId={currentProjectId || ""} />
+                </div>
+              )}
 
               {/* Account Settings */}
               {activeView === "account" && (
@@ -1047,7 +1614,7 @@ function DashboardContent() {
                             <p className="text-sm text-gray-600">Invited collaborators</p>
                           </div>
                           <span className="text-sm font-semibold text-gray-900">
-                            1 / {user?.plan === "free" ? "1" : user?.plan === "pro" ? "5" : "Unlimited"}
+                            1 / {!user?.plan || user?.plan === "free" ? "1" : user?.plan === "pro" ? "5" : "Unlimited"}
                           </span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-3">
@@ -1058,41 +1625,39 @@ function DashboardContent() {
                   </Card>
 
                   {user?.plan === "free" && (
-                    <Card className="border-emerald-200 bg-emerald-50">
-                      <CardHeader>
+                    <Card className="border-gray-200 bg-gray-50">
+                      <CardContent className="pt-6">
                         <div className="flex items-start gap-4">
-                          <div className="h-12 w-12 rounded-lg bg-emerald-600 flex items-center justify-center flex-shrink-0">
-                            <Crown className="h-6 w-6 text-white" />
+                          <div className="h-12 w-12 rounded-lg bg-gray-700 flex items-center justify-center flex-shrink-0">
+                            <Zap className="h-6 w-6 text-white" />
                           </div>
                           <div>
-                            <CardTitle className="text-emerald-900">Upgrade to Pro</CardTitle>
-                            <CardDescription className="text-emerald-800 mt-1">
+                            <CardTitle className="text-gray-900">Upgrade to Pro</CardTitle>
+                            <CardDescription className="text-gray-700 mt-1">
                               Unlock unlimited projects, advanced features, and priority support
                             </CardDescription>
                           </div>
                         </div>
-                      </CardHeader>
-                      <CardContent>
                         <ul className="space-y-2 mb-4">
-                          <li className="flex items-center gap-2 text-sm text-emerald-900">
-                            <CheckSquare className="h-4 w-4 text-emerald-600" />
+                          <li className="flex items-center gap-2 text-sm text-gray-900">
+                            <CheckSquare className="h-4 w-4 text-gray-600" />
                             Unlimited projects
                           </li>
-                          <li className="flex items-center gap-2 text-sm text-emerald-900">
-                            <CheckSquare className="h-4 w-4 text-emerald-600" />
+                          <li className="flex items-center gap-2 text-sm text-gray-900">
+                            <CheckSquare className="h-4 w-4 text-gray-600" />
                             Unlimited storage
                           </li>
-                          <li className="flex items-center gap-2 text-sm text-emerald-900">
-                            <CheckSquare className="h-4 w-4 text-emerald-600" />
+                          <li className="flex items-center gap-2 text-sm text-gray-900">
+                            <CheckSquare className="h-4 w-4 text-gray-600" />
                             Team collaboration (up to 5 members)
                           </li>
-                          <li className="flex items-center gap-2 text-sm text-emerald-900">
-                            <CheckSquare className="h-4 w-4 text-emerald-600" />
+                          <li className="flex items-center gap-2 text-sm text-gray-900">
+                            <CheckSquare className="h-4 w-4 text-gray-600" />
                             Priority support
                           </li>
                         </ul>
-                        <Button onClick={handleUpgrade} className="w-full bg-emerald-600 hover:bg-emerald-700">
-                          View Pricing Plans
+                        <Button onClick={handleUpgrade} className="w-full bg-gray-800 hover:bg-gray-900 text-white">
+                          Upgrade to Pro
                         </Button>
                       </CardContent>
                     </Card>
@@ -1209,6 +1774,7 @@ function DashboardContent() {
             </>
           )}
         </main>
+        {/* CHANGE> Removed Footer component */}
       </div>
     </div>
   )

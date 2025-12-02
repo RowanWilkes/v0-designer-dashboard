@@ -1,41 +1,23 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Check, Sparkles } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Check } from "lucide-react"
+import Image from "next/image"
 
 export function SiteFooter() {
   return (
     <footer className="relative overflow-visible">
       <div className="absolute inset-0 top-40 bg-primary">
         <div className="absolute inset-0 bg-gradient-to-br from-[#003A33] via-primary to-[#002724]"></div>
-        
-        <div className="absolute inset-0 opacity-10">
-          <svg className="absolute top-20 right-10 size-64" viewBox="0 0 200 200">
-            <polygon points="100,10 150,90 50,90" fill="currentColor" className="text-accent" />
-          </svg>
-          <svg className="absolute bottom-20 left-10 size-96" viewBox="0 0 200 200">
-            <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="2" className="text-secondary" />
-          </svg>
-          <svg className="absolute top-1/2 right-1/4 size-48" viewBox="0 0 200 200">
-            <rect x="50" y="50" width="100" height="100" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent" />
-          </svg>
-          <svg className="absolute top-10 left-1/3 w-64 h-64" viewBox="0 0 200 200">
-            <line x1="0" y1="100" x2="200" y2="100" stroke="currentColor" strokeWidth="1" className="text-white" />
-            <line x1="100" y1="0" x2="100" y2="200" stroke="currentColor" strokeWidth="1" className="text-white" />
-          </svg>
-        </div>
       </div>
 
-      <div className="relative z-30 -mt-40">
+      <div className="relative z-30 -mt-20">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
-            <div className="relative bg-[#F8FAF9] text-foreground rounded-2xl p-12 lg:p-16 overflow-hidden shadow-sm border border-border">
-              <div className="absolute top-0 right-0 opacity-5 pointer-events-none">
-                <svg className="size-96" viewBox="0 0 200 200">
-                  <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary" />
-                  <polygon points="100,20 180,180 20,180" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary" />
-                </svg>
-              </div>
-              
+            <div className="relative bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 text-foreground rounded-2xl p-12 lg:p-16 overflow-hidden shadow-lg border border-teal-100">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(6,182,212,0.08),transparent_50%)]"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(16,185,129,0.08),transparent_50%)]"></div>
+
               <div className="flex flex-col lg:flex-row items-center justify-between gap-8 relative">
                 <div className="space-y-6 flex-1">
                   <h2 className="text-5xl font-semibold leading-tight tracking-tight">
@@ -57,10 +39,17 @@ export function SiteFooter() {
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-accent hover:bg-accent/90 text-white px-8 h-12 font-medium rounded-md shadow-sm">
+                  <Button
+                    size="lg"
+                    className="bg-accent hover:bg-accent/90 text-white px-8 h-12 font-medium rounded-md shadow-sm"
+                  >
                     Book a demo
                   </Button>
-                  <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-muted px-8 h-12 font-medium rounded-md bg-transparent">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-border text-foreground hover:bg-white/60 px-8 h-12 font-medium rounded-md bg-white/40"
+                  >
                     Start a trial
                   </Button>
                 </div>
@@ -70,133 +59,221 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 pb-16 pt-32 relative z-10 text-white">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-12">
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Platform</h4>
-            <ul className="space-y-3">
-              <li><Link href="/platform" className="text-sm hover:text-white transition-colors">Platform overview</Link></li>
-              <li><Link href="/projects" className="text-sm hover:text-white transition-colors">Projects</Link></li>
-              <li><Link href="/mood-board" className="text-sm hover:text-white transition-colors">Mood Board</Link></li>
-              <li><Link href="/wireframes" className="text-sm hover:text-white transition-colors">Wireframes</Link></li>
-              <li><Link href="/tasks" className="text-sm hover:text-white transition-colors">Task Management</Link></li>
-              <li><Link href="/features" className="text-sm hover:text-white transition-colors">All features</Link></li>
-              <li><Link href="/integrations" className="text-sm hover:text-white transition-colors">All integrations</Link></li>
-              <li><Link href="/pricing" className="text-sm hover:text-white transition-colors">Pricing</Link></li>
-              <li><Link href="/security" className="text-sm hover:text-white transition-colors">Security + Compliance</Link></li>
-            </ul>
+      <div className="container mx-auto px-6 pb-12 pt-32 relative z-10 text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12">
+            <Image
+              src="/troov-studio-footer-logo.png"
+              alt="Troov Studio"
+              width={300}
+              height={60}
+              className="h-16 w-auto"
+            />
           </div>
 
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Features</h4>
-            <ul className="space-y-3">
-              <li><Link href="/features/color-palettes" className="text-sm hover:text-white transition-colors">Color Palettes</Link></li>
-              <li><Link href="/features/typography" className="text-sm hover:text-white transition-colors">Typography</Link></li>
-              <li><Link href="/features/wireframes" className="text-sm hover:text-white transition-colors">Wireframe Canvas</Link></li>
-              <li><Link href="/features/assets" className="text-sm hover:text-white transition-colors">Asset Management</Link></li>
-              <li><Link href="/features/collaboration" className="text-sm hover:text-white transition-colors">Team Collaboration</Link></li>
-              <li><Link href="/features/export" className="text-sm hover:text-white transition-colors">Export & Share</Link></li>
-              <li><Link href="/features/templates" className="text-sm hover:text-white transition-colors">Project Templates</Link></li>
-            </ul>
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-16">
+            {/* Left side: Dashboard, Resources, and Company columns */}
+            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+              {/* Dashboard Sections Column */}
+              <div className="space-y-4">
+                <h4 className="text-base font-semibold text-white">Dashboard</h4>
+                <ul className="space-y-3">
+                  <li>
+                    <Link
+                      href="/dashboard#overview"
+                      className="text-sm text-white/70 hover:text-white transition-colors"
+                    >
+                      Project Overview
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboard#mood-board"
+                      className="text-sm text-white/70 hover:text-white transition-colors"
+                    >
+                      Mood Board
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboard#style-guide"
+                      className="text-sm text-white/70 hover:text-white transition-colors"
+                    >
+                      Style Guide
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboard#sitemap"
+                      className="text-sm text-white/70 hover:text-white transition-colors"
+                    >
+                      Sitemap
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboard#technical-specs"
+                      className="text-sm text-white/70 hover:text-white transition-colors"
+                    >
+                      Technical Specs
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dashboard#content"
+                      className="text-sm text-white/70 hover:text-white transition-colors"
+                    >
+                      Content & Copy
+                    </Link>
+                  </li>
+                </ul>
+              </div>
 
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Solutions</h4>
-            <ul className="space-y-3">
-              <li><Link href="/solutions/agencies" className="text-sm hover:text-white transition-colors">Agencies</Link></li>
-              <li><Link href="/solutions/freelancers" className="text-sm hover:text-white transition-colors">Freelancers</Link></li>
-              <li><Link href="/solutions/teams" className="text-sm hover:text-white transition-colors">Design Teams</Link></li>
-              <li><Link href="/solutions/studios" className="text-sm hover:text-white transition-colors">Studios</Link></li>
-              <li><Link href="/solutions/startups" className="text-sm hover:text-white transition-colors">Startups</Link></li>
-            </ul>
-          </div>
+              {/* Resources Column */}
+              <div className="space-y-4">
+                <h4 className="text-base font-semibold text-white">Resources</h4>
+                <ul className="space-y-3">
+                  <li>
+                    <Link
+                      href="/dashboard#summary"
+                      className="text-sm text-white/70 hover:text-white transition-colors"
+                    >
+                      Project Summary
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/dashboard#assets" className="text-sm text-white/70 hover:text-white transition-colors">
+                      Assets Library
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/documentation" className="text-sm text-white/70 hover:text-white transition-colors">
+                      Documentation
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/help" className="text-sm text-white/70 hover:text-white transition-colors">
+                      Help & Support
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/getting-started" className="text-sm text-white/70 hover:text-white transition-colors">
+                      Getting Started
+                    </Link>
+                  </li>
+                </ul>
+              </div>
 
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Use cases</h4>
-            <ul className="space-y-3">
-              <li><Link href="/use-cases/web-design" className="text-sm hover:text-white transition-colors">Web Design</Link></li>
-              <li><Link href="/use-cases/branding" className="text-sm hover:text-white transition-colors">Branding</Link></li>
-              <li><Link href="/use-cases/ui-ux" className="text-sm hover:text-white transition-colors">UI/UX Projects</Link></li>
-              <li><Link href="/use-cases/client-projects" className="text-sm hover:text-white transition-colors">Client Projects</Link></li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Resources</h4>
-            <ul className="space-y-3">
-              <li><Link href="/getting-started" className="text-sm hover:text-white transition-colors">Getting Started Guide</Link></li>
-              <li><Link href="/faq" className="text-sm hover:text-white transition-colors">FAQ</Link></li>
-              <li><Link href="/blog" className="text-sm hover:text-white transition-colors">Blog</Link></li>
-              <li><Link href="/guides" className="text-sm hover:text-white transition-colors">Guides</Link></li>
-              <li><Link href="/documentation" className="text-sm hover:text-white transition-colors">Documentation</Link></li>
-              <li><Link href="/help" className="text-sm hover:text-white transition-colors">Help & Support</Link></li>
-            </ul>
-          </div>
-
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h4 className="text-sm font-semibold">Company</h4>
-              <ul className="space-y-3">
-                <li><Link href="/about" className="text-sm hover:text-white transition-colors">About</Link></li>
-                <li><Link href="/careers" className="text-sm hover:text-white transition-colors">Careers</Link></li>
-                <li><Link href="/support" className="text-sm hover:text-white transition-colors">Support</Link></li>
-                <li><Link href="/partners" className="text-sm hover:text-white transition-colors">Partners</Link></li>
-                <li><Link href="/contact" className="text-sm hover:text-white transition-colors">Contact</Link></li>
-              </ul>
+              {/* Company Column */}
+              <div className="space-y-4">
+                <h4 className="text-base font-semibold text-white">Company</h4>
+                <ul className="space-y-3">
+                  <li>
+                    <Link href="/about" className="text-sm text-white/70 hover:text-white transition-colors">
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/pricing" className="text-sm text-white/70 hover:text-white transition-colors">
+                      Pricing
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/contact" className="text-sm text-white/70 hover:text-white transition-colors">
+                      Contact
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/privacy" className="text-sm text-white/70 hover:text-white transition-colors">
+                      Privacy Policy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/terms" className="text-sm text-white/70 hover:text-white transition-colors">
+                      Terms of Service
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="text-sm font-semibold">Developers</h4>
-              <ul className="space-y-3">
-                <li><Link href="/api" className="text-sm hover:text-white transition-colors">API</Link></li>
-                <li><Link href="/release-notes" className="text-sm hover:text-white transition-colors">Release notes</Link></li>
-              </ul>
+              <h4 className="text-base font-semibold text-white">Subscribe To Our Newsletter</h4>
+              <p className="text-sm text-white/70">Get design tips, tricks, and updates delivered to your inbox.</p>
+              <form className="space-y-3">
+                <Input
+                  type="email"
+                  placeholder="Email:"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-11"
+                />
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className="w-full h-11 border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent"
+                >
+                  Subscribe
+                </Button>
+              </form>
             </div>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-8 mt-16 pt-8 border-t border-white/10">
-          <div className="flex items-center gap-2 text-white/60">
-            <div className="size-8 rounded bg-white/10 flex items-center justify-center">
-              <Sparkles className="size-4" />
-            </div>
-            <span className="text-xs font-medium">USERS<br/>LOVE US</span>
-          </div>
-          <div className="flex items-center gap-2 text-white/60">
-            <div className="size-8 rounded bg-white/10 flex items-center justify-center">
-              <svg className="size-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/></svg>
-            </div>
-            <span className="text-xs font-medium">GDPR<br/>COMPLIANT</span>
-          </div>
-          <div className="flex items-center gap-2 text-white/60">
-            <div className="size-8 rounded bg-white/10 flex items-center justify-center">
-              <svg className="size-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/></svg>
-            </div>
-            <span className="text-xs font-medium">SOC 2<br/>CERTIFIED</span>
           </div>
 
-          <div className="ml-auto flex items-center gap-4">
-            <Button size="icon" variant="ghost" className="size-9 text-white/70 hover:text-white hover:bg-white/10" asChild>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <svg className="size-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/></svg>
-              </a>
-            </Button>
-            <Button size="icon" variant="ghost" className="size-9 text-white/70 hover:text-white hover:bg-white/10" asChild>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                <svg className="size-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-              </a>
-            </Button>
-            <Button size="icon" variant="ghost" className="size-9 text-white/70 hover:text-white hover:bg-white/10" asChild>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                <svg className="size-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-              </a>
-            </Button>
-            <Button size="icon" variant="ghost" className="size-9 text-white/70 hover:text-white hover:bg-white/10" asChild>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <svg className="size-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s0 3.667.012 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.585-.072-4.85c-.06-1.17.256-1.805.421-2.227.224-.562.479-.96.899-1.382.419-.42.679-.819.896-1.381-.164-.422-.36-1.057-.413-2.227-.057-1.266-.071-1.646-.071-4.85s.016-3.585.071-4.85c.061-1.17.256-1.805.421-2.227.224-.562.479-.96.899-1.382.419-.419.824-.679 1.38-.896.165-.164.359-.36 1.065-.42 1.274-.045 1.65-.061 4.859-.061 3.211 0 3.586.016 4.859.071.165.061.359.256.42.421.569.224.96.479 1.379.899.419.42.69.824.9.138.165-.42.359-1.065.42-1.274.045-.164.071-.45.071-.646zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.388.244 1.388.244l-.045-.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.388.244 1.388.244l-.045-.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.388.244 1.388.244l-.045-.03"/></div>
+          {/* Bottom Bar */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mt-16 pt-8 border-t border-white/10">
+            <p className="text-sm text-white/60">©2025 All rights reserved</p>
+
+            <div className="flex items-center gap-4">
+              <Button
+                size="icon"
+                variant="ghost"
+                className="size-9 text-white/70 hover:text-white hover:bg-white/10"
+                asChild
+              >
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                  <svg className="size-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                  </svg>
+                </a>
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="size-9 text-white/70 hover:text-white hover:bg-white/10"
+                asChild
+              >
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                  <svg className="size-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="size-9 text-white/70 hover:text-white hover:bg-white/10"
+                asChild
+              >
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                  <svg className="size-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  </svg>
+                </a>
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="size-9 text-white/70 hover:text-white hover:bg-white/10"
+                asChild
+              >
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  <svg className="size-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.148-.558-2.913-.306-.789-.718-1.459-1.384-2.126C19.24 1.347 18.502.935 17.86.63c-.765-.297-1.636-.499-2.913-.558C13.667.012 13.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42 2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z" />
+                  </svg>
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
     </footer>
   )
-}\
+}

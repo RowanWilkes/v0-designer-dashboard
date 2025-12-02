@@ -1,11 +1,14 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Plus, CheckCircle2, Circle, GripVertical, Trash2 } from 'lucide-react'
+import { Plus, CheckCircle2, Circle, GripVertical, Trash2 } from "lucide-react"
+import { setSectionCompletion } from "@/lib/completion-tracker"
 
 interface Task {
   id: string
@@ -34,6 +37,9 @@ export function TaskManager({ projectId }: TaskManagerProps) {
   useEffect(() => {
     const storageKey = `project-${projectId}-manual-tasks`
     localStorage.setItem(storageKey, JSON.stringify(tasks))
+
+    const allCompleted = tasks.length === 0 || tasks.every((t) => t.completed)
+    setSectionCompletion(projectId, "tasks", allCompleted)
   }, [tasks, projectId])
 
   const sortedTasks = [...tasks].sort((a, b) => {
@@ -41,14 +47,12 @@ export function TaskManager({ projectId }: TaskManagerProps) {
     return a.order - b.order
   })
 
-  const completedCount = tasks.filter(t => t.completed).length
+  const completedCount = tasks.filter((t) => t.completed).length
   const totalCount = tasks.length
   const progressPercentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
 
   const toggleTask = (taskId: string) => {
-    setTasks(prev => prev.map(t => 
-      t.id === taskId ? { ...t, completed: !t.completed } : t
-    ))
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, completed: !t.completed } : t)))
   }
 
   const addTask = () => {
@@ -58,7 +62,7 @@ export function TaskManager({ projectId }: TaskManagerProps) {
       id: `task-${Date.now()}`,
       title: newTaskTitle,
       completed: false,
-      order: tasks.length
+      order: tasks.length,
     }
 
     setTasks([...tasks, newTask])
@@ -66,7 +70,7 @@ export function TaskManager({ projectId }: TaskManagerProps) {
   }
 
   const deleteTask = (taskId: string) => {
-    setTasks(prev => prev.filter(t => t.id !== taskId))
+    setTasks((prev) => prev.filter((t) => t.id !== taskId))
   }
 
   const handleDragStart = (e: React.DragEvent, taskId: string) => {
@@ -83,8 +87,8 @@ export function TaskManager({ projectId }: TaskManagerProps) {
     e.preventDefault()
     if (!draggedTaskId || draggedTaskId === targetTaskId) return
 
-    const draggedIndex = sortedTasks.findIndex(t => t.id === draggedTaskId)
-    const targetIndex = sortedTasks.findIndex(t => t.id === targetTaskId)
+    const draggedIndex = sortedTasks.findIndex((t) => t.id === draggedTaskId)
+    const targetIndex = sortedTasks.findIndex((t) => t.id === targetTaskId)
 
     const reordered = [...sortedTasks]
     const [removed] = reordered.splice(draggedIndex, 1)
@@ -110,7 +114,9 @@ export function TaskManager({ projectId }: TaskManagerProps) {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-2xl font-bold text-gray-900">{completedCount} / {totalCount}</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {completedCount} / {totalCount}
+                </p>
                 <p className="text-sm text-gray-600">Tasks completed</p>
               </div>
               <div className="text-right">
@@ -119,13 +125,11 @@ export function TaskManager({ projectId }: TaskManagerProps) {
               </div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-              <div 
-                className="bg-emerald-500 h-4 rounded-full transition-all duration-500 flex items-center justify-end pr-2" 
+              <div
+                className="bg-emerald-500 h-4 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
                 style={{ width: `${progressPercentage}%` }}
               >
-                {progressPercentage > 10 && (
-                  <span className="text-white text-xs font-bold">{progressPercentage}%</span>
-                )}
+                {progressPercentage > 10 && <span className="text-white text-xs font-bold">{progressPercentage}%</span>}
               </div>
             </div>
           </div>
@@ -135,9 +139,7 @@ export function TaskManager({ projectId }: TaskManagerProps) {
       <Card className="border-emerald-200 bg-white shadow-sm">
         <CardHeader>
           <CardTitle className="text-gray-900">Your Tasks</CardTitle>
-          <CardDescription>
-            Add custom tasks and drag to reorder
-          </CardDescription>
+          <CardDescription>Add custom tasks and drag to reorder</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -149,8 +151,8 @@ export function TaskManager({ projectId }: TaskManagerProps) {
                 onKeyDown={(e) => e.key === "Enter" && addTask()}
                 className="flex-1 bg-white border-gray-300"
               />
-              <Button 
-                onClick={addTask} 
+              <Button
+                onClick={addTask}
                 className="bg-emerald-600 hover:bg-emerald-700 text-white"
                 disabled={!newTaskTitle.trim()}
               >
@@ -176,20 +178,18 @@ export function TaskManager({ projectId }: TaskManagerProps) {
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, task.id)}
                   className={`flex items-center gap-3 p-3 rounded-lg border-2 bg-white transition-all cursor-move group ${
-                    task.completed 
-                      ? "border-emerald-200 bg-emerald-50 opacity-60" 
+                    task.completed
+                      ? "border-emerald-200 bg-emerald-50 opacity-60"
                       : "border-gray-200 hover:border-emerald-300 hover:shadow-sm"
                   } ${draggedTaskId === task.id ? "opacity-30 scale-95" : ""}`}
                 >
                   <GripVertical className="size-5 text-gray-400 shrink-0" />
-                  
-                  <Checkbox 
-                    checked={task.completed} 
-                    onCheckedChange={() => toggleTask(task.id)} 
-                    className="shrink-0"
-                  />
 
-                  <p className={`flex-1 font-medium ${task.completed ? "line-through text-gray-400" : "text-gray-900"}`}>
+                  <Checkbox checked={task.completed} onCheckedChange={() => toggleTask(task.id)} className="shrink-0" />
+
+                  <p
+                    className={`flex-1 font-medium ${task.completed ? "line-through text-gray-400" : "text-gray-900"}`}
+                  >
                     {task.title}
                   </p>
 

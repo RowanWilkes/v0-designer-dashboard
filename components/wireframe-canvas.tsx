@@ -436,7 +436,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
             id="sitemap-complete"
             checked={isCompleted}
             onCheckedChange={handleCompletionToggle}
-            className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+            className="size-6 data-[state=checked]:bg-black data-[state=checked]:border-black"
           />
           <Label htmlFor="sitemap-complete" className="text-sm font-medium cursor-pointer">
             Mark Sitemap as Complete

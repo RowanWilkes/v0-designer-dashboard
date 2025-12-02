@@ -7,7 +7,23 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Plus, FileText, LinkIcon, ImageIcon, X, Upload, Pencil, Trash2 } from "lucide-react"
+import {
+  Plus,
+  FileText,
+  LinkIcon,
+  ImageIcon,
+  X,
+  Upload,
+  Pencil,
+  Trash2,
+  Target,
+  MessageSquare,
+  Megaphone,
+  Lightbulb,
+  FileEdit,
+  Search,
+  BookOpen,
+} from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { setSectionCompletion } from "@/lib/completion-tracker"
@@ -520,7 +536,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
                   : "border-border dark:border-[#2DCE73] hover:border-primary/50"
               }`}
             >
-              <Upload className="size-16 mx-auto mb-4 text-muted-foreground dark:text-gray-400" />
+              <Upload className="size-16 mx-auto mb-4 text-cyan-600" />
               <p className="text-lg font-semibold text-foreground dark:text-white mb-2">Drop your assets here</p>
               <p className="text-sm text-muted-foreground dark:text-gray-400 mb-4">
                 Logos, images, icons, screenshots - PNG, JPG, GIF, SVG
@@ -536,7 +552,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
               <label htmlFor="asset-upload">
                 <Button variant="outline" className="cursor-pointer bg-transparent" asChild>
                   <span>
-                    <Upload className="size-4 mr-2" />
+                    <Upload className="size-4 mr-2 text-cyan-600" />
                     Browse Files
                   </span>
                 </Button>
@@ -731,7 +747,10 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
 
       <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#013B34]">
         <CardHeader>
-          <CardTitle className="text-foreground dark:text-white">Brand Messaging Framework</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-foreground dark:text-white">
+            <Target className="size-5 text-red-600" />
+            Brand Messaging Framework
+          </CardTitle>
           <CardDescription className="dark:text-gray-400">
             Define your core brand narrative and positioning
           </CardDescription>
@@ -795,7 +814,10 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
 
       <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#013B34]">
         <CardHeader>
-          <CardTitle className="text-foreground dark:text-white">Messaging Pillars</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-foreground dark:text-white">
+            <Megaphone className="size-5 text-red-600" />
+            Messaging Pillars
+          </CardTitle>
           <CardDescription className="dark:text-gray-400">
             Core themes that support your brand narrative
           </CardDescription>
@@ -847,7 +869,10 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
       {/* Tone & Style now full width */}
       <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#012B26]">
         <CardHeader>
-          <CardTitle className="text-foreground dark:text-white">Tone & Style</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-foreground dark:text-white">
+            <FileEdit className="size-5 text-red-600" />
+            Tone & Style
+          </CardTitle>
           <CardDescription className="dark:text-gray-400">Voice, keywords, and messaging notes</CardDescription>
         </CardHeader>
         <CardContent>
@@ -864,7 +889,10 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="bg-card dark:bg-[#012B26] border-border dark:border-[#2DCE73]/50">
           <CardHeader>
-            <CardTitle className="text-foreground dark:text-white">Key Messages</CardTitle>
+            <CardTitle className="flex items-center gap-2 text-foreground dark:text-white">
+              <Lightbulb className="size-5 text-red-600" />
+              Key Messages
+            </CardTitle>
             <CardDescription className="dark:text-gray-400">
               Important points to communicate consistently
             </CardDescription>
@@ -901,7 +929,10 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
 
         <Card className="bg-card dark:bg-[#012B26] border-border dark:border-[#2DCE73]/50">
           <CardHeader>
-            <CardTitle className="text-foreground dark:text-white">Content Snippets</CardTitle>
+            <CardTitle className="flex items-center gap-2 text-foreground dark:text-white">
+              <MessageSquare className="size-5 text-red-600" />
+              Content Snippets
+            </CardTitle>
             <CardDescription className="dark:text-gray-400">
               Add key headings, CTAs, and copy for your website
             </CardDescription>
@@ -1035,7 +1066,10 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
       {/* SEO Strategy now full width with enhanced content */}
       <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#012B26]">
         <CardHeader>
-          <CardTitle className="text-foreground dark:text-white">SEO Strategy</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-foreground dark:text-white">
+            <Search className="size-5 text-red-600" />
+            SEO Strategy
+          </CardTitle>
           <CardDescription className="dark:text-gray-400">Plan your page SEO and content strategy</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -1119,7 +1153,10 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
 
       <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#012B26]">
         <CardHeader>
-          <CardTitle className="text-foreground dark:text-white">Content Guidelines</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-foreground dark:text-white">
+            <BookOpen className="size-5 text-red-600" />
+            Content Guidelines
+          </CardTitle>
           <CardDescription className="dark:text-gray-400">
             Rules and best practices for content creation
           </CardDescription>

@@ -5,15 +5,16 @@ import { Button } from "@/components/ui/button"
 import {
   ChevronDown,
   Palette,
-  Layout,
   Zap,
   Users,
   FileText,
-  BarChart,
   BookOpen,
-  FileCheck,
-  Lightbulb,
   HelpCircle,
+  LayoutDashboard,
+  ImageIcon,
+  Globe,
+  Code,
+  Package,
 } from "lucide-react"
 import { useState, useEffect } from "react"
 
@@ -38,7 +39,7 @@ export function SiteHeader() {
         <div className="flex items-center justify-between h-14">
           <Link href="/" className="flex items-center gap-2.5 group">
             <img
-              src={scrolled ? "/troov-studio-logo.png" : "/troov-studio-logo-white.png"}
+              src={scrolled ? "/troov-studio-black-text.png" : "/troov-studio-logo-white.png"}
               alt="Troov Studio"
               className="h-16 object-contain transition-all duration-300"
             />
@@ -53,36 +54,46 @@ export function SiteHeader() {
                   Platform <ChevronDown className="size-4" />
                 </button>
                 <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
-                  <div className="bg-background border border-border rounded-2xl shadow-2xl p-8 w-[720px]">
+                  <div className="bg-background border border-border rounded-2xl shadow-2xl p-8 w-[800px]">
                     <div className="grid grid-cols-3 gap-8">
                       <div>
                         <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                          DESIGN TOOLS
+                          PLANNING
                         </h4>
                         <div className="space-y-1">
                           <Link
-                            href="/#features"
+                            href="/dashboard?view=overview"
                             className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
                           >
-                            <Palette className="size-5 text-primary mt-0.5 flex-shrink-0" />
+                            <LayoutDashboard className="size-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                             <div>
-                              <div className="font-medium text-foreground group-hover/item:text-accent">
-                                Mood Boards
-                              </div>
+                              <div className="font-medium text-foreground group-hover/item:text-accent">Overview</div>
                               <div className="text-xs text-muted-foreground leading-relaxed">
-                                Create color palettes and typography
+                                Define project goals and requirements
                               </div>
                             </div>
                           </Link>
                           <Link
-                            href="/#features"
+                            href="/dashboard?view=sitemap"
                             className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
                           >
-                            <Layout className="size-5 text-primary mt-0.5 flex-shrink-0" />
+                            <Globe className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
                             <div>
-                              <div className="font-medium text-foreground group-hover/item:text-accent">Wireframes</div>
+                              <div className="font-medium text-foreground group-hover/item:text-accent">Sitemap</div>
                               <div className="text-xs text-muted-foreground leading-relaxed">
-                                Plan layouts with drag-and-drop
+                                Map out your site structure
+                              </div>
+                            </div>
+                          </Link>
+                          <Link
+                            href="/dashboard?view=technical"
+                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
+                          >
+                            <Code className="size-5 text-purple-600 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <div className="font-medium text-foreground group-hover/item:text-accent">Technical</div>
+                              <div className="text-xs text-muted-foreground leading-relaxed">
+                                Document technical specifications
                               </div>
                             </div>
                           </Link>
@@ -90,34 +101,44 @@ export function SiteHeader() {
                       </div>
                       <div>
                         <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                          WORKFLOW
+                          DESIGN
                         </h4>
                         <div className="space-y-1">
                           <Link
-                            href="/#features"
+                            href="/dashboard?view=moodboard"
                             className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
                           >
-                            <Zap className="size-5 text-accent mt-0.5 flex-shrink-0" />
+                            <ImageIcon className="size-5 text-orange-600 mt-0.5 flex-shrink-0" />
                             <div>
-                              <div className="font-medium text-foreground group-hover/item:text-accent">
-                                Task Manager
-                              </div>
+                              <div className="font-medium text-foreground group-hover/item:text-accent">Mood Board</div>
                               <div className="text-xs text-muted-foreground leading-relaxed">
-                                Track progress and deliverables
+                                Collect visual inspiration and ideas
                               </div>
                             </div>
                           </Link>
                           <Link
-                            href="/#features"
+                            href="/dashboard?view=styleguide"
                             className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
                           >
-                            <FileText className="size-5 text-accent mt-0.5 flex-shrink-0" />
+                            <Palette className="size-5 text-pink-600 mt-0.5 flex-shrink-0" />
                             <div>
                               <div className="font-medium text-foreground group-hover/item:text-accent">
-                                Design Reports
+                                Style Guide
                               </div>
                               <div className="text-xs text-muted-foreground leading-relaxed">
-                                Export complete summaries
+                                Define colors and typography
+                              </div>
+                            </div>
+                          </Link>
+                          <Link
+                            href="/dashboard?view=assets"
+                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
+                          >
+                            <Package className="size-5 text-cyan-600 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <div className="font-medium text-foreground group-hover/item:text-accent">Assets</div>
+                              <div className="text-xs text-muted-foreground leading-relaxed">
+                                Organize images and media files
                               </div>
                             </div>
                           </Link>
@@ -125,29 +146,43 @@ export function SiteHeader() {
                       </div>
                       <div>
                         <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                          PLATFORM
+                          MANAGEMENT
                         </h4>
                         <div className="space-y-1">
                           <Link
-                            href="/dashboard"
+                            href="/dashboard?view=content"
                             className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
                           >
-                            <BarChart className="size-5 text-secondary mt-0.5 flex-shrink-0" />
+                            <FileText className="size-5 text-indigo-600 mt-0.5 flex-shrink-0" />
                             <div>
-                              <div className="font-medium text-foreground group-hover/item:text-accent">Dashboard</div>
-                              <div className="text-xs text-muted-foreground leading-relaxed">Access your workspace</div>
+                              <div className="font-medium text-foreground group-hover/item:text-accent">Content</div>
+                              <div className="text-xs text-muted-foreground leading-relaxed">
+                                Write and organize page content
+                              </div>
                             </div>
                           </Link>
                           <Link
-                            href="/integrations"
+                            href="/dashboard?view=tasks"
                             className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
                           >
-                            <Zap className="size-5 text-secondary mt-0.5 flex-shrink-0" />
+                            <Zap className="size-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                             <div>
-                              <div className="font-medium text-foreground group-hover/item:text-accent">
-                                Integrations
+                              <div className="font-medium text-foreground group-hover/item:text-accent">Tasks</div>
+                              <div className="text-xs text-muted-foreground leading-relaxed">
+                                Track project tasks and milestones
                               </div>
-                              <div className="text-xs text-muted-foreground leading-relaxed">Connect your tools</div>
+                            </div>
+                          </Link>
+                          <Link
+                            href="/dashboard?view=summary"
+                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
+                          >
+                            <FileText className="size-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <div className="font-medium text-foreground group-hover/item:text-accent">Summary</div>
+                              <div className="text-xs text-muted-foreground leading-relaxed">
+                                Review and export project summary
+                              </div>
                             </div>
                           </Link>
                         </div>
@@ -156,13 +191,6 @@ export function SiteHeader() {
                   </div>
                 </div>
               </div>
-
-              <Link
-                href="/#features"
-                className={`px-4 py-2 text-sm font-medium transition-colors duration-500 ${scrolled ? "text-foreground hover:text-accent" : "text-white hover:text-accent"}`}
-              >
-                Solutions
-              </Link>
 
               <Link
                 href="/pricing"
@@ -178,7 +206,7 @@ export function SiteHeader() {
                   Resources <ChevronDown className="size-4" />
                 </button>
                 <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
-                  <div className="bg-background border border-border rounded-2xl shadow-2xl p-8 w-[720px]">
+                  <div className="bg-background border border-border rounded-2xl shadow-2xl p-8 w-[600px]">
                     <div className="grid grid-cols-2 gap-8">
                       <div>
                         <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
@@ -186,40 +214,28 @@ export function SiteHeader() {
                         </h4>
                         <div className="space-y-1">
                           <Link
-                            href="/blog"
+                            href="/getting-started"
                             className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
                           >
-                            <BookOpen className="size-5 text-primary mt-0.5 flex-shrink-0" />
-                            <div>
-                              <div className="font-medium text-foreground group-hover/item:text-accent">Blog</div>
-                              <div className="text-xs text-muted-foreground leading-relaxed">
-                                Design tips and industry insights
-                              </div>
-                            </div>
-                          </Link>
-                          <Link
-                            href="/case-studies"
-                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
-                          >
-                            <FileCheck className="size-5 text-primary mt-0.5 flex-shrink-0" />
+                            <BookOpen className="size-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                             <div>
                               <div className="font-medium text-foreground group-hover/item:text-accent">
-                                Case Studies
+                                Getting Started
                               </div>
                               <div className="text-xs text-muted-foreground leading-relaxed">
-                                Real results from real designers
+                                Learn how to use Troov Studio
                               </div>
                             </div>
                           </Link>
                           <Link
-                            href="/templates"
+                            href="/faq"
                             className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
                           >
-                            <Lightbulb className="size-5 text-primary mt-0.5 flex-shrink-0" />
+                            <HelpCircle className="size-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                             <div>
-                              <div className="font-medium text-foreground group-hover/item:text-accent">Templates</div>
+                              <div className="font-medium text-foreground group-hover/item:text-accent">FAQ</div>
                               <div className="text-xs text-muted-foreground leading-relaxed">
-                                Pre-built project templates
+                                Frequently asked questions
                               </div>
                             </div>
                           </Link>
@@ -231,42 +247,28 @@ export function SiteHeader() {
                         </h4>
                         <div className="space-y-1">
                           <Link
+                            href="/pricing"
+                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
+                          >
+                            <FileText className="size-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <div className="font-medium text-foreground group-hover/item:text-accent">Pricing</div>
+                              <div className="text-xs text-muted-foreground leading-relaxed">
+                                View plans and pricing
+                              </div>
+                            </div>
+                          </Link>
+                          <Link
                             href="/help"
                             className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
                           >
-                            <HelpCircle className="size-5 text-accent mt-0.5 flex-shrink-0" />
+                            <Users className="size-5 text-emerald-600 mt-0.5 flex-shrink-0" />
                             <div>
                               <div className="font-medium text-foreground group-hover/item:text-accent">
-                                Help Center
+                                Contact Support
                               </div>
                               <div className="text-xs text-muted-foreground leading-relaxed">
-                                Get answers to common questions
-                              </div>
-                            </div>
-                          </Link>
-                          <Link
-                            href="/docs"
-                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
-                          >
-                            <FileText className="size-5 text-accent mt-0.5 flex-shrink-0" />
-                            <div>
-                              <div className="font-medium text-foreground group-hover/item:text-accent">
-                                Documentation
-                              </div>
-                              <div className="text-xs text-muted-foreground leading-relaxed">
-                                Complete platform guides
-                              </div>
-                            </div>
-                          </Link>
-                          <Link
-                            href="/community"
-                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors group/item"
-                          >
-                            <Users className="size-5 text-accent mt-0.5 flex-shrink-0" />
-                            <div>
-                              <div className="font-medium text-foreground group-hover/item:text-accent">Community</div>
-                              <div className="text-xs text-muted-foreground leading-relaxed">
-                                Connect with other designers
+                                Get in touch with our team
                               </div>
                             </div>
                           </Link>
