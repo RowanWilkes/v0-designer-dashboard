@@ -519,7 +519,8 @@ function DashboardContent() {
               )}
             </Button>
           )}
-          <Button variant="outline" onClick={() => setActiveView("account")} className="w-full justify-start">
+          {/* CHANGE> Changed justify-start to justify-center to center the button text */}
+          <Button variant="outline" onClick={() => setActiveView("account")} className="w-full justify-center">
             <Settings className="h-4 w-4 mr-2" />
             {!sidebarCollapsed && "Admin Settings"}
           </Button>

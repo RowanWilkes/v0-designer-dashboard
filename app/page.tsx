@@ -18,7 +18,7 @@ export default function HomePage() {
       <SiteHeader />
 
       {/* Hero Section - Enhanced with green glow */}
-      <section className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-primary">
+      <section className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 bg-primary">
         <div className="absolute inset-0 bg-gradient-to-br from-[#003A33] to-[#002724] opacity-80" />
 
         {/* Green glow effects */}
@@ -66,7 +66,7 @@ export default function HomePage() {
             </div>
 
             {/* Dashboard Preview - Added green glow, removed animation */}
-            <div className={`max-w-5xl mx-auto -mb-32 ${mounted ? "" : ""}`}>
+            <div className={`max-w-5xl mx-auto -mb-48 relative z-20 ${mounted ? "" : ""}`}>
               <div className="relative">
                 <div className="absolute -inset-8 bg-accent/30 rounded-3xl blur-3xl" />
                 <div className="absolute -inset-6 bg-accent/20 rounded-3xl blur-2xl" />
@@ -136,7 +136,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Grid Section - Apollo spacing and styling */}
-      <section className="py-24 lg:py-32 pt-40 bg-background">
+      <section className="py-24 lg:py-32 pt-56 lg:pt-64 bg-background">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center space-y-4 mb-16">
@@ -371,7 +371,7 @@ export default function HomePage() {
       </section>
 
       {/* Social Proof - Subtle accent green background */}
-      <section className="py-24 pb-48 lg:py-32 lg:pb-64 bg-accent/5">
+      <section className="py-24 pb-24 lg:py-32 lg:pb-32 bg-accent/5">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center space-y-4 mb-16">

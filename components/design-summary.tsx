@@ -129,6 +129,20 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
     return false
   }
 
+  const isDefaultSitemap = (pages: any[]): boolean => {
+    if (!pages || pages.length === 0) return true
+    if (pages.length === 1) {
+      const page = pages[0]
+      return (
+        page.name === "Home" &&
+        page.path === "/" &&
+        (!page.blocks || page.blocks.length === 0) &&
+        (!page.children || page.children.length === 0)
+      )
+    }
+    return false
+  }
+
   const toggleSection = (section: string) => {
     setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }))
   }
@@ -225,7 +239,12 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
         hasContent(summaryData.styleGuide?.buttonStyles), // Changed from 'buttons' to 'buttonStyles'
       color: "pink",
     },
-    { name: "Sitemap", icon: Layout, hasData: hasContent(summaryData.sitemapPages), color: "orange" },
+    {
+      name: "Sitemap",
+      icon: Layout,
+      hasData: hasContent(summaryData.sitemapPages) && !isDefaultSitemap(summaryData.sitemapPages),
+      color: "orange",
+    },
     {
       name: "Technical",
       icon: Code,
@@ -293,7 +312,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
 
   return (
     <div className="w-full mx-auto">
-      <Card className="w-full mx-auto bg-gradient-to-r from-emerald-50 to-teal-50">
+      <Card className="w-full mx-auto bg-white">
         <CardHeader className="px-6 pt-6 pb-6">
           {/* Quick Reference Header */}
           <div className="space-y-6">

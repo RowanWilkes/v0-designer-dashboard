@@ -507,6 +507,26 @@ export function StyleGuideClean({ projectId }: { projectId: string }) {
 
                 {editingTypography === typo.level && (
                   <div className="space-y-3 p-3 bg-gray-50 rounded border">
+                    {/* Font Family Selection */}
+                    <div>
+                      <Label className="text-xs font-medium mb-2 block">Font Family</Label>
+                      <Select
+                        value={typo.fontFamily}
+                        onValueChange={(value) => updateTypography(index, "fontFamily", value)}
+                      >
+                        <SelectTrigger className="h-9">
+                          <SelectValue placeholder="Choose a font" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {STANDARD_FONTS.map((font) => (
+                            <SelectItem key={font} value={font}>
+                              <span style={{ fontFamily: font }}>{font}</span>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
                     {/* Font Size Controls */}
                     <div>
                       <Label className="text-xs font-medium mb-2 block">Font Size</Label>

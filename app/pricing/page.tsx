@@ -24,14 +24,14 @@ export default function PricingPage() {
 
         <div className="relative">
           {/* Hero Section */}
-          <div className="container mx-auto px-6 pt-24 pb-12">
+          <div className="container mx-auto px-6 pt-32 pb-12 lg:pt-40">
             <div className="max-w-5xl mx-auto text-center space-y-6">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+              <h1 className="text-[64px] leading-[1.1] font-semibold tracking-tight">
                 <span className="text-emerald-400">Simple pricing.</span>
                 <br />
                 <span className="text-white">Powerful design tools.</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg leading-relaxed text-white/85 max-w-2xl mx-auto">
                 Everything you need to plan, design, and deliver exceptional web projects.
               </p>
             </div>
@@ -39,10 +39,10 @@ export default function PricingPage() {
 
           <div className="container mx-auto px-6 pb-8">
             <div className="flex items-center justify-center">
-              <div className="inline-flex items-center gap-0 bg-white/10 backdrop-blur-sm rounded-full p-1.5 shadow-lg">
+              <div className="inline-flex items-center gap-0 bg-white/10 backdrop-blur-sm rounded-full p-1 shadow-lg">
                 <button
                   onClick={() => setBillingPeriod("monthly")}
-                  className={`px-8 py-3 text-base font-semibold rounded-full transition-all ${
+                  className={`px-6 py-2 text-sm font-semibold rounded-full transition-all ${
                     billingPeriod === "monthly" ? "bg-white text-gray-900 shadow-md" : "text-white/70 hover:text-white"
                   }`}
                 >
@@ -50,13 +50,13 @@ export default function PricingPage() {
                 </button>
                 <button
                   onClick={() => setBillingPeriod("yearly")}
-                  className={`px-8 py-3 text-base font-semibold rounded-full transition-all ${
+                  className={`px-6 py-2 text-sm font-semibold rounded-full transition-all ${
                     billingPeriod === "yearly" ? "bg-white text-gray-900 shadow-md" : "text-white/70 hover:text-white"
                   }`}
                 >
                   Yearly
                 </button>
-                <span className="ml-1 px-4 py-2 bg-blue-100/90 backdrop-blur-sm text-blue-600 text-sm font-semibold rounded-full">
+                <span className="ml-1 px-3 py-1.5 bg-blue-100/90 backdrop-blur-sm text-blue-600 text-xs font-semibold rounded-full">
                   Save 20%
                 </span>
               </div>

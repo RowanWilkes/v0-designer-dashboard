@@ -73,7 +73,7 @@ export const ProjectSelector = forwardRef<{ openCreateDialog: () => void }, Proj
             <Button
               data-project-selector
               variant="outline"
-              className="gap-2 bg-white dark:bg-card border-gray-300 dark:border-border hover:bg-gray-50 dark:hover:bg-muted text-gray-900 dark:text-foreground"
+              className="gap-2 bg-white dark:bg-card border-gray-300 dark:border-border hover:bg-gray-50 dark:hover:bg-muted text-gray-900 dark:text-foreground hover:text-gray-900 dark:hover:text-foreground"
             >
               <FolderOpen className="size-4 text-gray-600 dark:text-muted-foreground" />
               <span className="max-w-[150px] truncate">{currentProject?.name || "Select Project"}</span>
@@ -94,12 +94,12 @@ export const ProjectSelector = forwardRef<{ openCreateDialog: () => void }, Proj
               projects.map((project) => (
                 <DropdownMenuItem
                   key={project.id}
-                  className="flex items-center justify-between gap-2 cursor-pointer text-gray-900 dark:text-foreground hover:bg-gray-100 dark:hover:bg-muted focus:bg-gray-100 dark:focus:bg-muted"
+                  className="flex items-center justify-between gap-2 cursor-pointer text-gray-900 dark:text-foreground hover:bg-gray-100 dark:hover:bg-muted focus:bg-gray-100 dark:focus:bg-muted focus:text-gray-900 dark:focus:text-foreground"
                   onSelect={() => onSelectProject(project.id)}
                 >
                   <div className="flex-1 min-w-0">
                     <div className="font-medium truncate">{project.name}</div>
-                    <div className="text-xs text-gray-600 dark:text-muted-foreground">
+                    <div className="text-xs text-gray-700 dark:text-muted-foreground">
                       {new Date(project.lastModified).toLocaleDateString()}
                     </div>
                   </div>
@@ -122,7 +122,7 @@ export const ProjectSelector = forwardRef<{ openCreateDialog: () => void }, Proj
             )}
             <DropdownMenuSeparator className="bg-gray-200 dark:bg-border" />
             <DropdownMenuItem
-              className="gap-2 cursor-pointer text-gray-900 dark:text-foreground hover:bg-emerald-500/10 dark:hover:bg-primary/20 focus:bg-emerald-500/10 dark:focus:bg-primary/20"
+              className="gap-2 cursor-pointer text-gray-900 dark:text-foreground hover:bg-emerald-500/10 dark:hover:bg-primary/20 focus:bg-emerald-500/10 dark:focus:bg-primary/20 focus:text-gray-900 dark:focus:text-foreground"
               onSelect={() => setIsCreateDialogOpen(true)}
             >
               <Plus className="size-4 text-emerald-500 dark:text-primary" />

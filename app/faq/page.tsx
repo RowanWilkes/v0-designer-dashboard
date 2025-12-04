@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronDown, ChevronUp, HelpCircle, Search, ChevronLeft } from "lucide-react"
+import { ChevronDown, ChevronUp, Search, ChevronLeft } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 
@@ -187,7 +187,7 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <Link
           href="/dashboard"
           className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6 transition-colors"
@@ -198,18 +198,11 @@ export default function FAQPage() {
 
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="size-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-              <HelpCircle className="size-6 text-blue-600" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Frequently Asked Questions</h1>
-              <p className="text-gray-600">Find answers to common questions about DesignFlow</p>
-            </div>
-          </div>
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">Frequently Asked Questions</h1>
+          <p className="text-lg text-gray-600">Find answers to common questions about DesignFlow</p>
 
           {/* Search Bar */}
-          <div className="relative">
+          <div className="relative mt-6">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 size-5 text-gray-400" />
             <input
               type="text"
@@ -222,17 +215,17 @@ export default function FAQPage() {
         </div>
 
         {/* FAQ Categories */}
-        <div className="space-y-8">
+        <div className="bg-white rounded-2xl border border-gray-200 p-8 space-y-12">
           {filteredCategories.map((category, categoryIndex) => {
             const colors = getColorClasses(category.color)
             return (
               <div key={categoryIndex}>
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${colors.bg} mb-4`}>
-                  <h2 className={`font-semibold ${colors.text}`}>{category.category}</h2>
-                  <span className={`text-xs ${colors.text} opacity-60`}>({category.questions.length})</span>
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${colors.bg} mb-6`}>
+                  <h2 className={`text-xl font-semibold ${colors.text}`}>{category.category}</h2>
+                  <span className={`text-sm ${colors.text} opacity-60`}>({category.questions.length})</span>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {category.questions.map((faq, index) => {
                     const globalIndex = categoryIndex * 100 + index
                     const isOpen = openIndex === globalIndex
@@ -243,7 +236,7 @@ export default function FAQPage() {
                           onClick={() => setOpenIndex(isOpen ? null : globalIndex)}
                           className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
                         >
-                          <h3 className="font-semibold text-gray-900 text-left">{faq.question}</h3>
+                          <h3 className="text-lg font-semibold text-gray-900 text-left">{faq.question}</h3>
                           {isOpen ? (
                             <ChevronUp className={`size-5 ${colors.text} flex-shrink-0 ml-4`} />
                           ) : (
@@ -265,9 +258,9 @@ export default function FAQPage() {
         </div>
 
         {/* Still Need Help */}
-        <div className="mt-12 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl border border-blue-200 p-8 text-center">
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Still need help?</h3>
-          <p className="text-gray-600 mb-6">Our support team is here to assist you with any questions</p>
+        <div className="mt-8 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl border border-blue-200 p-8 text-center">
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">Still need help?</h3>
+          <p className="text-lg text-gray-600 mb-6">Our support team is here to assist you with any questions</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
               Contact Support

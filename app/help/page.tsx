@@ -1,110 +1,104 @@
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Search, Book, Zap, Users, Settings, CreditCard, HelpCircle } from 'lucide-react'
 
 export default function HelpPage() {
-  const categories = [
-    {
-      icon: Book,
-      title: "Getting Started",
-      description: "Learn the basics and set up your first project",
-      articles: 12
-    },
-    {
-      icon: Zap,
-      title: "Features",
-      description: "Deep dives into DesignFlow's powerful features",
-      articles: 24
-    },
-    {
-      icon: Users,
-      title: "Collaboration",
-      description: "Working with teams and sharing projects",
-      articles: 8
-    },
-    {
-      icon: Settings,
-      title: "Account & Settings",
-      description: "Managing your account and preferences",
-      articles: 15
-    },
-    {
-      icon: CreditCard,
-      title: "Billing & Plans",
-      description: "Subscription, pricing, and payment info",
-      articles: 10
-    },
-    {
-      icon: HelpCircle,
-      title: "Troubleshooting",
-      description: "Solutions to common issues and problems",
-      articles: 18
-    }
-  ]
-
   return (
-    <div className="min-h-screen bg-background">
-      <SiteHeader />
+    <div className="min-h-screen relative">
+      {/* Dark green background matching footer */}
+      <div className="absolute inset-0 bg-primary">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#003A33] via-primary to-[#002724]"></div>
+      </div>
 
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary/5 via-transparent to-accent/5">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center space-y-8">
-            <h1 className="text-5xl lg:text-6xl font-bold text-foreground text-balance leading-tight">
-              How can we help?
-            </h1>
-            <div className="relative max-w-2xl mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
-              <Input 
-                placeholder="Search for help articles..." 
-                className="h-14 pl-12 text-lg"
-              />
+      <div className="relative z-10">
+        <SiteHeader />
+
+        <section className="pt-32 lg:pt-40 pb-16">
+          <div className="container mx-auto px-6">
+            <div className="max-w-3xl mx-auto text-center space-y-6">
+              <h1 className="text-[64px] leading-[1.1] font-semibold text-white tracking-tight text-balance">
+                How can we help?
+              </h1>
+              <p className="text-lg leading-relaxed text-white/80">
+                Choose a category below to find the information you need
+              </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-16">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold text-foreground mb-8">Browse by category</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categories.map((category, i) => (
-                <Card key={i} className="p-6 space-y-4 hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer group">
-                  <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <category.icon className="size-6 text-primary" />
+        <section className="py-16 pb-32">
+          <div className="container mx-auto px-6">
+            <div className="max-w-2xl mx-auto">
+              <Card className="p-8 lg:p-12 bg-white rounded-2xl shadow-2xl">
+                <div className="space-y-6">
+                  <div className="text-center space-y-3">
+                    <h2 className="text-3xl font-bold text-foreground">Contact Support</h2>
+                    <p className="text-lg text-gray-700 leading-relaxed">
+                      Send us a message and we'll get back to you as soon as possible.
+                    </p>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                      {category.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">{category.description}</p>
-                  </div>
-                  <p className="text-sm text-muted-foreground pt-2 border-t border-border">
-                    {category.articles} articles
-                  </p>
-                </Card>
-              ))}
+
+                  <form className="space-y-6">
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="text-sm font-medium text-foreground">
+                        Name
+                      </label>
+                      <input
+                        id="name"
+                        type="text"
+                        className="w-full h-11 px-4 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                        placeholder="Your name"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-medium text-foreground">
+                        Email
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        className="w-full h-11 px-4 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                        placeholder="your.email@example.com"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="subject" className="text-sm font-medium text-foreground">
+                        Subject
+                      </label>
+                      <input
+                        id="subject"
+                        type="text"
+                        className="w-full h-11 px-4 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                        placeholder="What do you need help with?"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="message" className="text-sm font-medium text-foreground">
+                        Message
+                      </label>
+                      <textarea
+                        id="message"
+                        className="w-full min-h-32 px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent resize-none"
+                        placeholder="Describe your issue or question in detail..."
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full h-12 bg-accent hover:bg-accent/90 text-white font-semibold rounded-lg transition-colors"
+                    >
+                      Send Message
+                    </button>
+                  </form>
+                </div>
+              </Card>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-muted/20">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="text-3xl font-bold text-foreground">Still need help?</h2>
-            <p className="text-lg text-muted-foreground">
-              Our support team is here to help you succeed
-            </p>
-            <Button size="lg" className="h-12 px-8">
-              Contact Support
-            </Button>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <SiteFooter />
     </div>
