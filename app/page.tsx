@@ -26,6 +26,7 @@ import {
   Settings,
 } from "lucide-react"
 import { useEffect, useState } from "react"
+import Image from "next/image"
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false)
@@ -102,21 +103,13 @@ export default function HomePage() {
                     <div className="bg-background rounded-lg border border-border shadow-sm overflow-hidden">
                       <div className="bg-muted/40 border-b border-border px-4 py-2 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <svg
-                            className="size-6 text-accent"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                          <span className="text-sm">
-                            <span className="font-semibold text-foreground">troov</span>
-                            <span className="font-normal text-foreground">studio</span>
-                          </span>
+                          <Image
+                            src="/images/troovstudio-logo.png"
+                            alt="Troov Studio"
+                            width={120}
+                            height={32}
+                            className="h-6 w-auto"
+                          />
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="flex items-center gap-2 px-2 py-1 text-xs text-muted-foreground border border-border rounded-md bg-background">
@@ -125,7 +118,7 @@ export default function HomePage() {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth={2}
-                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7l-10-5z"
                               />
                             </svg>
                             Fitness App Redesign
@@ -408,8 +401,8 @@ export default function HomePage() {
                         </div>
                       </div>
                     </div>
-                  </Card>
-                </div>
+                  </div>
+                </Card>
               </div>
             </div>
           </div>
