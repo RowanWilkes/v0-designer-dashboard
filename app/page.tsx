@@ -3,7 +3,19 @@
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card } from "@/components/ui/card"
-import { Sparkles, Palette, Layout, CheckSquare, Check, FileText, PenTool, Zap, Star, Database } from "lucide-react"
+import {
+  Sparkles,
+  Palette,
+  Layout,
+  CheckSquare,
+  Check,
+  FileText,
+  PenTool,
+  Zap,
+  Star,
+  Database,
+  Bitcoin as Button,
+} from "lucide-react"
 import { useEffect, useState } from "react"
 
 export default function HomePage() {
@@ -79,28 +91,78 @@ export default function HomePage() {
                       <div className="size-2.5 rounded-full bg-green-500/80" />
                     </div>
                     <div className="bg-background rounded-lg border border-border shadow-sm overflow-hidden">
-                      {/* Dashboard Header with Troov branding and account details */}
-                      <div className="bg-muted/40 border-b border-border px-6 py-3 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <svg className="size-6 text-accent" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
+                      <div className="bg-muted/40 border-b border-border px-4 py-2 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <svg
+                            className="size-6 text-accent"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"
+                              fill="currentColor"
+                            />
                           </svg>
-                          <span className="font-semibold text-sm text-foreground">
-                            troov<span className="font-normal">studio</span>
+                          <span className="text-sm">
+                            <span className="font-semibold text-foreground">troov</span>
+                            <span className="font-normal text-foreground">studio</span>
                           </span>
                         </div>
-                        <div className="flex items-center gap-4">
-                          <div className="text-xs text-muted-foreground">Sarah Chen</div>
-                          <div className="size-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-semibold">
-                            SC
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2 px-2 py-1 text-xs text-muted-foreground border border-border rounded-md bg-background">
+                            <svg className="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                              />
+                            </svg>
+                            Troov Test
+                            <svg className="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                          <div className="relative">
+                            <div className="absolute -top-1 -right-1 size-3 bg-red-500 rounded-full border-2 border-background" />
+                            <svg
+                              className="size-4 text-muted-foreground"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                              />
+                            </svg>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="size-7 rounded-full bg-accent flex items-center justify-center text-white text-xs font-semibold">
+                              RW
+                            </div>
+                            <div className="text-xs">
+                              <div className="font-medium text-foreground">Rowan Wilkes</div>
+                              <div className="text-muted-foreground text-[10px]">Free Plan</div>
+                            </div>
+                            <svg
+                              className="size-3 text-muted-foreground"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
                           </div>
                         </div>
                       </div>
 
                       {/* Full dashboard layout with sidebar and main content */}
                       <div className="flex">
-                        {/* Sidebar */}
-                        <div className="w-56 border-r border-border bg-muted/20 p-4 space-y-6">
+                        <div className="w-56 border-r border-border bg-muted/10 p-3 space-y-5">
                           <div className="space-y-1">
                             <button className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-accent bg-accent/10 rounded-lg">
                               <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,116 +177,260 @@ export default function HomePage() {
                             </button>
                           </div>
 
-                          <div className="space-y-2">
-                            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3">
+                          <div className="space-y-1">
+                            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 pb-1">
                               Navigation
                             </div>
                             <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
-                              <Palette className="size-4" />
+                              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 13a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6z"
+                                />
+                              </svg>
                               Overview
                             </button>
                             <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
-                              <Palette className="size-4" />
+                              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                />
+                              </svg>
                               Mood Board
                             </button>
                             <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
-                              <PenTool className="size-4" />
+                              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                                />
+                              </svg>
                               Style Guide
                             </button>
                             <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
-                              <Layout className="size-4" />
+                              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
                               Sitemap
+                            </button>
+                            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
+                              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                                />
+                              </svg>
+                              Technical
                             </button>
                           </div>
 
-                          <div className="space-y-2">
-                            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3">
-                              Management
+                          <div className="space-y-1">
+                            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 pb-1">
+                              Content & Assets
                             </div>
                             <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
-                              <CheckSquare className="size-4" />
-                              Tasks
+                              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                />
+                              </svg>
+                              Content
                             </button>
                             <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
-                              <FileText className="size-4" />
-                              Summary
+                              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                />
+                              </svg>
+                              Assets
                             </button>
+                          </div>
+
+                          <div className="space-y-1">
+                            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 pb-1">
+                              Management
+                            </div>
                           </div>
                         </div>
 
-                        {/* Main Content */}
                         <div className="flex-1 p-6 space-y-4 bg-background">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-3">
-                              <div className="size-10 rounded-xl bg-gradient-to-br from-accent to-green-600 flex items-center justify-center shadow-sm">
-                                <div className="size-5 rounded-md bg-white/90" />
-                              </div>
-                              <div>
-                                <h2 className="font-semibold text-base text-foreground">Spring Campaign</h2>
-                                <p className="text-xs text-muted-foreground">E-commerce redesign project</p>
-                              </div>
-                            </div>
-                            <div className="px-3 py-1 bg-accent/10 text-accent text-xs font-medium rounded-full">
-                              Active
-                            </div>
+                          <div className="mb-4">
+                            <h2 className="text-lg font-semibold text-foreground mb-1">Welcome back, Rowan!</h2>
+                            <p className="text-xs text-muted-foreground">
+                              Here's what's happening with your projects today
+                            </p>
                           </div>
 
-                          <div className="grid grid-cols-3 gap-3">
-                            <Card className="bg-accent/5 border-accent/20 p-4 space-y-2">
+                          <div className="grid grid-cols-4 gap-3">
+                            <Card className="bg-background border-border p-4 space-y-1">
                               <div className="flex items-center justify-between">
-                                <Palette className="size-5 text-accent" />
-                                <span className="text-2xl font-bold text-foreground">8</span>
+                                <p className="text-xs text-muted-foreground">Total Projects</p>
+                                <div className="size-9 rounded-lg bg-accent/10 flex items-center justify-center">
+                                  <svg
+                                    className="size-4 text-accent"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                                    />
+                                  </svg>
+                                </div>
                               </div>
-                              <p className="text-xs font-medium text-muted-foreground">Color Palettes</p>
+                              <p className="text-2xl font-bold text-foreground">1</p>
                             </Card>
-                            <Card className="bg-primary/5 border-primary/20 p-4 space-y-2">
+                            <Card className="bg-background border-border p-4 space-y-1">
                               <div className="flex items-center justify-between">
-                                <Layout className="size-5 text-primary" />
-                                <span className="text-2xl font-bold text-foreground">12</span>
+                                <p className="text-xs text-muted-foreground">Active Tasks</p>
+                                <div className="size-9 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                                  <svg
+                                    className="size-4 text-blue-500"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                    />
+                                  </svg>
+                                </div>
                               </div>
-                              <p className="text-xs font-medium text-muted-foreground">Wireframes</p>
+                              <p className="text-2xl font-bold text-foreground">0</p>
                             </Card>
-                            <Card className="bg-secondary/5 border-secondary/20 p-4 space-y-2">
+                            <Card className="bg-background border-border p-4 space-y-1">
                               <div className="flex items-center justify-between">
-                                <CheckSquare className="size-5 text-secondary" />
-                                <span className="text-2xl font-bold text-foreground">24</span>
+                                <p className="text-xs text-muted-foreground">Completion</p>
+                                <div className="size-9 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                                  <svg
+                                    className="size-4 text-purple-500"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                                    />
+                                  </svg>
+                                </div>
                               </div>
-                              <p className="text-xs font-medium text-muted-foreground">Tasks</p>
+                              <p className="text-2xl font-bold text-foreground">100%</p>
+                            </Card>
+                            <Card className="bg-background border-border p-4 space-y-1">
+                              <div className="flex items-center justify-between">
+                                <p className="text-xs text-muted-foreground">Plan Status</p>
+                                <div className="size-9 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+                                  <svg
+                                    className="size-4 text-yellow-500"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M5 13l4 4L19 7"
+                                    />
+                                  </svg>
+                                </div>
+                              </div>
+                              <p className="text-2xl font-bold text-foreground">Free</p>
                             </Card>
                           </div>
 
-                          <Card className="p-4 space-y-3 bg-muted/20 border-border">
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between">
-                                <span className="text-xs font-medium text-muted-foreground">Design Progress</span>
-                                <span className="text-sm font-bold text-foreground">75%</span>
+                          <Card className="bg-accent/5 border-accent/20 p-5 space-y-3">
+                            <div className="flex items-start gap-3">
+                              <div className="size-10 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
+                                <svg
+                                  className="size-5 text-white"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
                               </div>
-                              <div className="h-2 bg-muted rounded-full overflow-hidden">
-                                <div className="h-full w-3/4 bg-gradient-to-r from-accent to-green-600 rounded-full" />
+                              <div className="flex-1">
+                                <h3 className="text-sm font-semibold text-foreground mb-1">Ready to Develop! 🚀</h3>
+                                <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+                                  Congratulations! All design sections are complete. Your project is fully planned and
+                                  ready for development. Download your summary to share with your development team.
+                                </p>
+                                <div className="flex items-center gap-2">
+                                  <Button size="sm" className="h-8 text-xs bg-accent hover:bg-accent/90 text-white">
+                                    <svg
+                                      className="size-3 mr-1.5"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                      />
+                                    </svg>
+                                    Download Summary
+                                  </Button>
+                                  <Button size="sm" variant="outline" className="h-8 text-xs bg-transparent">
+                                    Review Project
+                                  </Button>
+                                </div>
                               </div>
                             </div>
                           </Card>
 
-                          <div className="grid grid-cols-2 gap-3 pt-2">
-                            <Card className="p-3 space-y-1 bg-background border-border">
-                              <div className="text-xs text-muted-foreground">Last Updated</div>
-                              <div className="text-sm font-semibold text-foreground">2 hours ago</div>
-                            </Card>
-                            <Card className="p-3 space-y-1 bg-background border-border">
-                              <div className="text-xs text-muted-foreground">Team Members</div>
-                              <div className="flex -space-x-2">
-                                <div className="size-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 border-2 border-background flex items-center justify-center text-white text-[10px] font-semibold">
-                                  SC
-                                </div>
-                                <div className="size-6 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 border-2 border-background flex items-center justify-center text-white text-[10px] font-semibold">
-                                  JD
-                                </div>
-                                <div className="size-6 rounded-full bg-gradient-to-br from-green-500 to-teal-500 border-2 border-background flex items-center justify-center text-white text-[10px] font-semibold">
-                                  MK
-                                </div>
-                              </div>
-                            </Card>
+                          <div className="flex items-center justify-between pt-2">
+                            <h3 className="text-sm font-semibold text-foreground">Recent Projects</h3>
+                            <Button size="sm" variant="ghost" className="h-8 text-xs text-muted-foreground">
+                              View All Projects
+                            </Button>
                           </div>
+
+                          <Card className="bg-background border-accent/30 p-4">
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-sm font-medium text-foreground">Troov Test</h4>
+                              <span className="px-2 py-0.5 bg-accent/10 text-accent text-[10px] font-medium rounded-full">
+                                Active
+                              </span>
+                            </div>
+                          </Card>
                         </div>
                       </div>
                     </div>
