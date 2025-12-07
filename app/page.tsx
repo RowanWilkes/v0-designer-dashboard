@@ -79,52 +79,153 @@ export default function HomePage() {
                       <div className="size-2.5 rounded-full bg-green-500/80" />
                     </div>
                     <div className="bg-background rounded-lg border border-border shadow-sm overflow-hidden">
-                      <div className="bg-muted/40 border-b border-border px-4 py-3 flex items-center justify-between">
+                      {/* Dashboard Header with Troov branding and account details */}
+                      <div className="bg-muted/40 border-b border-border px-6 py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <svg className="size-6 text-accent" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
+                          </svg>
+                          <span className="font-semibold text-sm text-foreground">
+                            troov<span className="font-normal">studio</span>
+                          </span>
+                        </div>
                         <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-2.5">
-                            <div className="size-7 rounded-lg bg-primary flex items-center justify-center">
-                              <div className="size-3 rounded-sm bg-primary-foreground/90" />
-                            </div>
-                            <span className="font-semibold text-sm text-foreground">Spring Campaign</span>
+                          <div className="text-xs text-muted-foreground">Sarah Chen</div>
+                          <div className="size-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-semibold">
+                            SC
                           </div>
                         </div>
                       </div>
-                      <div className="p-6 space-y-4 bg-background">
-                        <div className="grid grid-cols-3 gap-3">
-                          <Card className="bg-accent/5 border-accent/20 p-4 space-y-1.5">
-                            <div className="flex items-center justify-between">
-                              <Palette className="size-5 text-accent" />
-                              <span className="text-xl font-bold text-foreground">8</span>
+
+                      {/* Full dashboard layout with sidebar and main content */}
+                      <div className="flex">
+                        {/* Sidebar */}
+                        <div className="w-56 border-r border-border bg-muted/20 p-4 space-y-6">
+                          <div className="space-y-1">
+                            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-accent bg-accent/10 rounded-lg">
+                              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                                />
+                              </svg>
+                              Home
+                            </button>
+                          </div>
+
+                          <div className="space-y-2">
+                            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3">
+                              Navigation
                             </div>
-                            <p className="text-xs font-medium text-muted-foreground">Color Palettes</p>
-                          </Card>
-                          <Card className="bg-primary/5 border-primary/20 p-4 space-y-1.5">
-                            <div className="flex items-center justify-between">
-                              <Layout className="size-5 text-primary" />
-                              <span className="text-xl font-bold text-foreground">12</span>
+                            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
+                              <Palette className="size-4" />
+                              Overview
+                            </button>
+                            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
+                              <Palette className="size-4" />
+                              Mood Board
+                            </button>
+                            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
+                              <PenTool className="size-4" />
+                              Style Guide
+                            </button>
+                            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
+                              <Layout className="size-4" />
+                              Sitemap
+                            </button>
+                          </div>
+
+                          <div className="space-y-2">
+                            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3">
+                              Management
                             </div>
-                            <p className="text-xs font-medium text-muted-foreground">Wireframes</p>
-                          </Card>
-                          <Card className="bg-secondary/5 border-secondary/20 p-4 space-y-1.5">
-                            <div className="flex items-center justify-between">
-                              <CheckSquare className="size-5 text-secondary" />
-                              <span className="text-xl font-bold text-foreground">24</span>
-                            </div>
-                            <p className="text-xs font-medium text-muted-foreground">Tasks</p>
-                          </Card>
+                            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
+                              <CheckSquare className="size-4" />
+                              Tasks
+                            </button>
+                            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors">
+                              <FileText className="size-4" />
+                              Summary
+                            </button>
+                          </div>
                         </div>
 
-                        <Card className="p-4 space-y-3 bg-muted/20 border-border">
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-medium text-muted-foreground">Design Progress</span>
-                              <span className="text-xs font-bold text-foreground">75%</span>
+                        {/* Main Content */}
+                        <div className="flex-1 p-6 space-y-4 bg-background">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-3">
+                              <div className="size-10 rounded-xl bg-gradient-to-br from-accent to-green-600 flex items-center justify-center shadow-sm">
+                                <div className="size-5 rounded-md bg-white/90" />
+                              </div>
+                              <div>
+                                <h2 className="font-semibold text-base text-foreground">Spring Campaign</h2>
+                                <p className="text-xs text-muted-foreground">E-commerce redesign project</p>
+                              </div>
                             </div>
-                            <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                              <div className="h-full w-3/4 bg-accent rounded-full" />
+                            <div className="px-3 py-1 bg-accent/10 text-accent text-xs font-medium rounded-full">
+                              Active
                             </div>
                           </div>
-                        </Card>
+
+                          <div className="grid grid-cols-3 gap-3">
+                            <Card className="bg-accent/5 border-accent/20 p-4 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Palette className="size-5 text-accent" />
+                                <span className="text-2xl font-bold text-foreground">8</span>
+                              </div>
+                              <p className="text-xs font-medium text-muted-foreground">Color Palettes</p>
+                            </Card>
+                            <Card className="bg-primary/5 border-primary/20 p-4 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Layout className="size-5 text-primary" />
+                                <span className="text-2xl font-bold text-foreground">12</span>
+                              </div>
+                              <p className="text-xs font-medium text-muted-foreground">Wireframes</p>
+                            </Card>
+                            <Card className="bg-secondary/5 border-secondary/20 p-4 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <CheckSquare className="size-5 text-secondary" />
+                                <span className="text-2xl font-bold text-foreground">24</span>
+                              </div>
+                              <p className="text-xs font-medium text-muted-foreground">Tasks</p>
+                            </Card>
+                          </div>
+
+                          <Card className="p-4 space-y-3 bg-muted/20 border-border">
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-medium text-muted-foreground">Design Progress</span>
+                                <span className="text-sm font-bold text-foreground">75%</span>
+                              </div>
+                              <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                <div className="h-full w-3/4 bg-gradient-to-r from-accent to-green-600 rounded-full" />
+                              </div>
+                            </div>
+                          </Card>
+
+                          <div className="grid grid-cols-2 gap-3 pt-2">
+                            <Card className="p-3 space-y-1 bg-background border-border">
+                              <div className="text-xs text-muted-foreground">Last Updated</div>
+                              <div className="text-sm font-semibold text-foreground">2 hours ago</div>
+                            </Card>
+                            <Card className="p-3 space-y-1 bg-background border-border">
+                              <div className="text-xs text-muted-foreground">Team Members</div>
+                              <div className="flex -space-x-2">
+                                <div className="size-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 border-2 border-background flex items-center justify-center text-white text-[10px] font-semibold">
+                                  SC
+                                </div>
+                                <div className="size-6 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 border-2 border-background flex items-center justify-center text-white text-[10px] font-semibold">
+                                  JD
+                                </div>
+                                <div className="size-6 rounded-full bg-gradient-to-br from-green-500 to-teal-500 border-2 border-background flex items-center justify-center text-white text-[10px] font-semibold">
+                                  MK
+                                </div>
+                              </div>
+                            </Card>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
