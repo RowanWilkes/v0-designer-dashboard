@@ -52,7 +52,7 @@ export default function HomePage() {
               <div className="flex items-center justify-center gap-6 text-sm text-white/75 pt-2">
                 <div className="flex items-center gap-2">
                   <Check className="size-4 text-accent" />
-                  <span>14-day free trial</span>
+                  <span>Free for your first project</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="size-4 text-accent" />
@@ -60,7 +60,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="size-4 text-accent" />
-                  <span>Cancel anytime</span>
+                  <span>Upgrade only when you need more</span>
                 </div>
               </div>
             </div>
