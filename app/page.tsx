@@ -39,7 +39,7 @@ export default function HomePage() {
               <h1
                 className={`text-[64px] leading-[1.1] font-semibold text-white tracking-tight max-w-4xl mx-auto ${mounted ? "animate-fade-in-up" : "opacity-0"}`}
               >
-                Design Project Planning Made Simple
+                Organize Your Web Design Projects in One Place
               </h1>
 
               <p
