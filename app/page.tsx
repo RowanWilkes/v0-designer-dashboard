@@ -589,66 +589,128 @@ export default function HomePage() {
                 </ul>
               </div>
               <div className="relative aspect-[4/3] bg-gradient-to-br from-[#F8FAF9] to-white rounded-xl border border-border overflow-hidden shadow-lg">
-                <div className="absolute inset-0 p-8">
+                <div className="absolute inset-0">
                   {/* Dashboard Overview Preview */}
-                  <div className="bg-white rounded-lg border border-border shadow-sm h-full p-6 space-y-6 overflow-hidden">
+                  <div className="bg-white h-full p-6 space-y-5 overflow-hidden">
                     {/* Header */}
                     <div className="flex items-center justify-between pb-4 border-b border-border">
                       <div>
-                        <h3 className="text-xl font-semibold text-foreground">E-commerce Website Redesign</h3>
-                        <p className="text-sm text-muted-foreground mt-1">Client: Urban Collective</p>
+                        <h3 className="text-lg font-semibold text-foreground">E-commerce Website Redesign</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Client: Urban Collective</p>
                       </div>
-                      <div className="flex items-center gap-2 bg-accent/10 text-accent px-3 py-1.5 rounded-full text-sm font-medium">
-                        <div className="size-2 bg-accent rounded-full"></div>
+                      <div className="flex items-center gap-2 bg-accent/10 text-accent px-3 py-1.5 rounded-full text-xs font-medium">
+                        <div className="size-2 bg-accent rounded-full animate-pulse"></div>
                         In Progress
                       </div>
                     </div>
 
-                    {/* Key Metrics Grid */}
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="bg-gradient-to-br from-accent/5 to-accent/10 rounded-lg p-4 border border-accent/20">
-                        <div className="text-2xl font-bold text-foreground">32</div>
-                        <div className="text-xs text-muted-foreground mt-1">Total Pages</div>
+                    {/* Key Metrics Grid - Enhanced with more details */}
+                    <div className="grid grid-cols-4 gap-3">
+                      <div className="bg-gradient-to-br from-accent/5 to-accent/10 rounded-lg p-3 border border-accent/20">
+                        <div className="text-xl font-bold text-foreground">32</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">Total Pages</div>
+                        <div className="text-[9px] text-accent font-medium mt-1">+8 this week</div>
                       </div>
-                      <div className="bg-gradient-to-br from-blue-500/5 to-blue-500/10 rounded-lg p-4 border border-blue-500/20">
-                        <div className="text-2xl font-bold text-foreground">8</div>
-                        <div className="text-xs text-muted-foreground mt-1">Weeks Timeline</div>
+                      <div className="bg-gradient-to-br from-blue-500/5 to-blue-500/10 rounded-lg p-3 border border-blue-500/20">
+                        <div className="text-xl font-bold text-foreground">8</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">Weeks Timeline</div>
+                        <div className="text-[9px] text-blue-600 font-medium mt-1">4 weeks left</div>
                       </div>
-                      <div className="bg-gradient-to-br from-purple-500/5 to-purple-500/10 rounded-lg p-4 border border-purple-500/20">
-                        <div className="text-2xl font-bold text-foreground">$45k</div>
-                        <div className="text-xs text-muted-foreground mt-1">Budget</div>
+                      <div className="bg-gradient-to-br from-purple-500/5 to-purple-500/10 rounded-lg p-3 border border-purple-500/20">
+                        <div className="text-xl font-bold text-foreground">$45k</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">Budget</div>
+                        <div className="text-[9px] text-purple-600 font-medium mt-1">78% allocated</div>
                       </div>
-                    </div>
-
-                    {/* Project Progress */}
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium text-foreground">Design Progress</span>
-                        <span className="text-muted-foreground">68%</span>
-                      </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-accent to-accent/80 rounded-full"
-                          style={{ width: "68%" }}
-                        ></div>
+                      <div className="bg-gradient-to-br from-orange-500/5 to-orange-500/10 rounded-lg p-3 border border-orange-500/20">
+                        <div className="text-xl font-bold text-foreground">5</div>
+                        <div className="text-[10px] text-muted-foreground mt-1">Team Members</div>
+                        <div className="text-[9px] text-orange-600 font-medium mt-1">3 active now</div>
                       </div>
                     </div>
 
-                    {/* Recent Activity */}
+                    {/* Project Progress with Multiple Tracks */}
                     <div className="space-y-3">
-                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-medium text-foreground">Design Phase</span>
+                          <span className="text-muted-foreground">68%</span>
+                        </div>
+                        <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-accent to-emerald-500 rounded-full"
+                            style={{ width: "68%" }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-medium text-foreground">Content Collection</span>
+                          <span className="text-muted-foreground">45%</span>
+                        </div>
+                        <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full"
+                            style={{ width: "45%" }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Deliverables Checklist */}
+                    <div className="space-y-2">
+                      <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                        Deliverables Status
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-[11px]">
+                        <div className="flex items-center gap-2 bg-accent/5 rounded px-2 py-1.5">
+                          <div className="size-3 rounded bg-accent flex items-center justify-center flex-shrink-0">
+                            <Check className="size-2 text-white" />
+                          </div>
+                          <span className="text-foreground">Wireframes</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-accent/5 rounded px-2 py-1.5">
+                          <div className="size-3 rounded bg-accent flex items-center justify-center flex-shrink-0">
+                            <Check className="size-2 text-white" />
+                          </div>
+                          <span className="text-foreground">Mood Board</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-blue-500/5 rounded px-2 py-1.5">
+                          <div className="size-3 rounded border-2 border-blue-500 flex-shrink-0"></div>
+                          <span className="text-foreground">Style Guide</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-muted/50 rounded px-2 py-1.5">
+                          <div className="size-3 rounded border-2 border-muted-foreground/30 flex-shrink-0"></div>
+                          <span className="text-muted-foreground">Final Mockups</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Recent Activity Timeline */}
+                    <div className="space-y-2">
+                      <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
                         Recent Updates
                       </div>
                       <div className="space-y-2">
-                        <div className="flex items-center gap-3 text-sm">
-                          <div className="size-2 bg-accent rounded-full"></div>
-                          <span className="text-foreground">Mood board approved</span>
-                          <span className="text-muted-foreground ml-auto">2h ago</span>
+                        <div className="flex items-start gap-2 text-[11px]">
+                          <div className="size-1.5 bg-accent rounded-full mt-1 flex-shrink-0"></div>
+                          <div className="flex-1">
+                            <span className="text-foreground font-medium">Hero section wireframes completed</span>
+                            <span className="text-muted-foreground ml-2">2h ago</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-3 text-sm">
-                          <div className="size-2 bg-blue-500 rounded-full"></div>
-                          <span className="text-foreground">Style guide updated</span>
-                          <span className="text-muted-foreground ml-auto">5h ago</span>
+                        <div className="flex items-start gap-2 text-[11px]">
+                          <div className="size-1.5 bg-blue-500 rounded-full mt-1 flex-shrink-0"></div>
+                          <div className="flex-1">
+                            <span className="text-foreground font-medium">Color palette approved by client</span>
+                            <span className="text-muted-foreground ml-2">5h ago</span>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2 text-[11px]">
+                          <div className="size-1.5 bg-purple-500 rounded-full mt-1 flex-shrink-0"></div>
+                          <div className="flex-1">
+                            <span className="text-foreground font-medium">Typography system defined</span>
+                            <span className="text-muted-foreground ml-2">Yesterday</span>
+                          </div>
                         </div>
                       </div>
                     </div>
