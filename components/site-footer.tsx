@@ -2,7 +2,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
-import { Check } from "lucide-react"
 
 export function SiteFooter() {
   return (
@@ -21,20 +20,9 @@ export function SiteFooter() {
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
               <div className="flex-1 space-y-4">
                 <h2 className="text-4xl lg:text-5xl font-bold text-white">Transform your design workflow</h2>
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
-                  <div className="flex items-center gap-2 text-white">
-                    <Check className="size-5" />
-                    <span className="text-sm font-medium">14-day free trial</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-white">
-                    <Check className="size-5" />
-                    <span className="text-sm font-medium">No credit card required</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-white">
-                    <Check className="size-5" />
-                    <span className="text-sm font-medium">Cancel anytime</span>
-                  </div>
-                </div>
+                <p className="text-white/90 text-base">
+                  Your first project is free — upgrade whenever you're ready to take on more.
+                </p>
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-4">
