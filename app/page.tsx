@@ -588,13 +588,70 @@ export default function HomePage() {
                   ))}
                 </ul>
               </div>
-              <div className="relative aspect-[4/3] bg-white rounded-xl border border-border overflow-hidden shadow-sm">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-3">
-                    <div className="size-16 mx-auto bg-accent/10 rounded-lg flex items-center justify-center">
-                      <Palette className="size-8 text-accent/50" />
+              <div className="relative aspect-[4/3] bg-gradient-to-br from-[#F8FAF9] to-white rounded-xl border border-border overflow-hidden shadow-lg">
+                <div className="absolute inset-0 p-8">
+                  {/* Dashboard Overview Preview */}
+                  <div className="bg-white rounded-lg border border-border shadow-sm h-full p-6 space-y-6 overflow-hidden">
+                    {/* Header */}
+                    <div className="flex items-center justify-between pb-4 border-b border-border">
+                      <div>
+                        <h3 className="text-xl font-semibold text-foreground">E-commerce Website Redesign</h3>
+                        <p className="text-sm text-muted-foreground mt-1">Client: Urban Collective</p>
+                      </div>
+                      <div className="flex items-center gap-2 bg-accent/10 text-accent px-3 py-1.5 rounded-full text-sm font-medium">
+                        <div className="size-2 bg-accent rounded-full"></div>
+                        In Progress
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground font-medium">Image Placeholder</p>
+
+                    {/* Key Metrics Grid */}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="bg-gradient-to-br from-accent/5 to-accent/10 rounded-lg p-4 border border-accent/20">
+                        <div className="text-2xl font-bold text-foreground">32</div>
+                        <div className="text-xs text-muted-foreground mt-1">Total Pages</div>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-500/5 to-blue-500/10 rounded-lg p-4 border border-blue-500/20">
+                        <div className="text-2xl font-bold text-foreground">8</div>
+                        <div className="text-xs text-muted-foreground mt-1">Weeks Timeline</div>
+                      </div>
+                      <div className="bg-gradient-to-br from-purple-500/5 to-purple-500/10 rounded-lg p-4 border border-purple-500/20">
+                        <div className="text-2xl font-bold text-foreground">$45k</div>
+                        <div className="text-xs text-muted-foreground mt-1">Budget</div>
+                      </div>
+                    </div>
+
+                    {/* Project Progress */}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-medium text-foreground">Design Progress</span>
+                        <span className="text-muted-foreground">68%</span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-accent to-accent/80 rounded-full"
+                          style={{ width: "68%" }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    {/* Recent Activity */}
+                    <div className="space-y-3">
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                        Recent Updates
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-3 text-sm">
+                          <div className="size-2 bg-accent rounded-full"></div>
+                          <span className="text-foreground">Mood board approved</span>
+                          <span className="text-muted-foreground ml-auto">2h ago</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-sm">
+                          <div className="size-2 bg-blue-500 rounded-full"></div>
+                          <span className="text-foreground">Style guide updated</span>
+                          <span className="text-muted-foreground ml-auto">5h ago</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
