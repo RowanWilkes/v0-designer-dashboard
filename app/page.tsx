@@ -29,6 +29,7 @@ import {
   Upload,
   Clock,
   Calendar,
+  Download,
 } from "lucide-react"
 import { useEffect, useState } from "react"
 import Image from "next/image"
@@ -833,6 +834,83 @@ export default function HomePage() {
 
             {/* Benefit 3 */}
             <div className="grid lg:grid-cols-2 gap-16 items-center">
+              {/* CHANGE: Replace placeholder with engaging summary page preview */}
+              <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-50 to-white rounded-xl overflow-hidden shadow-lg">
+                <div className="absolute inset-0 p-8 space-y-6 overflow-hidden">
+                  {/* Header with Export Button */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900">Project Summary</h3>
+                      <p className="text-sm text-gray-500 mt-1">E-commerce Website Redesign</p>
+                    </div>
+                    <button className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors flex items-center gap-2">
+                      <Download className="size-4" />
+                      Export PDF
+                    </button>
+                  </div>
+
+                  {/* Project Overview Cards */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                      <div className="text-xs text-gray-500 mb-1">Status</div>
+                      <div className="text-sm font-semibold text-emerald-600">Ready to Ship</div>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                      <div className="text-xs text-gray-500 mb-1">Total Pages</div>
+                      <div className="text-sm font-semibold text-gray-900">32 Designed</div>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                      <div className="text-xs text-gray-500 mb-1">Components</div>
+                      <div className="text-sm font-semibold text-gray-900">48 Specs</div>
+                    </div>
+                  </div>
+
+                  {/* Technical Specifications Preview */}
+                  <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-5 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <FileText className="size-4 text-emerald-600" />
+                      <h4 className="text-sm font-semibold text-gray-900">Technical Specifications</h4>
+                    </div>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600">Breakpoints</span>
+                        <span className="font-medium text-gray-900">Mobile, Tablet, Desktop</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600">Font System</span>
+                        <span className="font-medium text-gray-900">Inter, 5 weights</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600">Color Palette</span>
+                        <span className="font-medium text-gray-900">8 colors defined</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Deliverables Checklist */}
+                  <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-5 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <CheckSquare className="size-4 text-emerald-600" />
+                      <h4 className="text-sm font-semibold text-gray-900">Deliverables Included</h4>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      {["Wireframes", "Mockups", "Style Guide", "Component Specs", "Icon Library", "PDF Export"].map(
+                        (item, idx) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <div className="size-4 bg-emerald-100 rounded flex items-center justify-center">
+                              <Check className="size-3 text-emerald-600" />
+                            </div>
+                            <span className="text-gray-700">{item}</span>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Subtle Gradient Overlay at Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+                </div>
+              </div>
               <div className="space-y-6">
                 <p className="text-sm font-semibold text-accent uppercase tracking-wider">Ship Confidently</p>
                 <h2 className="text-5xl font-semibold text-foreground tracking-tight leading-tight">
@@ -854,16 +932,6 @@ export default function HomePage() {
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div className="relative aspect-[4/3] bg-white rounded-xl border border-border overflow-hidden shadow-sm">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-3">
-                    <div className="size-16 mx-auto bg-accent/10 rounded-lg flex items-center justify-center">
-                      <PenTool className="size-8 text-accent/50" />
-                    </div>
-                    <p className="text-sm text-muted-foreground font-medium">Image Placeholder</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
