@@ -14,7 +14,6 @@ import {
   Zap,
   Star,
   Database,
-  Bitcoin as Button,
   Home,
   Grid,
   ImageIcon,
@@ -24,6 +23,12 @@ import {
   FileBarChart,
   Crown,
   Settings,
+  Folder,
+  TrendingUp,
+  Users,
+  Upload,
+  Clock,
+  Calendar,
 } from "lucide-react"
 import { useEffect, useState } from "react"
 import Image from "next/image"
@@ -238,166 +243,249 @@ export default function HomePage() {
                           </div>
                         </div>
 
-                        <div className="flex-1 p-6 space-y-4 bg-background">
-                          <div className="mb-4">
+                        <div className="flex-1 p-6 space-y-5 bg-background overflow-y-auto max-h-[600px]">
+                          <div className="mb-3">
                             <h2 className="text-lg font-semibold text-foreground mb-1">Welcome back, Emma Chen!</h2>
                             <p className="text-xs text-muted-foreground">
                               Here's what's happening with your projects today
                             </p>
                           </div>
 
+                          {/* Stats Grid */}
                           <div className="grid grid-cols-4 gap-3">
-                            <Card className="bg-background border-border p-4 space-y-1">
+                            <Card className="bg-background border-border p-4 space-y-2">
                               <div className="flex items-center justify-between">
                                 <p className="text-xs text-muted-foreground">Total Projects</p>
-                                <div className="size-9 rounded-lg bg-accent/10 flex items-center justify-center">
-                                  <svg
-                                    className="size-4 text-accent"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-                                    />
-                                  </svg>
+                                <div className="size-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                                  <Folder className="size-4 text-emerald-600" />
                                 </div>
                               </div>
                               <p className="text-2xl font-bold text-foreground">3</p>
+                              <p className="text-[10px] text-muted-foreground">+1 this month</p>
                             </Card>
-                            <Card className="bg-background border-border p-4 space-y-1">
+                            <Card className="bg-background border-border p-4 space-y-2">
                               <div className="flex items-center justify-between">
                                 <p className="text-xs text-muted-foreground">Active Tasks</p>
-                                <div className="size-9 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                                  <svg
-                                    className="size-4 text-blue-500"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                                    />
-                                  </svg>
+                                <div className="size-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                                  <CheckSquare className="size-4 text-blue-600" />
                                 </div>
                               </div>
                               <p className="text-2xl font-bold text-foreground">12</p>
+                              <p className="text-[10px] text-muted-foreground">3 due this week</p>
                             </Card>
-                            <Card className="bg-background border-border p-4 space-y-1">
+                            <Card className="bg-background border-border p-4 space-y-2">
                               <div className="flex items-center justify-between">
                                 <p className="text-xs text-muted-foreground">Completion</p>
-                                <div className="size-9 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                                  <svg
-                                    className="size-4 text-purple-500"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                                    />
-                                  </svg>
+                                <div className="size-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                                  <TrendingUp className="size-4 text-purple-600" />
                                 </div>
                               </div>
                               <p className="text-2xl font-bold text-foreground">67%</p>
+                              <p className="text-[10px] text-emerald-600">+12% from last week</p>
                             </Card>
-                            <Card className="bg-background border-border p-4 space-y-1">
+                            <Card className="bg-background border-border p-4 space-y-2">
                               <div className="flex items-center justify-between">
-                                <p className="text-xs text-muted-foreground">Plan Status</p>
-                                <div className="size-9 rounded-lg bg-yellow-500/10 flex items-center justify-center">
-                                  <svg
-                                    className="size-4 text-yellow-500"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M5 13l4 4L19 7"
-                                    />
-                                  </svg>
+                                <p className="text-xs text-muted-foreground">Team Members</p>
+                                <div className="size-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                                  <Users className="size-4 text-amber-600" />
                                 </div>
                               </div>
-                              <p className="text-2xl font-bold text-foreground">Free</p>
+                              <p className="text-2xl font-bold text-foreground">4</p>
+                              <p className="text-[10px] text-muted-foreground">2 active now</p>
                             </Card>
                           </div>
 
-                          <Card className="bg-accent/5 border-accent/20 p-5 space-y-3">
-                            <div className="flex items-start gap-3">
-                              <div className="size-10 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
-                                <svg
-                                  className="size-5 text-white"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M5 13l4 4L19 7"
-                                  />
-                                </svg>
+                          {/* Quick Actions */}
+                          <Card className="bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20 p-4">
+                            <div className="flex items-center justify-between mb-3">
+                              <div className="flex items-center gap-2">
+                                <div className="size-8 rounded-lg bg-accent flex items-center justify-center">
+                                  <Zap className="size-4 text-white" />
+                                </div>
+                                <h3 className="text-sm font-semibold text-foreground">Quick Actions</h3>
                               </div>
-                              <div className="flex-1">
-                                <h3 className="text-sm font-semibold text-foreground mb-1">
-                                  Design Phase Complete! 🎨
-                                </h3>
-                                <p className="text-xs text-muted-foreground leading-relaxed mb-3">
-                                  Great progress! Your mood board and style guide are complete. Continue with wireframes
-                                  and content planning to finish your project specification.
-                                </p>
-                                <div className="flex items-center gap-2">
-                                  <Button size="sm" className="h-8 text-xs bg-accent hover:bg-accent/90 text-white">
-                                    <svg
-                                      className="size-3 mr-1.5"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                                      />
-                                    </svg>
-                                    View Tasks
-                                  </Button>
-                                  <Button size="sm" variant="outline" className="h-8 text-xs bg-transparent">
-                                    Continue Planning
-                                  </Button>
+                            </div>
+                            <div className="grid grid-cols-3 gap-2">
+                              <button className="p-3 bg-background hover:bg-accent/10 border border-border hover:border-accent/30 rounded-lg transition-colors text-left">
+                                <FileText className="size-4 text-accent mb-1.5" />
+                                <p className="text-[11px] font-medium text-foreground">New Project</p>
+                              </button>
+                              <button className="p-3 bg-background hover:bg-accent/10 border border-border hover:border-accent/30 rounded-lg transition-colors text-left">
+                                <Upload className="size-4 text-accent mb-1.5" />
+                                <p className="text-[11px] font-medium text-foreground">Upload Assets</p>
+                              </button>
+                              <button className="p-3 bg-background hover:bg-accent/10 border border-border hover:border-accent/30 rounded-lg transition-colors text-left">
+                                <Users className="size-4 text-accent mb-1.5" />
+                                <p className="text-[11px] font-medium text-foreground">Invite Team</p>
+                              </button>
+                            </div>
+                          </Card>
+
+                          {/* Two Column Layout */}
+                          <div className="grid grid-cols-2 gap-4">
+                            {/* Recent Activity */}
+                            <Card className="bg-background border-border p-4 space-y-3">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Clock className="size-4 text-muted-foreground" />
+                                <h3 className="text-sm font-semibold text-foreground">Recent Activity</h3>
+                              </div>
+                              <div className="space-y-3">
+                                <div className="flex gap-2.5">
+                                  <div className="size-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0"></div>
+                                  <div className="flex-1">
+                                    <p className="text-[11px] text-foreground font-medium">Style guide updated</p>
+                                    <p className="text-[10px] text-muted-foreground">Fitness App • 2 hours ago</p>
+                                  </div>
+                                </div>
+                                <div className="flex gap-2.5">
+                                  <div className="size-1.5 rounded-full bg-blue-500 mt-1.5 flex-shrink-0"></div>
+                                  <div className="flex-1">
+                                    <p className="text-[11px] text-foreground font-medium">3 new wireframes added</p>
+                                    <p className="text-[10px] text-muted-foreground">E-commerce Site • 4 hours ago</p>
+                                  </div>
+                                </div>
+                                <div className="flex gap-2.5">
+                                  <div className="size-1.5 rounded-full bg-purple-500 mt-1.5 flex-shrink-0"></div>
+                                  <div className="flex-1">
+                                    <p className="text-[11px] text-foreground font-medium">Mood board completed</p>
+                                    <p className="text-[10px] text-muted-foreground">Portfolio Site • Yesterday</p>
+                                  </div>
+                                </div>
+                                <div className="flex gap-2.5">
+                                  <div className="size-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0"></div>
+                                  <div className="flex-1">
+                                    <p className="text-[11px] text-foreground font-medium">Project created</p>
+                                    <p className="text-[10px] text-muted-foreground">Fitness App • 3 days ago</p>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </Card>
+                            </Card>
 
-                          <div className="flex items-center justify-between pt-2">
-                            <h3 className="text-sm font-semibold text-foreground">Recent Projects</h3>
-                            <Button size="sm" variant="ghost" className="h-8 text-xs text-muted-foreground">
-                              View All Projects
-                            </Button>
+                            {/* Upcoming Deadlines */}
+                            <Card className="bg-background border-border p-4 space-y-3">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Calendar className="size-4 text-muted-foreground" />
+                                <h3 className="text-sm font-semibold text-foreground">Upcoming Deadlines</h3>
+                              </div>
+                              <div className="space-y-3">
+                                <div className="flex items-start justify-between gap-2 p-2.5 rounded-lg bg-red-500/5 border border-red-500/10">
+                                  <div className="flex-1">
+                                    <p className="text-[11px] text-foreground font-medium">Wireframes review</p>
+                                    <p className="text-[10px] text-muted-foreground">Fitness App Redesign</p>
+                                  </div>
+                                  <span className="text-[10px] font-medium text-red-600 bg-red-50 px-1.5 py-0.5 rounded">
+                                    Today
+                                  </span>
+                                </div>
+                                <div className="flex items-start justify-between gap-2 p-2.5 rounded-lg bg-amber-500/5 border border-amber-500/10">
+                                  <div className="flex-1">
+                                    <p className="text-[11px] text-foreground font-medium">Client presentation</p>
+                                    <p className="text-[10px] text-muted-foreground">E-commerce Site</p>
+                                  </div>
+                                  <span className="text-[10px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">
+                                    Fri
+                                  </span>
+                                </div>
+                                <div className="flex items-start justify-between gap-2 p-2.5 rounded-lg bg-blue-500/5 border border-blue-500/10">
+                                  <div className="flex-1">
+                                    <p className="text-[11px] text-foreground font-medium">Final delivery</p>
+                                    <p className="text-[10px] text-muted-foreground">Portfolio Site</p>
+                                  </div>
+                                  <span className="text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">
+                                    Dec 15
+                                  </span>
+                                </div>
+                              </div>
+                            </Card>
                           </div>
 
-                          <Card className="bg-background border-accent/30 p-4">
-                            <div className="flex items-center justify-between">
-                              <h4 className="text-sm font-medium text-foreground">Fitness App Redesign</h4>
-                              <span className="px-2 py-0.5 bg-amber-500/10 text-amber-600 text-[10px] font-medium rounded-full">
-                                In Progress
-                              </span>
+                          {/* Active Projects */}
+                          <div>
+                            <div className="flex items-center justify-between mb-3">
+                              <h3 className="text-sm font-semibold text-foreground">Active Projects</h3>
+                              <button className="text-[11px] text-accent hover:text-accent/80 font-medium">
+                                View All →
+                              </button>
                             </div>
-                          </Card>
+                            <div className="space-y-2.5">
+                              <Card className="bg-background border-accent/30 p-3.5 hover:border-accent/50 transition-colors">
+                                <div className="flex items-start justify-between mb-2">
+                                  <div>
+                                    <h4 className="text-sm font-medium text-foreground">Fitness App Redesign</h4>
+                                    <p className="text-[10px] text-muted-foreground mt-0.5">
+                                      Mobile App • Started Nov 28
+                                    </p>
+                                  </div>
+                                  <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-600 text-[10px] font-medium rounded-full">
+                                    67% Complete
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 mb-2">
+                                  <div className="h-1.5 flex-1 bg-muted rounded-full overflow-hidden">
+                                    <div className="h-full bg-accent rounded-full" style={{ width: "67%" }}></div>
+                                  </div>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-1.5">
+                                    <div className="flex -space-x-1.5">
+                                      <div className="size-5 rounded-full bg-accent text-white text-[9px] font-medium flex items-center justify-center ring-2 ring-background">
+                                        EC
+                                      </div>
+                                      <div className="size-5 rounded-full bg-blue-500 text-white text-[9px] font-medium flex items-center justify-center ring-2 ring-background">
+                                        JD
+                                      </div>
+                                    </div>
+                                    <span className="text-[10px] text-muted-foreground ml-1">2 members</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                                      <CheckSquare className="size-3" />
+                                      <span>8/12 tasks</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Card>
+
+                              <Card className="bg-background border-border p-3.5 hover:border-accent/30 transition-colors">
+                                <div className="flex items-start justify-between mb-2">
+                                  <div>
+                                    <h4 className="text-sm font-medium text-foreground">E-commerce Redesign</h4>
+                                    <p className="text-[10px] text-muted-foreground mt-0.5">Web App • Started Nov 15</p>
+                                  </div>
+                                  <span className="px-2 py-0.5 bg-blue-500/10 text-blue-600 text-[10px] font-medium rounded-full">
+                                    45% Complete
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 mb-2">
+                                  <div className="h-1.5 flex-1 bg-muted rounded-full overflow-hidden">
+                                    <div className="h-full bg-blue-500 rounded-full" style={{ width: "45%" }}></div>
+                                  </div>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-1.5">
+                                    <div className="flex -space-x-1.5">
+                                      <div className="size-5 rounded-full bg-purple-500 text-white text-[9px] font-medium flex items-center justify-center ring-2 ring-background">
+                                        MK
+                                      </div>
+                                      <div className="size-5 rounded-full bg-amber-500 text-white text-[9px] font-medium flex items-center justify-center ring-2 ring-background">
+                                        AL
+                                      </div>
+                                      <div className="size-5 rounded-full bg-rose-500 text-white text-[9px] font-medium flex items-center justify-center ring-2 ring-background">
+                                        ST
+                                      </div>
+                                    </div>
+                                    <span className="text-[10px] text-muted-foreground ml-1">3 members</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                                      <CheckSquare className="size-3" />
+                                      <span>6/15 tasks</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Card>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
