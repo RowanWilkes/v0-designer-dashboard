@@ -721,13 +721,89 @@ export default function HomePage() {
 
             {/* Benefit 2 */}
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="relative aspect-[4/3] bg-white rounded-xl border border-border overflow-hidden order-2 lg:order-1 shadow-sm">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center space-y-3">
-                    <div className="size-16 mx-auto bg-accent/10 rounded-lg flex items-center justify-center">
-                      <Layout className="size-8 text-accent/50" />
+              <div className="relative aspect-[4/3] bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl overflow-hidden order-2 lg:order-1 shadow-lg">
+                <div className="h-full p-8 space-y-6 overflow-hidden">
+                  {/* Header */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xl font-semibold text-slate-900">Style Guide</h3>
+                      <p className="text-sm text-slate-500">Brand Identity System</p>
                     </div>
-                    <p className="text-sm text-muted-foreground font-medium">Image Placeholder</p>
+                    <div className="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-full">
+                      Complete
+                    </div>
+                  </div>
+
+                  {/* Color Palette Section */}
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Color Palette</h4>
+                    <div className="grid grid-cols-5 gap-2">
+                      <div className="space-y-1">
+                        <div className="h-12 bg-blue-600 rounded-lg shadow-sm"></div>
+                        <p className="text-[10px] text-slate-500 text-center">#2563EB</p>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="h-12 bg-emerald-500 rounded-lg shadow-sm"></div>
+                        <p className="text-[10px] text-slate-500 text-center">#10B981</p>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="h-12 bg-slate-900 rounded-lg shadow-sm"></div>
+                        <p className="text-[10px] text-slate-500 text-center">#0F172A</p>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="h-12 bg-amber-400 rounded-lg shadow-sm"></div>
+                        <p className="text-[10px] text-slate-500 text-center">#FBBF24</p>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="h-12 bg-slate-100 rounded-lg shadow-sm border border-slate-200"></div>
+                        <p className="text-[10px] text-slate-500 text-center">#F1F5F9</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Typography Section */}
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Typography</h4>
+                    <div className="bg-white rounded-lg p-4 space-y-2 shadow-sm">
+                      <p className="text-2xl font-bold text-slate-900">Heading Bold</p>
+                      <p className="text-base font-medium text-slate-700">Body Medium Text</p>
+                      <p className="text-sm text-slate-500">Caption Regular</p>
+                    </div>
+                  </div>
+
+                  {/* Components Preview */}
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Components</h4>
+                    <div className="flex flex-wrap gap-2">
+                      <button className="px-4 py-2 bg-blue-600 text-white text-xs font-medium rounded-lg shadow-sm">
+                        Primary
+                      </button>
+                      <button className="px-4 py-2 bg-white border border-slate-300 text-slate-700 text-xs font-medium rounded-lg shadow-sm">
+                        Secondary
+                      </button>
+                      <div className="px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-full">
+                        Badge
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Spacing System */}
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Spacing Scale</h4>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-2 bg-blue-600 rounded"></div>
+                        <span className="text-[10px] text-slate-500">8px</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 h-2 bg-blue-600 rounded"></div>
+                        <span className="text-[10px] text-slate-500">16px</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-24 h-2 bg-blue-600 rounded"></div>
+                        <span className="text-[10px] text-slate-500">24px</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
