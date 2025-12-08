@@ -569,9 +569,8 @@ export default function HomePage() {
                           Organize projects in minutes, not hours
                         </h2>
                         <p className="text-lg text-muted-foreground leading-relaxed">
-                          Stop juggling spreadsheets, design files, and scattered notes. Troov Studio brings all your
-                          design planning into one organized dashboard with dedicated sections for every aspect of your
-                          project.
+                          Stop juggling spreadsheets, design files, and scattered notes. Troov Studio brings all your design
+                          planning into one organized dashboard with dedicated sections for every aspect of your project.
                         </p>
                         <ul className="space-y-4">
                           {[
@@ -692,18 +691,14 @@ export default function HomePage() {
                                 <div className="flex items-start gap-2 text-[11px]">
                                   <div className="size-1.5 bg-accent rounded-full mt-1 flex-shrink-0"></div>
                                   <div className="flex-1">
-                                    <span className="text-foreground font-medium">
-                                      Hero section wireframes completed
-                                    </span>
+                                    <span className="text-foreground font-medium">Hero section wireframes completed</span>
                                     <span className="text-muted-foreground ml-2">2h ago</span>
                                   </div>
                                 </div>
                                 <div className="flex items-start gap-2 text-[11px]">
                                   <div className="size-1.5 bg-blue-500 rounded-full mt-1 flex-shrink-0"></div>
                                   <div className="flex-1">
-                                    <span className="text-foreground font-medium">
-                                      Color palette approved by client
-                                    </span>
+                                    <span className="text-foreground font-medium">Color palette approved by client</span>
                                     <span className="text-muted-foreground ml-2">5h ago</span>
                                   </div>
                                 </div>
@@ -725,9 +720,8 @@ export default function HomePage() {
                           Everything in its place
                         </h2>
                         <p className="text-lg text-muted-foreground leading-relaxed">
-                          From mood boards to technical specs, content strategy to task management - every project
-                          element has a dedicated home. Find what you need instantly with organized sections and smart
-                          categorization.
+                          From mood boards to technical specs, content strategy to task management - every project element has a
+                          dedicated home. Find what you need instantly with organized sections and smart categorization.
                         </p>
                         <ul className="space-y-4">
                           {[
@@ -804,21 +798,16 @@ export default function HomePage() {
                               <h4 className="text-sm font-semibold text-gray-900">Deliverables Included</h4>
                             </div>
                             <div className="grid grid-cols-2 gap-2 text-xs">
-                              {[
-                                "Wireframes",
-                                "Mockups",
-                                "Style Guide",
-                                "Component Specs",
-                                "Icon Library",
-                                "PDF Export",
-                              ].map((item, idx) => (
-                                <div key={idx} className="flex items-center gap-2">
-                                  <div className="size-4 bg-emerald-100 rounded flex items-center justify-center">
-                                    <Check className="size-3 text-emerald-600" />
+                              {["Wireframes", "Mockups", "Style Guide", "Component Specs", "Icon Library", "PDF Export"].map(
+                                (item, idx) => (
+                                  <div key={idx} className="flex items-center gap-2">
+                                    <div className="size-4 bg-emerald-100 rounded flex items-center justify-center">
+                                      <Check className="size-3 text-emerald-600" />
+                                    </div>
+                                    <span className="text-gray-700">{item}</span>
                                   </div>
-                                  <span className="text-gray-700">{item}</span>
-                                </div>
-                              ))}
+                                ),
+                              )}
                             </div>
                           </div>
 
@@ -833,9 +822,8 @@ export default function HomePage() {
                           Hand off with clarity
                         </h2>
                         <p className="text-lg text-muted-foreground leading-relaxed">
-                          Generate professional project summaries that document every design decision. Developers,
-                          clients, and stakeholders get exactly what they need with comprehensive specifications and
-                          visual guidelines.
+                          Generate professional project summaries that document every design decision. Developers, clients, and
+                          stakeholders get exactly what they need with comprehensive specifications and visual guidelines.
                         </p>
                         <ul className="space-y-4">
                           {[
@@ -865,8 +853,8 @@ export default function HomePage() {
                         From concept to delivery in 8 sections
                       </h2>
                       <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Our organized dashboard guides you through every phase of design planning with dedicated
-                        sections for each step.
+                        Our organized dashboard guides you through every phase of design planning with dedicated sections for
+                        each step.
                       </p>
                     </div>
 
@@ -918,9 +906,7 @@ export default function HomePage() {
                   <div className="max-w-7xl mx-auto">
                     <div className="text-center space-y-4 mb-16">
                       <p className="text-sm font-semibold text-accent uppercase tracking-wider">Testimonials</p>
-                      <h2 className="text-5xl font-semibold text-foreground tracking-tight">
-                        Loved by designers everywhere
-                      </h2>
+                      <h2 className="text-5xl font-semibold text-foreground tracking-tight">Loved by designers everywhere</h2>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
@@ -968,6 +954,8 @@ export default function HomePage() {
                   </div>
                 </div>
               </section>
+
+              <SiteFooter />
             </div>
           </div>
         </div>
@@ -1435,6 +1423,6 @@ export default function HomePage() {
       </section>
 
       <SiteFooter />
-    </div>
+    </>
   )
 }
