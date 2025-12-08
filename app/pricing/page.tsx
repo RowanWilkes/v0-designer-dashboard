@@ -67,7 +67,7 @@ export default function PricingPage() {
           <div className="container mx-auto px-6 pb-24">
             <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
               {/* Free Plan */}
-              <Card className="p-10 bg-white border border-gray-200 rounded-3xl shadow-[0_0_100px_-10px_rgba(16,185,129,0.7),0_0_60px_-15px_rgba(16,185,129,0.5)] hover:shadow-[0_0_120px_-5px_rgba(16,185,129,0.8),0_0_80px_-10px_rgba(16,185,129,0.6)] transition-shadow">
+              <Card className="p-10 bg-white border border-gray-200 rounded-3xl shadow-lg hover:shadow-xl transition-shadow">
                 <div className="space-y-8">
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium text-emerald-600">For individuals & freelancers</h3>
@@ -129,7 +129,7 @@ export default function PricingPage() {
               </Card>
 
               {/* Pro Plan */}
-              <Card className="p-10 bg-gray-50 border border-gray-200 rounded-3xl shadow-[0_0_100px_-10px_rgba(16,185,129,0.7),0_0_60px_-15px_rgba(16,185,129,0.5)] hover:shadow-[0_0_120px_-5px_rgba(16,185,129,0.8),0_0_80px_-10px_rgba(16,185,129,0.6)] transition-shadow">
+              <Card className="p-10 bg-white border border-gray-200 rounded-3xl shadow-[0_0_100px_-10px_rgba(16,185,129,0.7),0_0_60px_-15px_rgba(16,185,129,0.5)] hover:shadow-[0_0_120px_-5px_rgba(16,185,129,0.8),0_0_80px_-10px_rgba(16,185,129,0.6)] transition-shadow">
                 <div className="space-y-8">
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium text-gray-900">Pro</h3>
@@ -149,41 +149,41 @@ export default function PricingPage() {
                   </Button>
 
                   <div className="pt-2">
-                    <p className="text-sm font-medium text-gray-900 mb-6">Everything in Free, plus:</p>
+                    <p className="text-sm font-medium text-emerald-600 mb-6">Everything in Free, plus:</p>
                     <ul className="space-y-4">
                       <li className="flex items-start gap-3">
-                        <div className="rounded-full bg-gray-200 p-1 mt-0.5 flex-shrink-0">
-                          <Check className="size-4 text-gray-700 stroke-[3]" />
+                        <div className="rounded-full bg-emerald-50 p-1 mt-0.5 flex-shrink-0">
+                          <Check className="size-4 text-emerald-600 stroke-[3]" />
                         </div>
                         <span className="text-gray-700 text-base font-medium">Unlimited projects</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <div className="rounded-full bg-gray-200 p-1 mt-0.5 flex-shrink-0">
-                          <Check className="size-4 text-gray-700 stroke-[3]" />
+                        <div className="rounded-full bg-emerald-50 p-1 mt-0.5 flex-shrink-0">
+                          <Check className="size-4 text-emerald-600 stroke-[3]" />
                         </div>
                         <span className="text-gray-700 text-base font-medium">Unlimited team members</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <div className="rounded-full bg-gray-200 p-1 mt-0.5 flex-shrink-0">
-                          <Check className="size-4 text-gray-700 stroke-[3]" />
+                        <div className="rounded-full bg-emerald-50 p-1 mt-0.5 flex-shrink-0">
+                          <Check className="size-4 text-emerald-600 stroke-[3]" />
                         </div>
                         <span className="text-gray-700 text-base">Unlimited summary downloads</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <div className="rounded-full bg-gray-200 p-1 mt-0.5 flex-shrink-0">
-                          <Check className="size-4 text-gray-700 stroke-[3]" />
+                        <div className="rounded-full bg-emerald-50 p-1 mt-0.5 flex-shrink-0">
+                          <Check className="size-4 text-emerald-600 stroke-[3]" />
                         </div>
                         <span className="text-gray-700 text-base">Advanced collaboration</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <div className="rounded-full bg-gray-200 p-1 mt-0.5 flex-shrink-0">
-                          <Check className="size-4 text-gray-700 stroke-[3]" />
+                        <div className="rounded-full bg-emerald-50 p-1 mt-0.5 flex-shrink-0">
+                          <Check className="size-4 text-emerald-600 stroke-[3]" />
                         </div>
                         <span className="text-gray-700 text-base">Priority support</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <div className="rounded-full bg-gray-200 p-1 mt-0.5 flex-shrink-0">
-                          <Check className="size-4 text-gray-700 stroke-[3]" />
+                        <div className="rounded-full bg-emerald-50 p-1 mt-0.5 flex-shrink-0">
+                          <Check className="size-4 text-emerald-600 stroke-[3]" />
                         </div>
                         <span className="text-gray-700 text-base">Custom branding options</span>
                       </li>
