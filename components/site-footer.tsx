@@ -24,7 +24,7 @@ export function SiteFooter() {
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
                   <div className="flex items-center gap-2 text-white">
                     <Check className="size-5" />
-                    <span className="text-sm font-medium">14-day free trial</span>
+                    <span className="text-sm font-medium">Free for your first project</span>
                   </div>
                   <div className="flex items-center gap-2 text-white">
                     <Check className="size-5" />
@@ -32,7 +32,7 @@ export function SiteFooter() {
                   </div>
                   <div className="flex items-center gap-2 text-white">
                     <Check className="size-5" />
-                    <span className="text-sm font-medium">Cancel anytime</span>
+                    <span className="text-sm font-medium">Upgrade only when you need more</span>
                   </div>
                 </div>
               </div>
