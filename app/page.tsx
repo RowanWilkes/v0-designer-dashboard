@@ -567,28 +567,7 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto space-y-32">
             {/* Benefit 1 */}
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="space-y-6">
-                <p className="text-sm font-semibold text-accent uppercase tracking-wider">Plan Faster</p>
-                <h2 className="text-5xl font-semibold text-foreground tracking-tight leading-tight">
-                  Organize projects in minutes, not hours
-                </h2>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  Stop juggling spreadsheets, design files, and scattered notes. Troov Studio brings all your design
-                  planning into one organized dashboard with dedicated sections for every aspect of your project.
-                </p>
-                <ul className="space-y-4">
-                  {[
-                    "8 dedicated sections from overview to summary",
-                    "Pre-built templates and 35+ website blocks",
-                    "Export professional PDF documentation",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <Check className="size-5 text-accent flex-shrink-0 mt-0.5" />
-                      <span className="text-foreground leading-relaxed">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {/* Dashboard Preview - Now First (Left Side) */}
               <div className="relative aspect-[4/3] bg-gradient-to-br from-[#F8FAF9] to-white rounded-xl border border-border overflow-hidden shadow-lg">
                 <div className="absolute inset-0">
                   {/* Dashboard Overview Preview */}
@@ -717,6 +696,29 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
+              </div>
+              {/* Text Content - Now Second (Right Side) */}
+              <div className="space-y-6">
+                <p className="text-sm font-semibold text-accent uppercase tracking-wider">Plan Faster</p>
+                <h2 className="text-5xl font-semibold text-foreground tracking-tight leading-tight">
+                  Organize projects in minutes, not hours
+                </h2>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Stop juggling spreadsheets, design files, and scattered notes. Troov Studio brings all your design
+                  planning into one organized dashboard with dedicated sections for every aspect of your project.
+                </p>
+                <ul className="space-y-4">
+                  {[
+                    "8 dedicated sections from overview to summary",
+                    "Pre-built templates and 35+ website blocks",
+                    "Export professional PDF documentation",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <Check className="size-5 text-accent flex-shrink-0 mt-0.5" />
+                      <span className="text-foreground leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
