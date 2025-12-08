@@ -198,7 +198,7 @@ export default function PricingPage() {
 
       <section className="bg-white py-32 border-t border-gray-200">
         <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto space-y-12">
+          <div className="max-w-6xl mx-auto space-y-12">
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">Frequently asked questions</h2>
             </div>
