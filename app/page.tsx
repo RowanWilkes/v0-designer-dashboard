@@ -491,7 +491,7 @@ export default function HomePage() {
                       </div>
                     </Card>
                   </div>
-                </Card>
+                </div>
               </section>
 
               {/* Features Grid Section - Apollo spacing and styling */}
