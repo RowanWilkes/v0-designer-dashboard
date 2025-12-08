@@ -947,7 +947,7 @@ export default function HomePage() {
             <div className="text-center space-y-4 mb-16">
               <p className="text-sm font-semibold text-accent uppercase tracking-wider">How It Works</p>
               <h2 className="text-5xl font-semibold text-foreground tracking-tight">
-                From concept to delivery in 8 sections
+                Your Project, Simplified in 3 Steps
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Our organized dashboard guides you through every phase of design planning with dedicated sections for
