@@ -403,8 +403,8 @@ export default function HomePage() {
                       </div>
 
                       {/* Active Projects */}
-                      <div className="p-6 space-y-4">
-                        <div className="flex items-center justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
                           <h3 className="text-sm font-semibold text-foreground">Active Projects</h3>
                           <button className="text-[11px] text-accent hover:text-accent/80 font-medium">
                             View All →
@@ -490,8 +490,8 @@ export default function HomePage() {
                         </div>
                       </div>
                     </div>
-                  </Card>
-                </div>
+                  </div>
+                </Card>
               </div>
             </div>
           </section>
