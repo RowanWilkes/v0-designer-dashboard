@@ -524,7 +524,7 @@ export default function HomePage() {
                       {
                         icon: Layout,
                         title: "Interactive Sitemaps",
-                        desc: "Build comprehensive site structures with our block library containing 35+ page sections. Plan your entire website architecture.",
+                        desc: "Build comprehensive site structures with our block library containing 35+ pre-designed page sections. Plan your entire website architecture.",
                       },
                       {
                         icon: FileText,
@@ -971,8 +971,7 @@ export default function HomePage() {
             </section>
 
             <SiteFooter />
-          </div>
+          </section>
         </div>
-      </div>
-    )\
-  }
+      )\
+    }
