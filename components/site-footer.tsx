@@ -11,9 +11,9 @@ export function SiteFooter() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#003A33] via-primary to-[#002724]"></div>
       </div>
 
-      <div className="container mx-auto px-6 pt-24 pb-8 relative z-10">
+      <div className="container mx-auto px-6 pt-24 pb-8 relative z-0">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-accent p-12 rounded-3xl shadow-2xl relative overflow-hidden">
+          <div className="bg-accent p-12 rounded-3xl shadow-2xl relative overflow-hidden z-0">
             <div className="absolute inset-0 bg-gradient-radial from-emerald-300/20 via-transparent to-transparent"></div>
             <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-emerald-400/30 rounded-full blur-3xl"></div>
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl"></div>
@@ -59,7 +59,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 pb-12 pt-18 relative z-10 text-white">
+      <div className="container mx-auto px-6 pb-12 pt-18 relative z-0 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12">
             <Image
