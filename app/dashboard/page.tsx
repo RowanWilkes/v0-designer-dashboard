@@ -1223,10 +1223,10 @@ function DashboardContent() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Card
-                      className="cursor-pointer hover:shadow-md transition-all"
+                      className="cursor-pointer hover:shadow-md transition-all h-full"
                       onClick={() => setActiveView("account-profile")}
                     >
-                      <CardContent className="pt-6">
+                      <CardContent className="pt-6 min-h-[140px] flex items-start">
                         <div className="flex items-start gap-4">
                           <div className="h-12 w-12 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
                             <User className="h-6 w-6 text-blue-600" />
@@ -1242,10 +1242,10 @@ function DashboardContent() {
                     </Card>
 
                     <Card
-                      className="cursor-pointer hover:shadow-md transition-all"
+                      className="cursor-pointer hover:shadow-md transition-all h-full"
                       onClick={() => setActiveView("account-preferences")}
                     >
-                      <CardContent className="pt-6">
+                      <CardContent className="pt-6 min-h-[140px] flex items-start">
                         <div className="flex items-start gap-4">
                           <div className="h-12 w-12 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
                             <SlidersHorizontal className="h-6 w-6 text-purple-600" />
@@ -1259,10 +1259,10 @@ function DashboardContent() {
                     </Card>
 
                     <Card
-                      className="cursor-pointer hover:shadow-md transition-all"
+                      className="cursor-pointer hover:shadow-md transition-all h-full"
                       onClick={() => setActiveView("account-usage")}
                     >
-                      <CardContent className="pt-6">
+                      <CardContent className="pt-6 min-h-[140px] flex items-start">
                         <div className="flex items-start gap-4">
                           <div className="h-12 w-12 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
                             <BarChart2 className="h-6 w-6 text-emerald-600" />
@@ -1276,10 +1276,10 @@ function DashboardContent() {
                     </Card>
 
                     <Card
-                      className="cursor-pointer hover:shadow-md transition-all"
+                      className="cursor-pointer hover:shadow-md transition-all h-full"
                       onClick={() => setActiveView("account-help")}
                     >
-                      <CardContent className="pt-6">
+                      <CardContent className="pt-6 min-h-[140px] flex items-start">
                         <div className="flex items-start gap-4">
                           <div className="h-12 w-12 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
                             <HelpCircle className="h-6 w-6 text-orange-600" />
