@@ -37,14 +37,9 @@ export default function SignupPage() {
     <div className="min-h-screen relative bg-gradient-to-br from-white via-gray-50 to-white flex items-center justify-center p-6 overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Green glow effects */}
-        <div className="absolute top-20 left-20 size-96 bg-[#2DCE73]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-20 size-80 bg-[#013B34]/5 rounded-full blur-3xl" />
-
-        {/* Geometric patterns */}
-        <div className="absolute top-1/4 right-1/4 size-32 border border-[#2DCE73]/20 rounded-lg -rotate-12" />
-        <div className="absolute bottom-1/3 left-1/4 size-24 border border-[#013B34]/20 rounded-full" />
-        <div className="absolute top-1/2 left-1/3 size-16 border border-[#2DCE73]/30 -rotate-45" />
+        <div className="absolute top-20 left-20 size-[500px] bg-[#2DCE73]/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-20 size-[400px] bg-[#2DCE73]/15 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[600px] bg-[#013B34]/10 rounded-full blur-3xl" />
       </div>
 
       <div className="w-full max-w-md space-y-6 relative z-10">
@@ -53,8 +48,7 @@ export default function SignupPage() {
           <img src="/troov-studio-black-text.png" alt="Troov Studio" className="h-16 object-contain" />
         </Link>
 
-        {/* Signup Card */}
-        <Card className="p-8 space-y-6 border-[#2DCE73]/20 shadow-lg">
+        <Card className="p-8 space-y-6 border-[#2DCE73]/30 shadow-[0_0_50px_rgba(45,206,115,0.25)]">
           <div className="space-y-2 text-center">
             <h1 className="text-3xl font-bold text-[#013B34]">Create your account</h1>
             <p className="text-gray-600">Start designing better projects today</p>

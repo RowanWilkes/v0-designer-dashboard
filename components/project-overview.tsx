@@ -1,12 +1,14 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp } from "lucide-react"
+import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp, X, Plus } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
@@ -34,6 +36,9 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     clientReviewDate: "",
   })
 
+  const [features, setFeatures] = useState<string[]>([])
+  const [featureInput, setFeatureInput] = useState("")
+
   const [isComplete, setIsComplete] = useState(false)
 
   useEffect(() => {
@@ -58,13 +63,16 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         teamMembers: parsed.teamMembers || "",
         clientReviewDate: parsed.clientReviewDate || "",
       })
+      if (parsed.features && Array.isArray(parsed.features)) {
+        setFeatures(parsed.features)
+      }
     }
   }, [projectId])
 
   useEffect(() => {
     const storageKey = `project-${projectId}-overview`
-    localStorage.setItem(storageKey, JSON.stringify(projectData))
-  }, [projectData, projectId])
+    localStorage.setItem(storageKey, JSON.stringify({ ...projectData, features }))
+  }, [projectData, projectId, features])
 
   useEffect(() => {
     setIsComplete(checkSectionCompletion(projectId, "overview"))
@@ -74,6 +82,18 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     const newValue = !isComplete
     setIsComplete(newValue)
     setSectionCompletion(projectId, "overview", newValue)
+  }
+
+  const handleFeatureKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && featureInput.trim()) {
+      e.preventDefault()
+      setFeatures([...features, featureInput.trim()])
+      setFeatureInput("")
+    }
+  }
+
+  const removeFeature = (index: number) => {
+    setFeatures(features.filter((_, i) => i !== index))
   }
 
   const getPriorityColor = (priority: string) => {
@@ -227,19 +247,45 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
             <CardDescription className="dark:text-gray-400">What will be delivered</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="deliverables" className="font-medium dark:text-gray-300">
-                Key Deliverables
+            <div className="space-y-3">
+              <Label htmlFor="features-input" className="font-medium dark:text-gray-300 flex items-center gap-2">
+                <Plus className="size-4 text-emerald-600" />
+                Added Features
               </Label>
-              <Textarea
-                id="deliverables"
-                value={projectData.deliverables}
-                onChange={(e) => setProjectData({ ...projectData, deliverables: e.target.value })}
-                placeholder="List main deliverables (e.g., Homepage design, 5 inner pages, mobile responsive, style guide...)"
-                rows={4}
-                className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
+              <Input
+                id="features-input"
+                value={featureInput}
+                onChange={(e) => setFeatureInput(e.target.value)}
+                onKeyDown={handleFeatureKeyDown}
+                placeholder="Type a feature and press Enter to add..."
+                className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
               />
+              <p className="text-xs text-muted-foreground dark:text-gray-400">
+                Examples: Homepage design, Mobile responsive, Style guide, 5 inner pages
+              </p>
+
+              {features.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3 p-3 bg-emerald-50 dark:bg-[#013B34] rounded-lg border border-emerald-100 dark:border-[#2DCE73]">
+                  {features.map((feature, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="bg-emerald-100 dark:bg-[#024039] text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-[#035749] px-3 py-1.5 text-sm font-medium flex items-center gap-2 border border-emerald-200 dark:border-[#2DCE73]"
+                    >
+                      {feature}
+                      <button
+                        onClick={() => removeFeature(index)}
+                        className="hover:bg-emerald-300 dark:hover:bg-[#046B5A] rounded-full p-0.5 transition-colors"
+                        aria-label={`Remove ${feature}`}
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              )}
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="constraints" className="font-medium dark:text-gray-300">
                 Constraints & Requirements
@@ -292,7 +338,6 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         </CardHeader>
         <CardContent>
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Dates section */}
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="kickoff-date" className="flex items-center gap-2 font-medium">
@@ -340,7 +385,6 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
               </div>
             </div>
 
-            {/* Team & Priority section */}
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="priority" className="flex items-center gap-2 font-medium">
