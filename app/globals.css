@@ -52,13 +52,13 @@
 
   --radius: 0.5rem;
 
-  /* Added typography CSS variables for consistent sizing and weights */
-  --font-heading-xl: 48px;
-  --font-heading-lg: 36px;
-  --font-heading-md: 28px;
-  --font-heading-sm: 24px;
-  --font-heading-xs: 20px;
-  --font-heading-xxs: 16px;
+  /* Fixed typography CSS variables to use rem instead of px */
+  --font-heading-xl: 3rem;
+  --font-heading-lg: 2.25rem;
+  --font-heading-md: 1.75rem;
+  --font-heading-sm: 1.5rem;
+  --font-heading-xs: 1.25rem;
+  --font-heading-xxs: 1rem;
 
   --font-weight-light: 300;
   --font-weight-regular: 400;
