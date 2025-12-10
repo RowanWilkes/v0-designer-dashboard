@@ -1094,7 +1094,9 @@ function DashboardContent() {
                                       <AlertCircle className="h-5 w-5 text-amber-500" />
                                     )}
                                     <span
-                                      className={`font-medium ${section.completed ? "text-gray-500" : "text-gray-900"}`}
+                                      className={`font-medium transition-colors ${
+                                        section.completed ? "text-gray-500" : "text-gray-900 hover:text-emerald-700"
+                                      }`}
                                     >
                                       {section.name}
                                     </span>
