@@ -8,10 +8,10 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp, X, Plus } from "lucide-react"
+import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp, X, Plus, LinkIcon, User } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
+import { setSectionCompletion } from "@/lib/completion-tracker"
 
 type ProjectOverviewProps = {
   projectId: string
@@ -34,10 +34,15 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     estimatedDevTime: "",
     teamMembers: "",
     clientReviewDate: "",
+    projectType: "",
+    keyLinks: "",
   })
 
   const [features, setFeatures] = useState<string[]>([])
   const [featureInput, setFeatureInput] = useState("")
+  const [collaborators, setCollaborators] = useState<Array<{ name: string; role: string }>>([])
+  const [collaboratorName, setCollaboratorName] = useState("")
+  const [collaboratorRole, setCollaboratorRole] = useState("")
 
   const [isComplete, setIsComplete] = useState(false)
 
@@ -62,21 +67,22 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         estimatedDevTime: parsed.estimatedDevTime || "",
         teamMembers: parsed.teamMembers || "",
         clientReviewDate: parsed.clientReviewDate || "",
+        projectType: parsed.projectType || "",
+        keyLinks: parsed.keyLinks || "",
       })
       if (parsed.features && Array.isArray(parsed.features)) {
         setFeatures(parsed.features)
+      }
+      if (parsed.collaborators && Array.isArray(parsed.collaborators)) {
+        setCollaborators(parsed.collaborators)
       }
     }
   }, [projectId])
 
   useEffect(() => {
     const storageKey = `project-${projectId}-overview`
-    localStorage.setItem(storageKey, JSON.stringify({ ...projectData, features }))
-  }, [projectData, projectId, features])
-
-  useEffect(() => {
-    setIsComplete(checkSectionCompletion(projectId, "overview"))
-  }, [projectId])
+    localStorage.setItem(storageKey, JSON.stringify({ ...projectData, features, collaborators }))
+  }, [projectData, projectId, features, collaborators])
 
   const toggleComplete = () => {
     const newValue = !isComplete
@@ -94,6 +100,25 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
 
   const removeFeature = (index: number) => {
     setFeatures(features.filter((_, i) => i !== index))
+  }
+
+  const handleAddCollaborator = () => {
+    if (collaboratorName.trim() && collaboratorRole.trim()) {
+      setCollaborators([...collaborators, { name: collaboratorName.trim(), role: collaboratorRole.trim() }])
+      setCollaboratorName("")
+      setCollaboratorRole("")
+    }
+  }
+
+  const removeCollaborator = (index: number) => {
+    setCollaborators(collaborators.filter((_, i) => i !== index))
+  }
+
+  const handleCollaboratorKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      handleAddCollaborator()
+    }
   }
 
   const getPriorityColor = (priority: string) => {
@@ -156,6 +181,32 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                 className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
               />
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="project-type" className="font-medium dark:text-gray-300">
+                Project Type
+              </Label>
+              <Select
+                value={projectData.projectType}
+                onValueChange={(value) => setProjectData({ ...projectData, projectType: value })}
+              >
+                <SelectTrigger className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white">
+                  <SelectValue placeholder="Select project type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="E-commerce">E-commerce</SelectItem>
+                  <SelectItem value="Portfolio">Portfolio</SelectItem>
+                  <SelectItem value="SaaS">SaaS</SelectItem>
+                  <SelectItem value="Marketing Site">Marketing Site</SelectItem>
+                  <SelectItem value="Landing Page">Landing Page</SelectItem>
+                  <SelectItem value="Redesign">Redesign</SelectItem>
+                  <SelectItem value="Blog/Content">Blog/Content</SelectItem>
+                  <SelectItem value="Corporate Website">Corporate Website</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="client" className="font-medium dark:text-gray-300">
                 Client
@@ -302,7 +353,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-border bg-card shadow-sm">
+        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="size-5 text-emerald-600" />
@@ -324,6 +375,114 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                 className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
               />
             </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-foreground dark:text-white">
+              <LinkIcon className="size-5 text-emerald-600" />
+              Key Links & Resources
+            </CardTitle>
+            <CardDescription className="dark:text-gray-400">Important references and assets</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Label htmlFor="key-links" className="font-medium dark:text-gray-300">
+              Links & Resources
+            </Label>
+            <Textarea
+              id="key-links"
+              value={projectData.keyLinks}
+              onChange={(e) => setProjectData({ ...projectData, keyLinks: e.target.value })}
+              placeholder="Add links separated by lines:
+• Current website (for redesigns)
+• Figma/design files
+• Brand guidelines
+• Google Drive/assets folder
+• Competitor sites
+• Inspiration references"
+              rows={8}
+              className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
+            />
+          </CardContent>
+        </Card>
+
+        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-foreground dark:text-white">
+              <Users className="size-5 text-emerald-600" />
+              Collaborators & Stakeholders
+            </CardTitle>
+            <CardDescription className="dark:text-gray-400">Team members and key contacts</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label htmlFor="collaborator-name" className="text-sm font-medium dark:text-gray-300">
+                    Name
+                  </Label>
+                  <Input
+                    id="collaborator-name"
+                    value={collaboratorName}
+                    onChange={(e) => setCollaboratorName(e.target.value)}
+                    onKeyDown={handleCollaboratorKeyDown}
+                    placeholder="John Doe"
+                    className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="collaborator-role" className="text-sm font-medium dark:text-gray-300">
+                    Role
+                  </Label>
+                  <Input
+                    id="collaborator-role"
+                    value={collaboratorRole}
+                    onChange={(e) => setCollaboratorRole(e.target.value)}
+                    onKeyDown={handleCollaboratorKeyDown}
+                    placeholder="Designer"
+                    className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
+                  />
+                </div>
+              </div>
+              <button
+                onClick={handleAddCollaborator}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition-colors font-medium"
+              >
+                <Plus className="size-4" />
+                Add Collaborator
+              </button>
+            </div>
+
+            {collaborators.length > 0 && (
+              <div className="space-y-2 mt-4">
+                {collaborators.map((collaborator, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 bg-emerald-50 dark:bg-[#013B34] rounded-lg border border-emerald-100 dark:border-[#2DCE73]"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="size-10 rounded-full bg-emerald-100 dark:bg-[#024039] flex items-center justify-center">
+                        <User className="size-5 text-emerald-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground dark:text-white">{collaborator.name}</p>
+                        <p className="text-sm text-muted-foreground dark:text-gray-400">{collaborator.role}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => removeCollaborator(index)}
+                      className="p-1.5 hover:bg-emerald-200 dark:hover:bg-[#046B5A] rounded-full transition-colors"
+                      aria-label={`Remove ${collaborator.name}`}
+                    >
+                      <X className="size-4 text-emerald-700 dark:text-emerald-300" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
