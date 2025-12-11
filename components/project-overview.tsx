@@ -352,30 +352,33 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                 className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73]/50 text-foreground dark:text-white"
               />
 
-              {projectData.primaryAction && projectData.primaryAction.length > 0 && (
-                <div className="flex flex-wrap gap-2 p-3 bg-emerald-50/50 dark:bg-[#013B34]/50 rounded-lg border border-emerald-200 dark:border-[#2DCE73]/30">
-                  {projectData.primaryAction.map((action, index) => (
-                    <span
-                      key={index}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded-md shadow-sm"
-                    >
-                      {action}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setProjectData({
-                            ...projectData,
-                            primaryAction: projectData.primaryAction.filter((_, i) => i !== index),
-                          })
-                        }
-                        className="ml-1 hover:bg-emerald-700 rounded-full p-0.5 transition-colors"
+              {projectData.primaryAction &&
+                Array.isArray(projectData.primaryAction) &&
+                projectData.primaryAction.length > 0 && (
+                  <div className="flex flex-wrap gap-2 p-3 bg-emerald-50/50 dark:bg-[#013B34]/50 rounded-lg border border-emerald-200 dark:border-[#2DCE73]/30">
+                    {projectData.primaryAction.map((action, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded-md shadow-sm"
                       >
-                        <X className="size-3" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
+                        {action}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const currentActions = projectData.primaryAction || []
+                            setProjectData({
+                              ...projectData,
+                              primaryAction: currentActions.filter((_, i) => i !== index),
+                            })
+                          }}
+                          className="ml-1 hover:bg-emerald-700 rounded-full p-0.5 transition-colors"
+                        >
+                          <X className="size-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
             </div>
 
             <div className="space-y-2">
@@ -683,14 +686,14 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                 </Label>
                 <Textarea
                   id="team-members"
-                  value={projectData.teamMembers.map((member) => `${member.name} - ${member.role}`).join(", ")}
+                  value={projectData.collaborators.map((member) => `${member.name} - ${member.role}`).join(", ")}
                   onChange={(e) => {
                     const teamMembersString = e.target.value
                     const teamMembersArray = teamMembersString.split(", ").map((member) => {
                       const [name, role] = member.split(" - ")
                       return { name, role }
                     })
-                    setProjectData({ ...projectData, teamMembers: teamMembersArray })
+                    setProjectData({ ...projectData, collaborators: teamMembersArray })
                   }}
                   placeholder="List team members involved (e.g., John - Designer, Sarah - Content Writer)"
                   rows={3}
