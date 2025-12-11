@@ -33,6 +33,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     teamMembers: "",
     clientReviewDate: "",
     projectType: "",
+    websiteFeatures: [] as string[],
   })
 
   const [isComplete, setIsComplete] = useState(false)
@@ -59,6 +60,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         teamMembers: parsed.teamMembers || "",
         clientReviewDate: parsed.clientReviewDate || "",
         projectType: parsed.projectType || "",
+        websiteFeatures: parsed.websiteFeatures || [],
       })
     }
   }, [projectId])
@@ -78,6 +80,18 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     setSectionCompletion(projectId, "overview", newValue)
   }
 
+  const toggleWebsiteFeature = (feature: string) => {
+    setProjectData((prev) => {
+      const features = prev.websiteFeatures.includes(feature)
+        ? prev.websiteFeatures.filter((f) => f !== feature)
+        : [...prev.websiteFeatures, feature]
+      return {
+        ...prev,
+        websiteFeatures: features,
+      }
+    })
+  }
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "High":
@@ -90,6 +104,29 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         return "bg-gray-50 text-gray-700 border-gray-200"
     }
   }
+
+  const commonFeatures = [
+    "Blog/News Section",
+    "Newsletter Subscription",
+    "Contact Form",
+    "E-commerce/Shopping Cart",
+    "User Authentication/Login",
+    "Search Functionality",
+    "Live Chat Support",
+    "Booking/Scheduling System",
+    "Gallery/Portfolio",
+    "Testimonials/Reviews",
+    "FAQ Section",
+    "Social Media Integration",
+    "Multi-language Support",
+    "Payment Processing",
+    "Analytics Integration",
+    "Member/User Dashboard",
+    "File Upload/Downloads",
+    "Event Calendar",
+    "Maps Integration",
+    "Video Integration",
+  ]
 
   return (
     <div className="space-y-6">
@@ -272,6 +309,45 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                 className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
               />
             </div>
+
+            <div className="space-y-3">
+              <Label className="font-medium dark:text-gray-300">Website Features Required</Label>
+              <p className="text-sm text-muted-foreground dark:text-gray-400">
+                Select the features this website will need
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-lg border border-emerald-100 dark:border-emerald-900">
+                {commonFeatures.map((feature) => (
+                  <div key={feature} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`feature-${feature}`}
+                      checked={projectData.websiteFeatures.includes(feature)}
+                      onCheckedChange={() => toggleWebsiteFeature(feature)}
+                      className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+                    />
+                    <Label
+                      htmlFor={`feature-${feature}`}
+                      className="text-sm font-normal cursor-pointer dark:text-gray-300"
+                    >
+                      {feature}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+              {projectData.websiteFeatures.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {projectData.websiteFeatures.map((feature) => (
+                    <Badge
+                      key={feature}
+                      variant="secondary"
+                      className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300"
+                    >
+                      {feature}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="constraints" className="font-medium dark:text-gray-300">
                 Constraints & Requirements
