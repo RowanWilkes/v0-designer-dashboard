@@ -32,6 +32,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     estimatedDevTime: "",
     teamMembers: "",
     clientReviewDate: "",
+    projectType: "",
   })
 
   const [isComplete, setIsComplete] = useState(false)
@@ -57,6 +58,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         estimatedDevTime: parsed.estimatedDevTime || "",
         teamMembers: parsed.teamMembers || "",
         clientReviewDate: parsed.clientReviewDate || "",
+        projectType: parsed.projectType || "",
       })
     }
   }, [projectId])
@@ -135,6 +137,36 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                 placeholder="Enter project name"
                 className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="project-type" className="font-medium dark:text-gray-300">
+                Project Type
+              </Label>
+              <Select
+                value={projectData.projectType}
+                onValueChange={(value) => setProjectData({ ...projectData, projectType: value })}
+              >
+                <SelectTrigger
+                  id="project-type"
+                  className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
+                >
+                  <SelectValue placeholder="Select project type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="saas">SaaS Website</SelectItem>
+                  <SelectItem value="ecommerce">E-commerce Site</SelectItem>
+                  <SelectItem value="small-business">Small Business Site</SelectItem>
+                  <SelectItem value="portfolio">Portfolio/Personal Site</SelectItem>
+                  <SelectItem value="blog">Blog/Content Site</SelectItem>
+                  <SelectItem value="landing-page">Landing Page</SelectItem>
+                  <SelectItem value="corporate">Corporate Website</SelectItem>
+                  <SelectItem value="nonprofit">Non-profit/Charity</SelectItem>
+                  <SelectItem value="marketplace">Marketplace/Directory</SelectItem>
+                  <SelectItem value="web-app">Web Application</SelectItem>
+                  <SelectItem value="redesign">Website Redesign</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="client" className="font-medium dark:text-gray-300">
