@@ -38,24 +38,24 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     audience: "",
     deadline: "",
     budget: "",
-    deliverables: "",
+    deliverables: [] as string[],
     constraints: "",
-    successMetrics: "",
+    successCriteria: "",
     kickoffDate: "",
     priorityLevel: "Medium",
     estimatedDevTime: "",
-    teamMembers: "",
+    collaborators: [] as Array<{ name: string; role: string }>,
     clientReviewDate: "",
     projectType: "",
     keyLinks: "",
-    primaryAction: "",
+    primaryAction: [] as string[],
   })
 
   const [features, setFeatures] = useState<string[]>([])
   const [featureInput, setFeatureInput] = useState("")
   const [collaborators, setCollaborators] = useState<Array<{ name: string; role: string }>>([])
-  const [collaboratorName, setCollaboratorName] = useState("")
-  const [collaboratorRole, setCollaboratorRole] = useState("")
+  const [newCollaborator, setNewCollaborator] = useState({ name: "", role: "" })
+  const [customAction, setCustomAction] = useState("")
 
   const [isComplete, setIsComplete] = useState(false)
 
@@ -72,23 +72,24 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         audience: parsed.audience || "",
         deadline: parsed.deadline || "",
         budget: parsed.budget || "",
-        deliverables: parsed.deliverables || "",
+        deliverables: Array.isArray(parsed.deliverables) ? parsed.deliverables : [],
         constraints: parsed.constraints || "",
-        successMetrics: parsed.successMetrics || "",
+        successCriteria: parsed.successCriteria || "",
         kickoffDate: parsed.kickoffDate || "",
         priorityLevel: parsed.priorityLevel || "Medium",
         estimatedDevTime: parsed.estimatedDevTime || "",
-        teamMembers: parsed.teamMembers || "",
+        collaborators: Array.isArray(parsed.collaborators) ? parsed.collaborators : [],
         clientReviewDate: parsed.clientReviewDate || "",
         projectType: parsed.projectType || "",
         keyLinks: parsed.keyLinks || "",
-        primaryAction: parsed.primaryAction || "",
+        primaryAction: Array.isArray(parsed.primaryAction)
+          ? parsed.primaryAction
+          : parsed.primaryAction
+            ? [parsed.primaryAction]
+            : [],
       })
       if (parsed.features && Array.isArray(parsed.features)) {
         setFeatures(parsed.features)
-      }
-      if (parsed.collaborators && Array.isArray(parsed.collaborators)) {
-        setCollaborators(parsed.collaborators)
       }
     }
   }, [projectId])
@@ -117,10 +118,9 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
   }
 
   const handleAddCollaborator = () => {
-    if (collaboratorName.trim() && collaboratorRole.trim()) {
-      setCollaborators([...collaborators, { name: collaboratorName.trim(), role: collaboratorRole.trim() }])
-      setCollaboratorName("")
-      setCollaboratorRole("")
+    if (newCollaborator.name.trim() && newCollaborator.role.trim()) {
+      setCollaborators([...collaborators, { name: newCollaborator.name.trim(), role: newCollaborator.role.trim() }])
+      setNewCollaborator({ name: "", role: "" })
     }
   }
 
@@ -288,10 +288,10 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
             <div className="space-y-3">
               <Label className="flex items-center gap-2 font-medium dark:text-gray-300">
                 <ArrowRight className="size-4 text-emerald-600" />
-                Primary User Action
+                Primary User Actions
               </Label>
               <p className="text-sm text-muted-foreground dark:text-gray-400">
-                What's the main action you want users to take?
+                Select all actions you want users to take
               </p>
               <div className="flex flex-wrap gap-2">
                 {[
@@ -307,9 +307,22 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                   <button
                     key={action}
                     type="button"
-                    onClick={() => setProjectData({ ...projectData, primaryAction: action })}
+                    onClick={() => {
+                      const currentActions = projectData.primaryAction || []
+                      if (currentActions.includes(action)) {
+                        setProjectData({
+                          ...projectData,
+                          primaryAction: currentActions.filter((a) => a !== action),
+                        })
+                      } else {
+                        setProjectData({
+                          ...projectData,
+                          primaryAction: [...currentActions, action],
+                        })
+                      }
+                    }}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      projectData.primaryAction === action
+                      (projectData.primaryAction || []).includes(action)
                         ? "bg-emerald-600 text-white shadow-lg shadow-emerald-500/30"
                         : "bg-emerald-50 dark:bg-[#013B34] text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-[#024039] border border-emerald-200 dark:border-[#2DCE73]/30"
                     }`}
@@ -318,27 +331,52 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                   </button>
                 ))}
               </div>
+
               <Input
-                value={
-                  ![
-                    "Sign Up",
-                    "Purchase",
-                    "Contact Us",
-                    "Download",
-                    "Subscribe",
-                    "Book Now",
-                    "Get Quote",
-                    "Learn More",
-                  ].includes(projectData.primaryAction || "")
-                    ? projectData.primaryAction
-                    : ""
-                }
-                onChange={(e) => setProjectData({ ...projectData, primaryAction: e.target.value })}
-                placeholder="Or type a custom action..."
+                value={customAction}
+                onChange={(e) => setCustomAction(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && customAction.trim()) {
+                    e.preventDefault()
+                    const currentActions = projectData.primaryAction || []
+                    if (!currentActions.includes(customAction.trim())) {
+                      setProjectData({
+                        ...projectData,
+                        primaryAction: [...currentActions, customAction.trim()],
+                      })
+                    }
+                    setCustomAction("")
+                  }
+                }}
+                placeholder="Type a custom action and press Enter..."
                 className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73]/50 text-foreground dark:text-white"
               />
+
+              {projectData.primaryAction && projectData.primaryAction.length > 0 && (
+                <div className="flex flex-wrap gap-2 p-3 bg-emerald-50/50 dark:bg-[#013B34]/50 rounded-lg border border-emerald-200 dark:border-[#2DCE73]/30">
+                  {projectData.primaryAction.map((action, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded-md shadow-sm"
+                    >
+                      {action}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setProjectData({
+                            ...projectData,
+                            primaryAction: projectData.primaryAction.filter((_, i) => i !== index),
+                          })
+                        }
+                        className="ml-1 hover:bg-emerald-700 rounded-full p-0.5 transition-colors"
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
-            {/* </CHANGE> */}
 
             <div className="space-y-2">
               <Label htmlFor="audience" className="flex items-center gap-2 font-medium dark:text-gray-300">
@@ -433,13 +471,13 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <Label htmlFor="successMetrics" className="font-medium dark:text-gray-300">
+              <Label htmlFor="successCriteria" className="font-medium dark:text-gray-300">
                 Success Criteria
               </Label>
               <Textarea
-                id="successMetrics"
-                value={projectData.successMetrics}
-                onChange={(e) => setProjectData({ ...projectData, successMetrics: e.target.value })}
+                id="successCriteria"
+                value={projectData.successCriteria}
+                onChange={(e) => setProjectData({ ...projectData, successCriteria: e.target.value })}
                 placeholder="How will you measure success? (e.g., conversion rate +20%, time on site, user feedback scores...)"
                 rows={7}
                 className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
@@ -496,8 +534,8 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                   </Label>
                   <Input
                     id="collaborator-name"
-                    value={collaboratorName}
-                    onChange={(e) => setCollaboratorName(e.target.value)}
+                    value={newCollaborator.name}
+                    onChange={(e) => setNewCollaborator({ ...newCollaborator, name: e.target.value })}
                     onKeyDown={handleCollaboratorKeyDown}
                     placeholder="John Doe"
                     className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
@@ -509,8 +547,8 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                   </Label>
                   <Input
                     id="collaborator-role"
-                    value={collaboratorRole}
-                    onChange={(e) => setCollaboratorRole(e.target.value)}
+                    value={newCollaborator.role}
+                    onChange={(e) => setNewCollaborator({ ...newCollaborator, role: e.target.value })}
                     onKeyDown={handleCollaboratorKeyDown}
                     placeholder="Designer"
                     className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
@@ -645,8 +683,15 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                 </Label>
                 <Textarea
                   id="team-members"
-                  value={projectData.teamMembers}
-                  onChange={(e) => setProjectData({ ...projectData, teamMembers: e.target.value })}
+                  value={projectData.teamMembers.map((member) => `${member.name} - ${member.role}`).join(", ")}
+                  onChange={(e) => {
+                    const teamMembersString = e.target.value
+                    const teamMembersArray = teamMembersString.split(", ").map((member) => {
+                      const [name, role] = member.split(" - ")
+                      return { name, role }
+                    })
+                    setProjectData({ ...projectData, teamMembers: teamMembersArray })
+                  }}
                   placeholder="List team members involved (e.g., John - Designer, Sarah - Content Writer)"
                   rows={3}
                   className="bg-background border-input resize-none"
