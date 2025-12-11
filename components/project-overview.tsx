@@ -8,7 +8,19 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp, X, Plus, LinkIcon, User } from "lucide-react"
+import {
+  CalendarIcon,
+  Target,
+  Users,
+  Briefcase,
+  FileText,
+  TrendingUp,
+  X,
+  Plus,
+  LinkIcon,
+  User,
+  ArrowRight,
+} from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { setSectionCompletion } from "@/lib/completion-tracker"
@@ -36,6 +48,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     clientReviewDate: "",
     projectType: "",
     keyLinks: "",
+    primaryAction: "",
   })
 
   const [features, setFeatures] = useState<string[]>([])
@@ -69,6 +82,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         clientReviewDate: parsed.clientReviewDate || "",
         projectType: parsed.projectType || "",
         keyLinks: parsed.keyLinks || "",
+        primaryAction: parsed.primaryAction || "",
       })
       if (parsed.features && Array.isArray(parsed.features)) {
         setFeatures(parsed.features)
@@ -270,6 +284,62 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                 className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
               />
             </div>
+
+            <div className="space-y-3">
+              <Label className="flex items-center gap-2 font-medium dark:text-gray-300">
+                <ArrowRight className="size-4 text-emerald-600" />
+                Primary User Action
+              </Label>
+              <p className="text-sm text-muted-foreground dark:text-gray-400">
+                What's the main action you want users to take?
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "Sign Up",
+                  "Purchase",
+                  "Contact Us",
+                  "Download",
+                  "Subscribe",
+                  "Book Now",
+                  "Get Quote",
+                  "Learn More",
+                ].map((action) => (
+                  <button
+                    key={action}
+                    type="button"
+                    onClick={() => setProjectData({ ...projectData, primaryAction: action })}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                      projectData.primaryAction === action
+                        ? "bg-emerald-600 text-white shadow-lg shadow-emerald-500/30"
+                        : "bg-emerald-50 dark:bg-[#013B34] text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-[#024039] border border-emerald-200 dark:border-[#2DCE73]/30"
+                    }`}
+                  >
+                    {action}
+                  </button>
+                ))}
+              </div>
+              <Input
+                value={
+                  ![
+                    "Sign Up",
+                    "Purchase",
+                    "Contact Us",
+                    "Download",
+                    "Subscribe",
+                    "Book Now",
+                    "Get Quote",
+                    "Learn More",
+                  ].includes(projectData.primaryAction || "")
+                    ? projectData.primaryAction
+                    : ""
+                }
+                onChange={(e) => setProjectData({ ...projectData, primaryAction: e.target.value })}
+                placeholder="Or type a custom action..."
+                className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73]/50 text-foreground dark:text-white"
+              />
+            </div>
+            {/* </CHANGE> */}
+
             <div className="space-y-2">
               <Label htmlFor="audience" className="flex items-center gap-2 font-medium dark:text-gray-300">
                 <Users className="size-4 text-emerald-600" />
