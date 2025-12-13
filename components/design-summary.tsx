@@ -481,6 +481,32 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                           </div>
                         )}
 
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {hasContent(summaryData.overview.projectType) && (
+                            <div className="bg-white rounded-lg p-4 border border-emerald-200 shadow-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Package className="size-4 text-emerald-600" />
+                                <h3 className="font-semibold text-emerald-900 text-xs uppercase tracking-wide">
+                                  Project Type
+                                </h3>
+                              </div>
+                              <p className="text-gray-700 font-medium">{summaryData.overview.projectType}</p>
+                            </div>
+                          )}
+
+                          {hasContent(summaryData.overview.primaryAction) && (
+                            <div className="bg-white rounded-lg p-4 border border-emerald-200 shadow-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Target className="size-4 text-emerald-600" />
+                                <h3 className="font-semibold text-emerald-900 text-xs uppercase tracking-wide">
+                                  Primary Action
+                                </h3>
+                              </div>
+                              <p className="text-gray-700 font-medium">{summaryData.overview.primaryAction}</p>
+                            </div>
+                          )}
+                        </div>
+
                         {/* Goals & Audience Section - Color Coded Boxes */}
                         <div className="grid md:grid-cols-2 gap-4">
                           {hasContent(summaryData.overview.goal) && (
@@ -512,6 +538,24 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                           )}
                         </div>
 
+                        {hasContent(summaryData.overview.websiteFeatures) && (
+                          <div className="bg-emerald-50 rounded-lg p-5 border border-emerald-200">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Package className="size-5 text-emerald-600" />
+                              <h3 className="font-bold text-emerald-900 text-sm uppercase tracking-wide">
+                                Website Features Required
+                              </h3>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              {summaryData.overview.websiteFeatures.map((feature: string, index: number) => (
+                                <span key={index} className="px-3 py-1 bg-emerald-600 text-white text-sm rounded-full">
+                                  {feature}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
                         {/* Deliverables & Success Metrics - Highlighted Sections */}
                         {hasContent(summaryData.overview.deliverables) && (
                           <div className="bg-emerald-50 rounded-lg p-5 border border-emerald-200">
@@ -523,20 +567,6 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             </div>
                             <p className="text-emerald-800 leading-relaxed whitespace-pre-wrap">
                               {summaryData.overview.deliverables}
-                            </p>
-                          </div>
-                        )}
-
-                        {hasContent(summaryData.overview.successMetrics) && (
-                          <div className="bg-emerald-50 rounded-lg p-5 border border-emerald-200">
-                            <div className="flex items-center gap-2 mb-3">
-                              <TrendingUp className="size-5 text-emerald-600" />
-                              <h3 className="font-bold text-emerald-900 text-sm uppercase tracking-wide">
-                                Success Metrics
-                              </h3>
-                            </div>
-                            <p className="text-emerald-800 leading-relaxed whitespace-pre-wrap">
-                              {summaryData.overview.successMetrics}
                             </p>
                           </div>
                         )}
