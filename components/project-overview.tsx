@@ -26,7 +26,6 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     audience: "",
     deadline: "",
     budget: "",
-    deliverables: "",
     constraints: "",
     successMetrics: "",
     kickoffDate: "",
@@ -78,7 +77,6 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         audience: parsed.audience || "",
         deadline: parsed.deadline || "",
         budget: parsed.budget || "",
-        deliverables: parsed.deliverables || "",
         constraints: parsed.constraints || "",
         successMetrics: parsed.successMetrics || "",
         kickoffDate: parsed.kickoffDate || "",
@@ -326,20 +324,6 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
             <CardDescription className="dark:text-gray-400">What will be delivered</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="deliverables" className="font-medium dark:text-gray-300">
-                Key Deliverables
-              </Label>
-              <Textarea
-                id="deliverables"
-                value={projectData.deliverables}
-                onChange={(e) => setProjectData({ ...projectData, deliverables: e.target.value })}
-                placeholder="List main deliverables (e.g., Homepage design, 5 inner pages, mobile responsive, style guide...)"
-                rows={4}
-                className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
-              />
-            </div>
-
             <div className="space-y-3">
               <Label className="font-medium dark:text-gray-300">Website Features Required</Label>
               <p className="text-sm text-muted-foreground dark:text-gray-400">Type and press Enter to add features</p>
