@@ -483,7 +483,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
 
                         <div className="grid md:grid-cols-2 gap-4">
                           {hasContent(summaryData.overview.projectType) && (
-                            <div className="bg-white rounded-lg p-4 border border-emerald-200 shadow-sm">
+                            <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200 shadow-sm">
                               <div className="flex items-center gap-2 mb-2">
                                 <Package className="size-4 text-emerald-600" />
                                 <h3 className="font-semibold text-emerald-900 text-xs uppercase tracking-wide">
@@ -495,7 +495,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                           )}
 
                           {hasContent(summaryData.overview.primaryAction) && (
-                            <div className="bg-white rounded-lg p-4 border border-emerald-200 shadow-sm">
+                            <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200 shadow-sm">
                               <div className="flex items-center gap-2 mb-2">
                                 <Target className="size-4 text-emerald-600" />
                                 <h3 className="font-semibold text-emerald-900 text-xs uppercase tracking-wide">
