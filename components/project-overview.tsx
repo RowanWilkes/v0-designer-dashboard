@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp, X } from "lucide-react"
+import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp, X, MousePointerClick } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
@@ -23,6 +23,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     client: "",
     description: "",
     goal: "",
+    primaryAction: "", // Add primary action field for core user CTA
     audience: "",
     deadline: "",
     budget: "",
@@ -74,6 +75,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         client: parsed.client || "",
         description: parsed.description || "",
         goal: parsed.goal || "",
+        primaryAction: parsed.primaryAction || "", // Load primary action from storage
         audience: parsed.audience || "",
         deadline: parsed.deadline || "",
         budget: parsed.budget || "",
@@ -296,6 +298,24 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                 className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
               />
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="primaryAction" className="flex items-center gap-2 font-medium dark:text-gray-300">
+                <MousePointerClick className="size-4 text-emerald-600" />
+                Primary Action
+              </Label>
+              <Input
+                id="primaryAction"
+                value={projectData.primaryAction}
+                onChange={(e) => setProjectData({ ...projectData, primaryAction: e.target.value })}
+                placeholder="e.g., Sign Up, Purchase, Contact Us, Download, Book Now"
+                className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
+              />
+              <p className="text-xs text-muted-foreground dark:text-gray-400">
+                What is the main action you want visitors to take?
+              </p>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="audience" className="flex items-center gap-2 font-medium dark:text-gray-300">
                 <Users className="size-4 text-emerald-600" />
