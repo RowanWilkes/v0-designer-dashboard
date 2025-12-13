@@ -315,18 +315,18 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
               <p className="text-sm text-muted-foreground dark:text-gray-400">
                 Select the features this website will need
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-lg border border-emerald-100 dark:border-emerald-900">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-lg border border-emerald-100 dark:border-emerald-900">
                 {commonFeatures.map((feature) => (
                   <div key={feature} className="flex items-center space-x-2">
                     <Checkbox
                       id={`feature-${feature}`}
                       checked={projectData.websiteFeatures.includes(feature)}
                       onCheckedChange={() => toggleWebsiteFeature(feature)}
-                      className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+                      className="h-4 w-4 data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
                     />
                     <Label
                       htmlFor={`feature-${feature}`}
-                      className="text-sm font-normal cursor-pointer dark:text-gray-300"
+                      className="text-xs font-normal cursor-pointer dark:text-gray-300 leading-tight"
                     >
                       {feature}
                     </Label>
