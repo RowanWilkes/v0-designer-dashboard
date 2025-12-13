@@ -129,6 +129,25 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
     return false
   }
 
+  const hasStyleGuideBeenEdited = (styleGuide: any) => {
+    // Check if any colors have been set (non-empty values)
+    const hasColors =
+      styleGuide?.colors && Object.values(styleGuide.colors).some((color: any) => color && color.trim() !== "")
+    const hasCustomColors = styleGuide?.customColors && styleGuide.customColors.length > 0
+
+    // Check if typography has been modified from defaults
+    const hasModifiedTypography =
+      styleGuide?.typography &&
+      styleGuide.typography.some((typo: any) => {
+        // Check if any field is different from defaults (e.g., not Inter font or default values)
+        return typo.fontFamily !== "Inter" || typo.color !== "#000000" || typo.description !== typo.label // Any custom description
+      })
+
+    const hasButtonStyles = styleGuide?.buttonStyles && Object.keys(styleGuide.buttonStyles).length > 0
+
+    return hasColors || hasCustomColors || hasModifiedTypography || hasButtonStyles
+  }
+
   const isDefaultSitemap = (pages: any[]): boolean => {
     if (!pages || pages.length === 0) return true
     if (pages.length === 1) {
@@ -233,10 +252,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
     {
       name: "Style Guide",
       icon: Palette,
-      hasData:
-        hasContent(summaryData.styleGuide?.colors) ||
-        hasContent(summaryData.styleGuide?.typography) ||
-        hasContent(summaryData.styleGuide?.buttonStyles), // Changed from 'buttons' to 'buttonStyles'
+      hasData: hasStyleGuideBeenEdited(summaryData.styleGuide), // Use new function instead of hasContent checks
       color: "pink",
     },
     {
