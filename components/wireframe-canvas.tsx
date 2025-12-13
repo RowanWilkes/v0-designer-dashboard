@@ -137,6 +137,8 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
   const [editingPageId, setEditingPageId] = useState<string | null>(null)
   const [editingPageName, setEditingPageName] = useState("")
   const [isCompleted, setIsCompleted] = useState(false)
+  const [draggedPageId, setDraggedPageId] = useState<string | null>(null)
+  const [dragOverPageId, setDragOverPageId] = useState<string | null>(null)
 
   useEffect(() => {
     const storageKey = `project-${projectId}-sitemap`
@@ -307,13 +309,67 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
     setEditingPageName("")
   }
 
+  const reorderPages = (draggedId: string, targetId: string) => {
+    if (draggedId === targetId || draggedId === "home") return
+
+    const reorderInList = (pageList: SitemapPage[]): SitemapPage[] => {
+      const draggedIndex = pageList.findIndex((p) => p.id === draggedId)
+      const targetIndex = pageList.findIndex((p) => p.id === targetId)
+
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        const newList = [...pageList]
+        const [removed] = newList.splice(draggedIndex, 1)
+        newList.splice(targetIndex, 0, removed)
+        return newList
+      }
+
+      return pageList.map((page) => ({
+        ...page,
+        children: reorderInList(page.children),
+      }))
+    }
+
+    setPages(reorderInList(pages))
+  }
+
   const renderPageTree = (pageList: SitemapPage[], depth = 0) => {
     return pageList.map((page) => (
       <div key={page.id} style={{ marginLeft: `${depth * 20}px` }}>
         <div
-          className={`flex items-center gap-2 p-3 rounded-lg hover:bg-accent/50 dark:hover:bg-[#013B34] cursor-pointer transition-colors group ${
-            selectedPage === page.id ? "bg-accent dark:bg-[#013B34]" : ""
-          }`}
+          className={`flex items-center gap-2 p-3 rounded-lg transition-colors group border-l-4 bg-emerald-100 dark:bg-emerald-950/30 ${
+            selectedPage === page.id
+              ? "border-l-emerald-600 dark:border-l-emerald-500"
+              : "border-l-emerald-600 dark:border-l-emerald-500"
+          } ${dragOverPageId === page.id ? "ring-2 ring-emerald-400" : ""}`}
+          draggable={page.id !== "home"}
+          onDragStart={(e) => {
+            if (page.id !== "home") {
+              setDraggedPageId(page.id)
+              e.dataTransfer.effectAllowed = "move"
+            }
+          }}
+          onDragOver={(e) => {
+            e.preventDefault()
+            if (draggedPageId && draggedPageId !== page.id) {
+              e.dataTransfer.dropEffect = "move"
+              setDragOverPageId(page.id)
+            }
+          }}
+          onDragLeave={() => {
+            setDragOverPageId(null)
+          }}
+          onDrop={(e) => {
+            e.preventDefault()
+            if (draggedPageId && draggedPageId !== page.id) {
+              reorderPages(draggedPageId, page.id)
+            }
+            setDraggedPageId(null)
+            setDragOverPageId(null)
+          }}
+          onDragEnd={() => {
+            setDraggedPageId(null)
+            setDragOverPageId(null)
+          }}
         >
           {page.children.length > 0 && (
             <button
