@@ -334,13 +334,13 @@ function DashboardContent() {
         className={cn(
           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all w-full relative",
           isActive
-            ? "bg-emerald-50 text-gray-900 font-medium border-l-4 border-emerald-500"
+            ? "bg-emerald-100 text-gray-900 font-medium border-l-4 border-emerald-600"
             : isDisabled
               ? "text-gray-400 cursor-not-allowed"
               : "text-gray-700 hover:bg-gray-50",
         )}
       >
-        <Icon className={cn("h-4 w-4", isActive && "text-emerald-600")} />
+        <Icon className={cn("h-4 w-4", isActive && "text-emerald-700")} />
         {!sidebarCollapsed && (
           <>
             <span className="flex-1 text-left">{label}</span>
