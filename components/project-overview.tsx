@@ -1,12 +1,14 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp } from "lucide-react"
+import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp, X } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
@@ -37,6 +39,31 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
   })
 
   const [isComplete, setIsComplete] = useState(false)
+  const [featureInput, setFeatureInput] = useState("")
+  const [showSuggestions, setShowSuggestions] = useState(false)
+
+  const commonFeatures = [
+    "Blog/News Section",
+    "Newsletter Subscription",
+    "Contact Form",
+    "E-commerce/Shopping Cart",
+    "User Authentication/Login",
+    "Search Functionality",
+    "Live Chat Support",
+    "Booking/Scheduling System",
+    "Gallery/Portfolio",
+    "Testimonials/Reviews",
+    "FAQ Section",
+    "Social Media Integration",
+    "Multi-language Support",
+    "Payment Processing",
+    "Analytics Integration",
+    "Member/User Dashboard",
+    "File Upload/Downloads",
+    "Event Calendar",
+    "Maps Integration",
+    "Video Integration",
+  ]
 
   useEffect(() => {
     const storageKey = `project-${projectId}-overview`
@@ -80,17 +107,35 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     setSectionCompletion(projectId, "overview", newValue)
   }
 
-  const toggleWebsiteFeature = (feature: string) => {
-    setProjectData((prev) => {
-      const features = prev.websiteFeatures.includes(feature)
-        ? prev.websiteFeatures.filter((f) => f !== feature)
-        : [...prev.websiteFeatures, feature]
-      return {
+  const addWebsiteFeature = (feature: string) => {
+    if (feature.trim() && !projectData.websiteFeatures.includes(feature.trim())) {
+      setProjectData((prev) => ({
         ...prev,
-        websiteFeatures: features,
-      }
-    })
+        websiteFeatures: [...prev.websiteFeatures, feature.trim()],
+      }))
+      setFeatureInput("")
+      setShowSuggestions(false)
+    }
   }
+
+  const removeWebsiteFeature = (feature: string) => {
+    setProjectData((prev) => ({
+      ...prev,
+      websiteFeatures: prev.websiteFeatures.filter((f) => f !== feature),
+    }))
+  }
+
+  const handleFeatureKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      addWebsiteFeature(featureInput)
+    }
+  }
+
+  const filteredFeatureSuggestions = commonFeatures.filter(
+    (feature) =>
+      feature.toLowerCase().includes(featureInput.toLowerCase()) && !projectData.websiteFeatures.includes(feature),
+  )
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -105,28 +150,13 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     }
   }
 
-  const commonFeatures = [
-    "Blog/News Section",
-    "Newsletter Subscription",
-    "Contact Form",
-    "E-commerce/Shopping Cart",
-    "User Authentication/Login",
-    "Search Functionality",
-    "Live Chat Support",
-    "Booking/Scheduling System",
-    "Gallery/Portfolio",
-    "Testimonials/Reviews",
-    "FAQ Section",
-    "Social Media Integration",
-    "Multi-language Support",
-    "Payment Processing",
-    "Analytics Integration",
-    "Member/User Dashboard",
-    "File Upload/Downloads",
-    "Event Calendar",
-    "Maps Integration",
-    "Video Integration",
-  ]
+  const toggleWebsiteFeature = (feature: string) => {
+    if (projectData.websiteFeatures.includes(feature)) {
+      removeWebsiteFeature(feature)
+    } else {
+      addWebsiteFeature(feature)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -312,36 +342,56 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
 
             <div className="space-y-3">
               <Label className="font-medium dark:text-gray-300">Website Features Required</Label>
-              <p className="text-sm text-muted-foreground dark:text-gray-400">
-                Select the features this website will need
-              </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-lg border border-emerald-100 dark:border-emerald-900">
-                {commonFeatures.map((feature) => (
-                  <div key={feature} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`feature-${feature}`}
-                      checked={projectData.websiteFeatures.includes(feature)}
-                      onCheckedChange={() => toggleWebsiteFeature(feature)}
-                      className="h-4 w-4 data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
-                    />
-                    <Label
-                      htmlFor={`feature-${feature}`}
-                      className="text-xs font-normal cursor-pointer dark:text-gray-300 leading-tight"
-                    >
-                      {feature}
-                    </Label>
+              <p className="text-sm text-muted-foreground dark:text-gray-400">Type and press Enter to add features</p>
+
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Type a feature (e.g., Blog, Contact Form, E-commerce)..."
+                  value={featureInput}
+                  onChange={(e) => {
+                    setFeatureInput(e.target.value)
+                    setShowSuggestions(e.target.value.length > 0)
+                  }}
+                  onKeyDown={handleFeatureKeyDown}
+                  onFocus={() => setShowSuggestions(featureInput.length > 0)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  className="w-full"
+                />
+
+                {/* Autocomplete suggestions */}
+                {showSuggestions && filteredFeatureSuggestions.length > 0 && (
+                  <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
+                    {filteredFeatureSuggestions.slice(0, 8).map((feature) => (
+                      <button
+                        key={feature}
+                        type="button"
+                        onClick={() => addWebsiteFeature(feature)}
+                        className="w-full text-left px-3 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-sm transition-colors"
+                      >
+                        {feature}
+                      </button>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
+
+              {/* Display selected features as removable chips */}
               {projectData.websiteFeatures.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-2">
+                <div className="flex flex-wrap gap-2 p-3 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-lg border border-emerald-100 dark:border-emerald-900">
                   {projectData.websiteFeatures.map((feature) => (
                     <Badge
                       key={feature}
-                      variant="secondary"
-                      className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300"
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white pl-3 pr-2 py-1 flex items-center gap-1.5"
                     >
                       {feature}
+                      <button
+                        onClick={() => removeWebsiteFeature(feature)}
+                        className="hover:bg-emerald-800 rounded-full p-0.5 transition-colors"
+                        aria-label={`Remove ${feature}`}
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
                     </Badge>
                   ))}
                 </div>
