@@ -8,7 +8,19 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp, X, MousePointerClick } from "lucide-react"
+import {
+  CalendarIcon,
+  Target,
+  Users,
+  Briefcase,
+  FileText,
+  TrendingUp,
+  X,
+  MousePointerClick,
+  Type,
+  Building2,
+  DollarSign,
+} from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
@@ -197,7 +209,8 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="project-name" className="font-medium dark:text-gray-300">
+              <Label htmlFor="project-name" className="font-medium dark:text-gray-300 flex items-center gap-2">
+                <Type className="h-4 w-4 text-emerald-600" />
                 Project Name
               </Label>
               <Input
@@ -209,7 +222,8 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="project-type" className="font-medium dark:text-gray-300">
+              <Label htmlFor="project-type" className="font-medium dark:text-gray-300 flex items-center gap-2">
+                <Briefcase className="h-4 w-4 text-emerald-600" />
                 Project Type
               </Label>
               <Select
@@ -239,7 +253,8 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="client" className="font-medium dark:text-gray-300">
+              <Label htmlFor="client" className="font-medium dark:text-gray-300 flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-emerald-600" />
                 Client
               </Label>
               <Input
@@ -251,7 +266,8 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description" className="font-medium dark:text-gray-300">
+              <Label htmlFor="description" className="font-medium dark:text-gray-300 flex items-center gap-2">
+                <FileText className="h-4 w-4 text-emerald-600" />
                 Description
               </Label>
               <Textarea
@@ -264,7 +280,8 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="budget" className="font-medium dark:text-gray-300">
+              <Label htmlFor="budget" className="font-medium dark:text-gray-300 flex items-center gap-2">
+                <DollarSign className="h-4 w-4 text-emerald-600" />
                 Budget Range
               </Label>
               <Input
