@@ -14,7 +14,7 @@ type TechnicalSpecsProps = {
 }
 
 export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
-  const [technicalData, setTechnicalData] = useState({
+  const defaultData = {
     currentHosting: "",
     hostingNotes: "",
     proposedHosting: "",
@@ -27,7 +27,9 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
     performanceRequirements: "",
     browserSupport: "",
     seoRequirements: "",
-  })
+  }
+
+  const [technicalData, setTechnicalData] = useState(defaultData)
 
   const [isComplete, setIsComplete] = useState(false)
 
@@ -35,7 +37,8 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
     const storageKey = `project-${projectId}-technical`
     const savedData = localStorage.getItem(storageKey)
     if (savedData) {
-      setTechnicalData(JSON.parse(savedData))
+      const parsedData = JSON.parse(savedData)
+      setTechnicalData({ ...defaultData, ...parsedData })
     }
   }, [projectId])
 
