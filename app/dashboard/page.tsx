@@ -64,12 +64,14 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { checkSectionCompletion, setSectionCompletion } from "@/lib/completion-tracker"
 import React from "react"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 type UserServiceUser = {
   id: string
   email: string
   fullName: string
   plan?: string
+  lifetimeProjectCount?: number // Added for new user check
 }
 
 export type Project = {
@@ -193,7 +195,13 @@ function DashboardContent() {
       const parsedUser: UserServiceUser = JSON.parse(userData)
       setUser(parsedUser)
 
-      const storedProjects = localStorage.getItem("design-studio-projects")
+      if (parsedUser.lifetimeProjectCount === 0) {
+        // New user - redirect to getting started page
+        router.push("/getting-started")
+        return
+      }
+
+      const storedProjects = getUserItem("design-studio-projects")
       if (storedProjects) {
         const parsedProjects: Project[] = JSON.parse(storedProjects)
         setProjects(parsedProjects)
@@ -209,8 +217,7 @@ function DashboardContent() {
         setCurrentProjectId(null)
       }
 
-      // Load downloaded summaries from localStorage
-      const storedSummaries = localStorage.getItem("downloadedSummaries")
+      const storedSummaries = getUserItem("downloadedSummaries")
       if (storedSummaries) {
         setDownloadedSummaries(JSON.parse(storedSummaries))
       }
@@ -224,13 +231,12 @@ function DashboardContent() {
 
   useEffect(() => {
     if (projects.length > 0) {
-      localStorage.setItem("design-studio-projects", JSON.stringify(projects))
+      setUserItem("design-studio-projects", JSON.stringify(projects))
     }
   }, [projects])
 
-  // Save downloaded summaries to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem("downloadedSummaries", JSON.stringify(downloadedSummaries))
+    setUserItem("downloadedSummaries", JSON.stringify(downloadedSummaries))
   }, [downloadedSummaries])
 
   useEffect(() => {

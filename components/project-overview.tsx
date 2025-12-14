@@ -12,6 +12,7 @@ import { CalendarIcon, Target, Users, Briefcase, FileText, TrendingUp, X, MouseP
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 type ProjectOverviewProps = {
   projectId: string
@@ -66,8 +67,10 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
   ]
 
   useEffect(() => {
+    if (!projectId) return
+
     const storageKey = `project-${projectId}-overview`
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     if (savedData) {
       const parsedData = JSON.parse(savedData)
       setProjectData({
@@ -94,7 +97,7 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
 
   useEffect(() => {
     const storageKey = `project-${projectId}-overview`
-    localStorage.setItem(storageKey, JSON.stringify(projectData))
+    setUserItem(storageKey, JSON.stringify(projectData))
   }, [projectData, projectId])
 
   useEffect(() => {

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Server, Link2, Globe, Zap, FileText } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 type TechnicalSpecsProps = {
   projectId: string
@@ -35,7 +36,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
 
   useEffect(() => {
     const storageKey = `project-${projectId}-technical`
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     if (savedData) {
       const parsedData = JSON.parse(savedData)
       setTechnicalData({ ...defaultData, ...parsedData })
@@ -48,7 +49,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
 
   useEffect(() => {
     const storageKey = `project-${projectId}-technical`
-    localStorage.setItem(storageKey, JSON.stringify(technicalData))
+    setUserItem(storageKey, JSON.stringify(technicalData))
   }, [technicalData, projectId])
 
   const toggleCompletion = (checked: boolean) => {

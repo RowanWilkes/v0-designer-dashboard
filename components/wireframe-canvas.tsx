@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 const BLOCK_LIBRARY = [
   {
@@ -142,7 +143,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
 
   useEffect(() => {
     const storageKey = `project-${projectId}-sitemap`
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     if (savedData) {
       setPages(JSON.parse(savedData))
     } else {
@@ -165,7 +166,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
 
   useEffect(() => {
     const storageKey = `project-${projectId}-sitemap`
-    localStorage.setItem(storageKey, JSON.stringify(pages))
+    setUserItem(storageKey, JSON.stringify(pages))
   }, [pages, projectId])
 
   const categories = ["All", ...Array.from(new Set(BLOCK_LIBRARY.map((b) => b.category)))]

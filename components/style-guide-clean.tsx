@@ -7,8 +7,9 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
+import { setSectionCompletion } from "@/lib/completion-tracker"
 import { PaletteIcon, Pencil, Plus, Minus, X, TypeIcon, PencilIcon } from "lucide-react"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 type StyleGuideProps = {
   projectId: string
@@ -226,17 +227,13 @@ export function StyleGuideClean({ projectId }: { projectId: string }) {
 
   useEffect(() => {
     if (!projectId) {
-      console.log("[v0] StyleGuide: No projectId, skipping load")
+      console.log("[v0] StyleGuide: No projectId provided, skipping load")
       return
     }
 
-    const completed = checkSectionCompletion(projectId, "styleguide")
-    setIsCompleted(completed)
-
-    // Load saved data
     const storageKey = `styleguide_${projectId}`
     console.log("[v0] StyleGuide: Loading data from", storageKey)
-    const saved = localStorage.getItem(storageKey)
+    const saved = getUserItem(storageKey)
     if (saved) {
       const data = JSON.parse(saved)
       console.log("[v0] StyleGuide: Loaded data:", data)
@@ -265,7 +262,7 @@ export function StyleGuideClean({ projectId }: { projectId: string }) {
       buttonStyles,
     }
     console.log("[v0] StyleGuide: Saving to", storageKey, dataToSave)
-    localStorage.setItem(storageKey, JSON.stringify(dataToSave))
+    setUserItem(storageKey, JSON.stringify(dataToSave))
   }, [standardColors, customColors, typography, buttonStyles, projectId, isDataLoaded])
 
   const handleCompletionToggle = (checked: boolean) => {

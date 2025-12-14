@@ -26,15 +26,11 @@ import {
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
-import { setSectionCompletion } from "@/lib/completion-tracker"
+import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
-interface ContentItem {
-  id: string
-  type: "heading" | "cta" | "body" | "subheading" | "button" | "tagline" | string // Allow string for custom types
-  text: string
-}
-
+// Define interfaces for BrandMessaging, MessagingPillar, and ContentGuideline
 interface BrandMessaging {
   missionStatement: string
   visionStatement: string
@@ -53,6 +49,12 @@ interface ContentGuideline {
   id: string
   category: string
   guideline: string
+}
+
+interface ContentItem {
+  id: string
+  type: "heading" | "cta" | "body" | "subheading" | "button" | "tagline" | string // Allow string for custom types
+  text: string
 }
 
 interface Asset {
@@ -137,7 +139,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     const section = showAssetsOnly ? "assets" : "content"
     const storageKey = `project-${projectId}-${section}`
     console.log("[v0] ContentAssets: Loading data from", storageKey)
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData)
@@ -162,14 +164,27 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           if (parsed.seoKeywords) {
             setSeoKeywords(parsed.seoKeywords)
           }
-          setMetaTitle(parsed.metaTitle || "")
-          setMetaDescription(parsed.metaDescription || "")
-          setFocusKeyword(parsed.focusKeyword || "")
-          setKeywordDifficulty(parsed.keywordDifficulty || {})
-          setUploadedAssets(parsed.uploadedAssets || [])
-          setCompetitorAnalysis(parsed.competitorAnalysis || "")
-          setIsComplete(parsed.isComplete || false)
-          setIsDataLoaded(true)
+          if (parsed.metaTitle) {
+            setMetaTitle(parsed.metaTitle)
+          }
+          if (parsed.metaDescription) {
+            setMetaDescription(parsed.metaDescription)
+          }
+          if (parsed.focusKeyword) {
+            setFocusKeyword(parsed.focusKeyword)
+          }
+          if (parsed.keywordDifficulty) {
+            setKeywordDifficulty(parsed.keywordDifficulty)
+          }
+          if (parsed.competitorAnalysis) {
+            setCompetitorAnalysis(parsed.competitorAnalysis)
+          }
+          if (parsed.uploadedAssets) {
+            setUploadedAssets(parsed.uploadedAssets)
+          }
+          if (parsed.isComplete !== undefined) {
+            setIsComplete(parsed.isComplete)
+          }
         } else {
           console.log("[v0] ContentAssets: No valid saved data found.")
           // Fallback to defaults if parsed data is null or undefined
@@ -242,7 +257,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
         }
 
     console.log("[v0] ContentAssets: Saving to", storageKey, dataToSave)
-    localStorage.setItem(storageKey, JSON.stringify(dataToSave))
+    setUserItem(storageKey, JSON.stringify(dataToSave))
   }, [
     contentItems,
     assets,
@@ -263,6 +278,11 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     showAssetsOnly,
     competitorAnalysis, // <-- Added competitorAnalysis here
   ])
+
+  // Add useEffect for checking completion status
+  useEffect(() => {
+    setIsComplete(checkSectionCompletion(projectId, showAssetsOnly ? "assets" : "content"))
+  }, [projectId, showAssetsOnly])
 
   const toggleCompletion = (checked: boolean) => {
     setIsComplete(checked)

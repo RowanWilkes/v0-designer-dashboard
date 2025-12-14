@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Plus, CheckCircle2, Circle, GripVertical, Trash2 } from "lucide-react"
 import { setSectionCompletion } from "@/lib/completion-tracker"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 interface Task {
   id: string
@@ -28,7 +29,7 @@ export function TaskManager({ projectId }: TaskManagerProps) {
 
   useEffect(() => {
     const storageKey = `project-${projectId}-manual-tasks`
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     if (savedData) {
       setTasks(JSON.parse(savedData))
     }
@@ -36,7 +37,7 @@ export function TaskManager({ projectId }: TaskManagerProps) {
 
   useEffect(() => {
     const storageKey = `project-${projectId}-manual-tasks`
-    localStorage.setItem(storageKey, JSON.stringify(tasks))
+    setUserItem(storageKey, JSON.stringify(tasks))
 
     const allCompleted = tasks.length === 0 || tasks.every((t) => t.completed)
     setSectionCompletion(projectId, "tasks", allCompleted)
