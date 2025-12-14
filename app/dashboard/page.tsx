@@ -195,12 +195,6 @@ function DashboardContent() {
       const parsedUser: UserServiceUser = JSON.parse(userData)
       setUser(parsedUser)
 
-      if (parsedUser.lifetimeProjectCount === 0) {
-        // New user - redirect to getting started page
-        router.push("/getting-started")
-        return
-      }
-
       const storedProjects = getUserItem("design-studio-projects")
       if (storedProjects) {
         const parsedProjects: Project[] = JSON.parse(storedProjects)
