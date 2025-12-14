@@ -22,7 +22,6 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
     contentUpdateFrequency: "",
     contentManagers: "",
     editableContent: "",
-    mediaManagement: "",
     thirdPartyIntegrations: "",
     technicalRequirements: "",
     performanceRequirements: "",
@@ -183,19 +182,6 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
                 value={technicalData.editableContent}
                 onChange={(e) => setTechnicalData({ ...technicalData, editableContent: e.target.value })}
                 placeholder="List what needs to be editable (e.g., blog posts, product pages, team members, testimonials, FAQs, pricing, images, videos...)"
-                rows={3}
-                className="bg-white border-gray-300 text-gray-900 resize-none"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="mediaManagement" className="font-medium text-gray-900">
-                Media & Asset Management
-              </Label>
-              <Textarea
-                id="mediaManagement"
-                value={technicalData.mediaManagement}
-                onChange={(e) => setTechnicalData({ ...technicalData, mediaManagement: e.target.value })}
-                placeholder="Image library, video hosting, document uploads, file size limits, supported formats, CDN requirements..."
                 rows={3}
                 className="bg-white border-gray-300 text-gray-900 resize-none"
               />
