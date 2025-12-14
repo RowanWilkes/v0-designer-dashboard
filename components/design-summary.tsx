@@ -36,6 +36,7 @@ import {
   Search,
 } from "lucide-react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { getUserItem } from "@/lib/storage-utils"
 
 interface DesignSummaryProps {
   projectId: string
@@ -65,13 +66,13 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
 
   const loadData = () => {
     try {
-      const overview = JSON.parse(localStorage.getItem(`project-${projectId}-overview`) || "{}")
-      const moodBoardRaw = JSON.parse(localStorage.getItem(`project-${projectId}-moodboard`) || "{}")
-      const styleGuideRaw = JSON.parse(localStorage.getItem(`styleguide_${projectId}`) || "{}")
-      const sitemap = JSON.parse(localStorage.getItem(`project-${projectId}-sitemap`) || "[]")
-      const technical = JSON.parse(localStorage.getItem(`project-${projectId}-technical`) || "{}")
-      const content = JSON.parse(localStorage.getItem(`project-${projectId}-content`) || "{}")
-      const assetsRaw = JSON.parse(localStorage.getItem(`project-${projectId}-assets`) || "{}")
+      const overview = JSON.parse(getUserItem(`project-${projectId}-overview`) || "{}")
+      const moodBoardRaw = JSON.parse(getUserItem(`project-${projectId}-moodboard`) || "{}")
+      const styleGuideRaw = JSON.parse(getUserItem(`styleguide_${projectId}`) || "{}")
+      const sitemap = JSON.parse(getUserItem(`project-${projectId}-sitemap`) || "[]")
+      const technical = JSON.parse(getUserItem(`project-${projectId}-technical`) || "{}")
+      const content = JSON.parse(getUserItem(`project-${projectId}-content`) || "{}")
+      const assetsRaw = JSON.parse(getUserItem(`project-${projectId}-assets`) || "{}")
 
       const moodBoard = {
         inspirationImages: moodBoardRaw.inspirationImages || [],
