@@ -500,7 +500,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200 shadow-sm">
                               <div className="flex items-center gap-2 mb-2">
                                 <Package className="size-4 text-emerald-600" />
-                                <h3 className="font-semibold text-emerald-900 text-xs uppercase tracking-wide">
+                                <h3 className="font-semibold text-emerald-900 text-sm uppercase tracking-wide">
                                   Project Type
                                 </h3>
                               </div>
@@ -512,7 +512,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200 shadow-sm">
                               <div className="flex items-center gap-2 mb-2">
                                 <Target className="size-4 text-emerald-600" />
-                                <h3 className="font-semibold text-emerald-900 text-xs uppercase tracking-wide">
+                                <h3 className="font-semibold text-emerald-900 text-sm uppercase tracking-wide">
                                   Primary Action
                                 </h3>
                               </div>
