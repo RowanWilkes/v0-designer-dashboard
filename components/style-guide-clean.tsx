@@ -320,16 +320,15 @@ export function StyleGuideClean({ projectId }: { projectId: string }) {
         </p>
 
         <div
-          className={`p-3 border rounded-lg flex items-center gap-3 cursor-pointer transition-colors ${
+          className={`flex items-center gap-2 mt-4 p-3 rounded-lg border transition-all ${
             isCompleted ? "bg-emerald-50 border-emerald-200" : "bg-gray-50 border-gray-200"
           }`}
-          onClick={() => handleCompletionToggle(!isCompleted)}
         >
           <Checkbox
             id="styleguide-complete"
             checked={isCompleted}
             onCheckedChange={handleCompletionToggle}
-            className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+            className="size-6 data-[state=checked]:bg-black data-[state=checked]:border-black"
           />
           <Label htmlFor="styleguide-complete" className="text-sm font-medium cursor-pointer">
             Mark Style Guide as Complete

@@ -483,10 +483,9 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
         <p className="text-sm text-gray-600 mt-1 mb-3">Build your website structure by adding pages and blocks</p>
 
         <div
-          className={`p-3 border rounded-lg flex items-center gap-3 cursor-pointer transition-colors ${
+          className={`flex items-center gap-2 mt-4 p-3 rounded-lg border transition-all ${
             isCompleted ? "bg-emerald-50 border-emerald-200" : "bg-gray-50 border-gray-200"
           }`}
-          onClick={() => handleCompletionToggle(!isCompleted)}
         >
           <Checkbox
             id="sitemap-complete"

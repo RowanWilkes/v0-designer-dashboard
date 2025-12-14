@@ -1,13 +1,10 @@
 "use client"
 
-import { DialogTitle } from "@/components/ui/dialog"
-
-import { DialogHeader } from "@/components/ui/dialog"
-
-import { DialogContent } from "@/components/ui/dialog"
-
+import { DialogTitle as DialogTitleComponent } from "@/components/ui/dialog"
+import { DialogHeader as DialogHeaderComponent } from "@/components/ui/dialog"
+import { DialogContent as DialogContentComponent } from "@/components/ui/dialog"
 import { Dialog } from "@/components/ui/dialog"
-
+import { Checkbox } from "@/components/ui/checkbox"
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -15,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { ImageIcon, Plus, X, Link, Palette } from "lucide-react"
+import { ImageIcon, Plus, X, Link } from "lucide-react"
 import { checkSectionCompletion, setSectionCompletion } from "@/lib/completion-tracker"
 import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
@@ -248,15 +245,14 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
             isComplete ? "bg-emerald-50 border-emerald-200" : "bg-gray-50 border-gray-200"
           }`}
         >
-          <Button
+          <Checkbox
             id="mood-complete"
-            onClick={toggleComplete}
-            className={`size-6 ${isComplete ? "bg-black text-white" : "bg-gray-200 text-gray-900"}`}
-          >
-            {isComplete ? <Palette className="size-4" /> : <Plus className="size-4" />}
-          </Button>
+            checked={isComplete}
+            onCheckedChange={toggleComplete}
+            className="size-6 data-[state=checked]:bg-black data-[state=checked]:border-black"
+          />
           <Label htmlFor="mood-complete" className="text-sm font-medium cursor-pointer">
-            {isComplete ? "Mark Mood Board as Incomplete" : "Mark Mood Board as Complete"}
+            Mark Mood Board as Complete
           </Label>
         </div>
       </div>
@@ -577,10 +573,10 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
       </Card>
 
       <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
-        <DialogContent className="max-w-5xl w-full p-2">
-          <DialogHeader>
-            <DialogTitle>{zoomedImage?.title}</DialogTitle>
-          </DialogHeader>
+        <DialogContentComponent className="max-w-5xl w-full p-2">
+          <DialogHeaderComponent>
+            <DialogTitleComponent>{zoomedImage?.title}</DialogTitleComponent>
+          </DialogHeaderComponent>
           <div className="relative w-full max-h-[80vh] flex items-center justify-center bg-gray-100 dark:bg-[#013B34] rounded-lg overflow-hidden">
             <img
               src={zoomedImage?.url || "/placeholder.svg"}
@@ -596,7 +592,7 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
               <p className="text-sm text-gray-700 dark:text-gray-300">{zoomedImage.notes}</p>
             </div>
           )}
-        </DialogContent>
+        </DialogContentComponent>
       </Dialog>
     </div>
   )
