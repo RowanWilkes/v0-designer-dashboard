@@ -69,25 +69,25 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     const storageKey = `project-${projectId}-overview`
     const savedData = localStorage.getItem(storageKey)
     if (savedData) {
-      const parsed = JSON.parse(savedData)
+      const parsedData = JSON.parse(savedData)
       setProjectData({
-        name: parsed.name || "",
-        client: parsed.client || "",
-        description: parsed.description || "",
-        goal: parsed.goal || "",
-        primaryAction: parsed.primaryAction || "", // Load primary action from storage
-        audience: parsed.audience || "",
-        deadline: parsed.deadline || "",
-        budget: parsed.budget || "",
-        constraints: parsed.constraints || "",
-        successMetrics: parsed.successMetrics || "",
-        kickoffDate: parsed.kickoffDate || "",
-        priorityLevel: parsed.priorityLevel || "Medium",
-        estimatedDevTime: parsed.estimatedDevTime || "",
-        teamMembers: parsed.teamMembers || "",
-        clientReviewDate: parsed.clientReviewDate || "",
-        projectType: parsed.projectType || "",
-        websiteFeatures: parsed.websiteFeatures || [],
+        name: parsedData.name || "",
+        client: parsedData.client || "",
+        description: parsedData.description || "",
+        goal: parsedData.goal || "",
+        primaryAction: parsedData.primaryAction || "",
+        audience: parsedData.audience || "",
+        deadline: parsedData.deadline || "",
+        budget: parsedData.budget || "",
+        constraints: parsedData.constraints || "",
+        successMetrics: parsedData.successMetrics || "",
+        kickoffDate: parsedData.kickoffDate || "",
+        priorityLevel: parsedData.priorityLevel || "Medium",
+        estimatedDevTime: parsedData.estimatedDevTime || "",
+        teamMembers: parsedData.teamMembers || "",
+        clientReviewDate: parsedData.clientReviewDate || "",
+        projectType: parsedData.projectType || "",
+        websiteFeatures: parsedData.websiteFeatures || [],
       })
     }
   }, [projectId])
