@@ -336,10 +336,10 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
     return pageList.map((page) => (
       <div key={page.id} style={{ marginLeft: `${depth * 20}px` }}>
         <div
-          className={`flex items-center gap-2 p-3 rounded-lg transition-colors group border-l-4 bg-emerald-100 dark:bg-emerald-950/30 ${
+          className={`flex items-center gap-2 p-3 rounded-lg transition-colors group border-l-4 ${
             selectedPage === page.id
-              ? "border-l-emerald-600 dark:border-l-emerald-500"
-              : "border-l-emerald-600 dark:border-l-emerald-500"
+              ? "bg-emerald-100 dark:bg-emerald-950/30 border-l-emerald-600 dark:border-l-emerald-500"
+              : "bg-white dark:bg-gray-800 border-l-gray-300 dark:border-l-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700/50"
           } ${dragOverPageId === page.id ? "ring-2 ring-emerald-400" : ""}`}
           draggable={page.id !== "home"}
           onDragStart={(e) => {
@@ -370,6 +370,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
             setDraggedPageId(null)
             setDragOverPageId(null)
           }}
+          onClick={() => setSelectedPage(page.id)}
         >
           {page.children.length > 0 && (
             <button
@@ -429,9 +430,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
             </div>
           ) : (
             <>
-              <span className="font-medium text-sm flex-1" onClick={() => setSelectedPage(page.id)}>
-                {page.name}
-              </span>
+              <span className="font-medium text-sm flex-1">{page.name}</span>
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Button
                   size="sm"
