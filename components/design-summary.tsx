@@ -1083,7 +1083,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
                               <div className="flex items-center gap-2 mb-3">
                                 <Server className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Hosting</h4>
+                                <h4 className="font-bold text-blue-900 text-sm uppercase tracking-wide">Hosting</h4>
                               </div>
                               <div className="space-y-2">
                                 {summaryData.technical.currentHosting && (
@@ -1122,7 +1122,9 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
                               <div className="flex items-center gap-2 mb-3">
                                 <FileText className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Content Management</h4>
+                                <h4 className="font-bold text-blue-900 text-sm uppercase tracking-wide">
+                                  Content Management
+                                </h4>
                               </div>
                               <div className="space-y-2">
                                 {summaryData.technical.cms && (
@@ -1165,7 +1167,9 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                           <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
                             <div className="flex items-center gap-2 mb-3">
                               <Link2 className="size-5 text-blue-600" />
-                              <h4 className="font-semibold text-blue-900">Third-Party Integrations</h4>
+                              <h4 className="font-bold text-blue-900 text-sm uppercase tracking-wide">
+                                Third-Party Integrations
+                              </h4>
                             </div>
                             <div>
                               <p className="text-sm text-gray-900 whitespace-pre-wrap">
@@ -1180,7 +1184,9 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                           <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
                             <div className="flex items-center gap-2 mb-3">
                               <Zap className="size-5 text-blue-600" />
-                              <h4 className="font-semibold text-blue-900">Performance & Compatibility</h4>
+                              <h4 className="font-bold text-blue-900 text-sm uppercase tracking-wide">
+                                Performance & Compatibility
+                              </h4>
                             </div>
                             <div className="space-y-2">
                               {summaryData.technical.performanceRequirements && (
