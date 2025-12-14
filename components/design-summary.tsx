@@ -27,11 +27,8 @@ import {
   Package,
   TrendingUp,
   Server,
-  Database,
   Link2,
-  Shield,
   Zap,
-  Globe,
   MessageCircle,
   Layers,
   Sparkles,
@@ -1077,7 +1074,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                       </p>
                     ) : (
                       <div className="space-y-6">
-                        {/* Top Row: Hosting & Platform/Database side by side */}
+                        {/* Top Row: Hosting & Content Management side by side */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                           {/* Hosting Information */}
                           {(summaryData.technical?.currentHosting ||
@@ -1117,12 +1114,15 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             </div>
                           )}
 
-                          {/* Platform & Database */}
-                          {(summaryData.technical?.cms || summaryData.technical?.database) && (
+                          {/* Content Management */}
+                          {(summaryData.technical?.cms ||
+                            summaryData.technical?.contentManagers ||
+                            summaryData.technical?.contentUpdateFrequency ||
+                            summaryData.technical?.editableContent) && (
                             <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
                               <div className="flex items-center gap-2 mb-3">
-                                <Database className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Platform & Database</h4>
+                                <FileText className="size-5 text-blue-600" />
+                                <h4 className="font-semibold text-blue-900">Content Management</h4>
                               </div>
                               <div className="space-y-2">
                                 {summaryData.technical.cms && (
@@ -1131,10 +1131,28 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                                     <span className="text-sm text-gray-900">{summaryData.technical.cms}</span>
                                   </div>
                                 )}
-                                {summaryData.technical.database && (
+                                {summaryData.technical.contentManagers && (
                                   <div>
-                                    <span className="text-xs font-medium text-blue-700">Database: </span>
-                                    <span className="text-sm text-gray-900">{summaryData.technical.database}</span>
+                                    <span className="text-xs font-medium text-blue-700">Managed By: </span>
+                                    <span className="text-sm text-gray-900">
+                                      {summaryData.technical.contentManagers}
+                                    </span>
+                                  </div>
+                                )}
+                                {summaryData.technical.contentUpdateFrequency && (
+                                  <div>
+                                    <span className="text-xs font-medium text-blue-700">Update Frequency: </span>
+                                    <span className="text-sm text-gray-900">
+                                      {summaryData.technical.contentUpdateFrequency}
+                                    </span>
+                                  </div>
+                                )}
+                                {summaryData.technical.editableContent && (
+                                  <div>
+                                    <span className="text-xs font-medium text-blue-700">Editable Content: </span>
+                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
+                                      {summaryData.technical.editableContent}
+                                    </span>
                                   </div>
                                 )}
                               </div>
@@ -1142,111 +1160,45 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                           )}
                         </div>
 
-                        {/* Second Row: Integrations & Security side by side */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                          {/* Integrations & APIs */}
-                          {(summaryData.technical?.thirdPartyIntegrations ||
-                            summaryData.technical?.apiIntegrations) && (
-                            <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Link2 className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Integrations & APIs</h4>
-                              </div>
-                              <div className="space-y-2">
-                                {summaryData.technical.thirdPartyIntegrations && (
-                                  <div>
-                                    <span className="text-xs font-medium text-blue-700">Third-Party: </span>
-                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
-                                      {summaryData.technical.thirdPartyIntegrations}
-                                    </span>
-                                  </div>
-                                )}
-                                {summaryData.technical.apiIntegrations && (
-                                  <div>
-                                    <span className="text-xs font-medium text-blue-700">APIs: </span>
-                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
-                                      {summaryData.technical.apiIntegrations}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Security & Compliance */}
-                          {summaryData.technical?.securityRequirements && (
-                            <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Shield className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Security & Compliance</h4>
-                              </div>
-                              <div>
-                                <p className="text-sm text-gray-900 whitespace-pre-wrap">
-                                  {summaryData.technical.securityRequirements}
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Third Row: Performance & SEO side by side */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                          {/* Performance & Browser Support */}
-                          {(summaryData.technical?.performanceRequirements ||
-                            summaryData.technical?.browserSupport) && (
-                            <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Zap className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Performance & Compatibility</h4>
-                              </div>
-                              <div className="space-y-2">
-                                {summaryData.technical.performanceRequirements && (
-                                  <div>
-                                    <span className="text-xs font-medium text-blue-700">Performance: </span>
-                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
-                                      {summaryData.technical.performanceRequirements}
-                                    </span>
-                                  </div>
-                                )}
-                                {summaryData.technical.browserSupport && (
-                                  <div>
-                                    <span className="text-xs font-medium text-blue-700">Browser Support: </span>
-                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
-                                      {summaryData.technical.browserSupport}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* SEO Requirements */}
-                          {summaryData.technical?.seoRequirements && (
-                            <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Globe className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">SEO Requirements</h4>
-                              </div>
-                              <div>
-                                <p className="text-sm text-gray-900 whitespace-pre-wrap">
-                                  {summaryData.technical.seoRequirements}
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Full Width: Additional Technical Requirements */}
-                        {summaryData.technical?.technicalRequirements && (
+                        {/* Third-Party Integrations (full width if alone) */}
+                        {summaryData.technical?.thirdPartyIntegrations && (
                           <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
                             <div className="flex items-center gap-2 mb-3">
-                              <FileText className="size-5 text-blue-600" />
-                              <h4 className="font-semibold text-blue-900">Additional Requirements</h4>
+                              <Link2 className="size-5 text-blue-600" />
+                              <h4 className="font-semibold text-blue-900">Third-Party Integrations</h4>
                             </div>
                             <div>
                               <p className="text-sm text-gray-900 whitespace-pre-wrap">
-                                {summaryData.technical.technicalRequirements}
+                                {summaryData.technical.thirdPartyIntegrations}
                               </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Performance & Browser Support (full width) */}
+                        {(summaryData.technical?.performanceRequirements || summaryData.technical?.browserSupport) && (
+                          <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Zap className="size-5 text-blue-600" />
+                              <h4 className="font-semibold text-blue-900">Performance & Compatibility</h4>
+                            </div>
+                            <div className="space-y-2">
+                              {summaryData.technical.performanceRequirements && (
+                                <div>
+                                  <span className="text-xs font-medium text-blue-700">Performance: </span>
+                                  <span className="text-sm text-gray-900 whitespace-pre-wrap">
+                                    {summaryData.technical.performanceRequirements}
+                                  </span>
+                                </div>
+                              )}
+                              {summaryData.technical.browserSupport && (
+                                <div>
+                                  <span className="text-xs font-medium text-blue-700">Browser Support: </span>
+                                  <span className="text-sm text-gray-900 whitespace-pre-wrap">
+                                    {summaryData.technical.browserSupport}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           </div>
                         )}
