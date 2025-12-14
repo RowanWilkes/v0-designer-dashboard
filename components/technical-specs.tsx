@@ -19,8 +19,11 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
     hostingNotes: "",
     proposedHosting: "",
     cms: "",
+    contentUpdateFrequency: "",
+    contentManagers: "",
+    editableContent: "",
+    mediaManagement: "",
     thirdPartyIntegrations: "",
-    formsDataCollection: "",
     technicalRequirements: "",
     performanceRequirements: "",
     browserSupport: "",
@@ -125,6 +128,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
           </CardContent>
         </Card>
 
+        {/* Content Management */}
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
@@ -146,36 +150,61 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
                 className="bg-white border-gray-300 text-gray-900"
               />
             </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="border-gray-200 bg-white shadow-sm">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-900">
-              <FileText className="size-5 text-blue-600" />
-              Forms & Data Collection
-            </CardTitle>
-            <CardDescription>Form requirements and data handling</CardDescription>
-          </CardHeader>
-          <CardContent>
             <div className="space-y-2">
-              <Label htmlFor="formsDataCollection" className="font-medium text-gray-900">
-                Form Types & Data Needs
+              <Label htmlFor="contentManagers" className="font-medium text-gray-900">
+                Who Will Update Content?
+              </Label>
+              <Input
+                id="contentManagers"
+                value={technicalData.contentManagers}
+                onChange={(e) => setTechnicalData({ ...technicalData, contentManagers: e.target.value })}
+                placeholder="e.g., Client, Agency, Marketing Team, Both"
+                className="bg-white border-gray-300 text-gray-900"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="contentUpdateFrequency" className="font-medium text-gray-900">
+                Update Frequency
+              </Label>
+              <Input
+                id="contentUpdateFrequency"
+                value={technicalData.contentUpdateFrequency}
+                onChange={(e) => setTechnicalData({ ...technicalData, contentUpdateFrequency: e.target.value })}
+                placeholder="e.g., Daily, Weekly, Monthly, Rarely"
+                className="bg-white border-gray-300 text-gray-900"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="editableContent" className="font-medium text-gray-900">
+                Editable Content Types
               </Label>
               <Textarea
-                id="formsDataCollection"
-                value={technicalData.formsDataCollection}
-                onChange={(e) => setTechnicalData({ ...technicalData, formsDataCollection: e.target.value })}
-                placeholder="Contact forms, newsletter signups, lead capture, file uploads, form submission handling (email, CRM, database), validation requirements..."
-                rows={8}
+                id="editableContent"
+                value={technicalData.editableContent}
+                onChange={(e) => setTechnicalData({ ...technicalData, editableContent: e.target.value })}
+                placeholder="List what needs to be editable (e.g., blog posts, product pages, team members, testimonials, FAQs, pricing, images, videos...)"
+                rows={3}
+                className="bg-white border-gray-300 text-gray-900 resize-none"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="mediaManagement" className="font-medium text-gray-900">
+                Media & Asset Management
+              </Label>
+              <Textarea
+                id="mediaManagement"
+                value={technicalData.mediaManagement}
+                onChange={(e) => setTechnicalData({ ...technicalData, mediaManagement: e.target.value })}
+                placeholder="Image library, video hosting, document uploads, file size limits, supported formats, CDN requirements..."
+                rows={3}
                 className="bg-white border-gray-300 text-gray-900 resize-none"
               />
             </div>
           </CardContent>
         </Card>
+      </div>
 
+      <div className="grid gap-6 md:grid-cols-2">
         {/* Integrations */}
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
@@ -201,9 +230,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
             </div>
           </CardContent>
         </Card>
-      </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
         {/* Performance & Browser Support */}
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
