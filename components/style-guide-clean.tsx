@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { setSectionCompletion } from "@/lib/completion-tracker"
+import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
 import { PaletteIcon, Pencil, Plus, Minus, X, TypeIcon, PencilIcon } from "lucide-react"
 import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
@@ -245,6 +245,10 @@ export function StyleGuideClean({ projectId }: { projectId: string }) {
       console.log("[v0] StyleGuide: No saved data found")
     }
     setIsDataLoaded(true)
+  }, [projectId])
+
+  useEffect(() => {
+    setIsCompleted(checkSectionCompletion(projectId, "styleguide"))
   }, [projectId])
 
   // Save data whenever it changes
