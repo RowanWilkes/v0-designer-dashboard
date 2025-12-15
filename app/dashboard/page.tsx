@@ -960,7 +960,7 @@ function DashboardContent() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="text-gray-700 border-gray-300 hover:bg-gray-100 bg-transparent"
+                        className="text-gray-700 border-gray-300 hover:bg-gray-100 hover:text-gray-900 bg-transparent"
                         onClick={() => {
                           // Navigate to a project list or similar if it exists, otherwise do nothing
                           // For now, let's just log this action.
@@ -1108,7 +1108,7 @@ function DashboardContent() {
                                       size="sm"
                                       variant="outline"
                                       onClick={() => setActiveView(getSectionViewName(section.id))}
-                                      className="text-emerald-600 border-emerald-300 hover:bg-emerald-50"
+                                      className="text-emerald-600 border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700"
                                     >
                                       Complete
                                     </Button>
