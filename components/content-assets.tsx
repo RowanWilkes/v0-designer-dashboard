@@ -36,7 +36,9 @@ interface BrandMessaging {
   visionStatement: string
   valueProposition: string
   brandPromise: string
-  targetAudience: string
+  tagline: string
+  brandVoice: string
+  keyMessages: string[]
 }
 
 interface MessagingPillar {
@@ -90,11 +92,13 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     visionStatement: "",
     valueProposition: "",
     brandPromise: "",
-    targetAudience: "",
+    tagline: "",
+    brandVoice: "",
+    keyMessages: [],
   })
   const [messagingPillars, setMessagingPillars] = useState<MessagingPillar[]>([])
   const [contentGuidelines, setContentGuidelines] = useState<ContentGuideline[]>([])
-  const [keyMessages, setKeyMessages] = useState<string[]>([])
+  // const [keyMessages, setKeyMessages] = useState<string[]>([]) // REMOVED: Now part of BrandMessaging
   const [seoKeywords, setSeoKeywords] = useState<string[]>([])
   const [newKeyword, setNewKeyword] = useState("")
   const [metaTitle, setMetaTitle] = useState("")
@@ -158,9 +162,9 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           if (parsed.contentGuidelines) {
             setContentGuidelines(parsed.contentGuidelines || [])
           }
-          if (parsed.keyMessages) {
-            setKeyMessages(parsed.keyMessages)
-          }
+          // if (parsed.keyMessages) { // REMOVED: Now part of BrandMessaging
+          //   setKeyMessages(parsed.keyMessages)
+          // }
           if (parsed.seoKeywords) {
             setSeoKeywords(parsed.seoKeywords)
           }
@@ -246,7 +250,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           brandMessaging,
           messagingPillars,
           contentGuidelines,
-          keyMessages,
+          // keyMessages, // REMOVED: Now part of BrandMessaging
           seoKeywords,
           metaTitle,
           metaDescription,
@@ -265,7 +269,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     brandMessaging,
     messagingPillars,
     contentGuidelines,
-    keyMessages,
+    // keyMessages, // REMOVED: Now part of BrandMessaging
     seoKeywords,
     metaTitle,
     metaDescription,
@@ -350,19 +354,19 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     setContentGuidelines(contentGuidelines.filter((g) => g.id !== id))
   }
 
-  const addKeyMessage = () => {
-    setKeyMessages([...keyMessages, "New key message"])
-  }
+  // const addKeyMessage = () => { // REMOVED: Now part of BrandMessaging
+  //   setKeyMessages([...keyMessages, "New key message"])
+  // }
 
-  const updateKeyMessage = (index: number, value: string) => {
-    const updated = [...keyMessages]
-    updated[index] = value
-    setKeyMessages(updated)
-  }
+  // const updateKeyMessage = (index: number, value: string) => { // REMOVED: Now part of BrandMessaging
+  //   const updated = [...keyMessages]
+  //   updated[index] = value
+  //   setKeyMessages(updated)
+  // }
 
-  const removeKeyMessage = (index: number) => {
-    setKeyMessages(keyMessages.filter((_, i) => i !== index))
-  }
+  // const removeKeyMessage = (index: number) => { // REMOVED: Now part of BrandMessaging
+  //   setKeyMessages(keyMessages.filter((_, i) => i !== index))
+  // }
 
   const setKeywordDifficultyLevel = (keyword: string, level: "easy" | "medium" | "hard") => {
     setKeywordDifficulty({ ...keywordDifficulty, [keyword]: level })
@@ -820,14 +824,76 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           </div>
 
           <div className="space-y-2">
-            <Label className="text-foreground dark:text-gray-300">Target Audience</Label>
+            <Label className="text-foreground dark:text-gray-300">Tagline</Label>
+            <Input
+              value={brandMessaging.tagline}
+              onChange={(e) => setBrandMessaging({ ...brandMessaging, tagline: e.target.value })}
+              placeholder="Short, memorable phrase that encapsulates your brand."
+              className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-foreground dark:text-gray-300">Brand Voice</Label>
             <Textarea
-              value={brandMessaging.targetAudience}
-              onChange={(e) => setBrandMessaging({ ...brandMessaging, targetAudience: e.target.value })}
-              placeholder="Who are you creating this for? Demographics, psychographics, pain points..."
+              value={brandMessaging.brandVoice}
+              onChange={(e) => setBrandMessaging({ ...brandMessaging, brandVoice: e.target.value })}
+              placeholder="Describe the personality and tone of your brand's communication."
               rows={3}
               className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-foreground dark:text-gray-300">Key Messages (Add up to 5)</Label>
+            <div className="space-y-2">
+              {brandMessaging.keyMessages.map((message, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 p-3 rounded-lg bg-background dark:bg-[#013B34] border border-border dark:border-[#2DCE73]/50"
+                >
+                  <Input
+                    value={message}
+                    onChange={(e) => {
+                      const updatedMessages = [...brandMessaging.keyMessages]
+                      updatedMessages[index] = e.target.value
+                      setBrandMessaging({ ...brandMessaging, keyMessages: updatedMessages })
+                    }}
+                    placeholder="Enter key message"
+                    className="bg-card dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setBrandMessaging({
+                        ...brandMessaging,
+                        keyMessages: brandMessaging.keyMessages.filter((_, i) => i !== index),
+                      })
+                    }}
+                    className="shrink-0"
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+            <Button
+              onClick={() => {
+                if (brandMessaging.keyMessages.length < 5) {
+                  setBrandMessaging({ ...brandMessaging, keyMessages: [...brandMessaging.keyMessages, ""] })
+                }
+              }}
+              variant="outline"
+              className="w-full border-dashed dark:border-[#2DCE73] bg-transparent"
+              disabled={brandMessaging.keyMessages.length >= 5}
+            >
+              <Plus className="size-4 mr-2" />
+              Add Key Message
+            </Button>
+            {brandMessaging.keyMessages.length >= 5 && (
+              <p className="text-xs text-muted-foreground dark:text-gray-400">Maximum of 5 key messages reached.</p>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -918,32 +984,56 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className={`space-y-2 ${keyMessages.length > 5 ? "max-h-[250px] overflow-y-auto pr-2" : ""}`}>
-              {keyMessages.map((message, index) => (
+            <div
+              className={`space-y-2 ${brandMessaging.keyMessages.length > 5 ? "max-h-[250px] overflow-y-auto pr-2" : ""}`}
+            >
+              {brandMessaging.keyMessages.map((message, index) => (
                 <div
                   key={index}
                   className="flex items-center gap-2 p-3 rounded-lg bg-background dark:bg-[#013B34] border border-border dark:border-[#2DCE73]/50"
                 >
                   <Input
                     value={message}
-                    onChange={(e) => updateKeyMessage(index, e.target.value)}
+                    onChange={(e) => {
+                      const updatedMessages = [...brandMessaging.keyMessages]
+                      updatedMessages[index] = e.target.value
+                      setBrandMessaging({ ...brandMessaging, keyMessages: updatedMessages })
+                    }}
                     placeholder="Enter key message"
                     className="bg-card dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
                   />
-                  <Button variant="ghost" size="icon" onClick={() => removeKeyMessage(index)} className="shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setBrandMessaging({
+                        ...brandMessaging,
+                        keyMessages: brandMessaging.keyMessages.filter((_, i) => i !== index),
+                      })
+                    }}
+                    className="shrink-0"
+                  >
                     <X className="size-4" />
                   </Button>
                 </div>
               ))}
             </div>
             <Button
-              onClick={addKeyMessage}
+              onClick={() => {
+                if (brandMessaging.keyMessages.length < 5) {
+                  setBrandMessaging({ ...brandMessaging, keyMessages: [...brandMessaging.keyMessages, ""] })
+                }
+              }}
               variant="outline"
               className="w-full border-dashed dark:border-[#2DCE73] bg-transparent"
+              disabled={brandMessaging.keyMessages.length >= 5}
             >
               <Plus className="size-4 mr-2" />
               Add Key Message
             </Button>
+            {brandMessaging.keyMessages.length >= 5 && (
+              <p className="text-xs text-muted-foreground dark:text-gray-400">Maximum of 5 key messages reached.</p>
+            )}
           </CardContent>
         </Card>
 
