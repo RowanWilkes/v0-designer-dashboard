@@ -154,7 +154,10 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           setAssets(parsed.assets || [])
           setToneNotes(parsed.toneNotes || "")
           if (parsed.brandMessaging) {
-            setBrandMessaging(parsed.brandMessaging)
+            setBrandMessaging({
+              ...parsed.brandMessaging,
+              keyMessages: parsed.brandMessaging.keyMessages || [],
+            })
           }
           if (parsed.messagingPillars) {
             setMessagingPillars(parsed.messagingPillars)
@@ -162,9 +165,6 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           if (parsed.contentGuidelines) {
             setContentGuidelines(parsed.contentGuidelines || [])
           }
-          // if (parsed.keyMessages) { // REMOVED: Now part of BrandMessaging
-          //   setKeyMessages(parsed.keyMessages)
-          // }
           if (parsed.seoKeywords) {
             setSeoKeywords(parsed.seoKeywords)
           }
@@ -186,51 +186,22 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           if (parsed.uploadedAssets) {
             setUploadedAssets(parsed.uploadedAssets)
           }
-          if (parsed.isComplete !== undefined) {
-            setIsComplete(parsed.isComplete)
-          }
           setIsDataLoaded(true)
         } else {
-          console.log("[v0] ContentAssets: No valid saved data found.")
-          // Fallback to defaults if parsed data is null or undefined
-          if (showAssetsOnly) {
-            setUploadedAssets([])
-          } else {
-            setContentItems([
-              { id: "example-1", type: "heading", text: "Transform Your Digital Experience" },
-              { id: "example-2", type: "cta", text: "Get Started Today" },
-              { id: "example-3", type: "subheading", text: "Join thousands of satisfied customers" },
-            ])
-            setAssets([
-              { id: "1", name: "Hero Image", url: "https://example.com/hero.jpg", type: "image" },
-              { id: "2", name: "Product Icons", url: "https://icons.com/set", type: "icon" },
-            ])
-            setToneNotes("Professional yet approachable. Use active voice and focus on benefits.")
-          }
           setIsDataLoaded(true)
         }
       } catch (error) {
-        console.error("[v0] Error loading data:", error)
+        console.error("[v0] ContentAssets: Error parsing saved data", error)
         setIsDataLoaded(true)
       }
     } else {
-      console.log("[v0] ContentAssets: No saved data, using defaults")
-      if (showAssetsOnly) {
-        setUploadedAssets([])
-      } else {
-        setContentItems([
-          { id: "example-1", type: "heading", text: "Transform Your Digital Experience" },
-          { id: "example-2", type: "cta", text: "Get Started Today" },
-          { id: "example-3", type: "subheading", text: "Join thousands of satisfied customers" },
-        ])
-        setAssets([
-          { id: "1", name: "Hero Image", url: "https://example.com/hero.jpg", type: "image" },
-          { id: "2", name: "Product Icons", url: "https://icons.com/set", type: "icon" },
-        ])
-        setToneNotes("Professional yet approachable. Use active voice and focus on benefits.")
-      }
+      console.log("[v0] ContentAssets: No saved data found")
       setIsDataLoaded(true)
     }
+
+    checkSectionCompletion(projectId, showAssetsOnly ? "assets" : "content").then((complete) => {
+      setIsComplete(complete)
+    })
   }, [projectId, showAssetsOnly])
 
   useEffect(() => {
