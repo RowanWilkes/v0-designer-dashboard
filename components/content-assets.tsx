@@ -189,6 +189,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           if (parsed.isComplete !== undefined) {
             setIsComplete(parsed.isComplete)
           }
+          setIsDataLoaded(true)
         } else {
           console.log("[v0] ContentAssets: No valid saved data found.")
           // Fallback to defaults if parsed data is null or undefined
@@ -275,12 +276,12 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     metaDescription,
     focusKeyword,
     keywordDifficulty,
+    competitorAnalysis, // <-- Added competitorAnalysis here
     uploadedAssets, // <-- Added uploadedAssets here
     projectId,
     isComplete,
     isDataLoaded,
     showAssetsOnly,
-    competitorAnalysis, // <-- Added competitorAnalysis here
   ])
 
   // Add useEffect for checking completion status
