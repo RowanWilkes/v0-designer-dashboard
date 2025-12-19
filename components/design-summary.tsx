@@ -584,6 +584,53 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             </p>
                           </div>
                         )}
+
+                        {(hasContent(summaryData.overview.successMetrics) ||
+                          hasContent(summaryData.overview.kpis) ||
+                          hasContent(summaryData.overview.targetMetrics) ||
+                          hasContent(summaryData.overview.trackingMethods) ||
+                          hasContent(summaryData.overview.measurementTimeline)) && (
+                          <div className="bg-emerald-50 rounded-lg p-5 border border-emerald-200">
+                            <div className="flex items-center gap-2 mb-3">
+                              <TrendingUp className="size-5 text-emerald-600" />
+                              <h3 className="font-bold text-emerald-900 text-sm uppercase tracking-wide">
+                                Success Metrics
+                              </h3>
+                            </div>
+                            <div className="space-y-3 text-emerald-800">
+                              {hasContent(summaryData.overview.successMetrics) && (
+                                <div>
+                                  <span className="font-semibold">Success Criteria: </span>
+                                  <span className="whitespace-pre-wrap">{summaryData.overview.successMetrics}</span>
+                                </div>
+                              )}
+                              {hasContent(summaryData.overview.kpis) && (
+                                <div>
+                                  <span className="font-semibold">KPIs: </span>
+                                  <span className="whitespace-pre-wrap">{summaryData.overview.kpis}</span>
+                                </div>
+                              )}
+                              {hasContent(summaryData.overview.targetMetrics) && (
+                                <div>
+                                  <span className="font-semibold">Targets: </span>
+                                  <span className="whitespace-pre-wrap">{summaryData.overview.targetMetrics}</span>
+                                </div>
+                              )}
+                              {hasContent(summaryData.overview.trackingMethods) && (
+                                <div>
+                                  <span className="font-semibold">Tracking: </span>
+                                  <span className="whitespace-pre-wrap">{summaryData.overview.trackingMethods}</span>
+                                </div>
+                              )}
+                              {hasContent(summaryData.overview.measurementTimeline) && (
+                                <div>
+                                  <span className="font-semibold">Timeline: </span>
+                                  <span>{summaryData.overview.measurementTimeline}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </>
                     )}
                   </CardContent>
