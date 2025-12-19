@@ -155,7 +155,12 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           setToneNotes(parsed.toneNotes || "")
           if (parsed.brandMessaging) {
             setBrandMessaging({
-              ...parsed.brandMessaging,
+              missionStatement: parsed.brandMessaging.missionStatement || "",
+              visionStatement: parsed.brandMessaging.visionStatement || "",
+              valueProposition: parsed.brandMessaging.valueProposition || "",
+              brandPromise: parsed.brandMessaging.brandPromise || "",
+              tagline: parsed.brandMessaging.tagline || "",
+              brandVoice: parsed.brandMessaging.brandVoice || "",
               keyMessages: parsed.brandMessaging.keyMessages || [],
             })
           }
