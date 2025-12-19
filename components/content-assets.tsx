@@ -820,57 +820,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
             />
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-foreground dark:text-gray-300">Key Messages (Add up to 5)</Label>
-            <div className="space-y-2">
-              {brandMessaging.keyMessages.map((message, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 p-3 rounded-lg bg-background dark:bg-[#013B34] border border-border dark:border-[#2DCE73]/50"
-                >
-                  <Input
-                    value={message}
-                    onChange={(e) => {
-                      const updatedMessages = [...brandMessaging.keyMessages]
-                      updatedMessages[index] = e.target.value
-                      setBrandMessaging({ ...brandMessaging, keyMessages: updatedMessages })
-                    }}
-                    placeholder="Enter key message"
-                    className="bg-card dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
-                  />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setBrandMessaging({
-                        ...brandMessaging,
-                        keyMessages: brandMessaging.keyMessages.filter((_, i) => i !== index),
-                      })
-                    }}
-                    className="shrink-0"
-                  >
-                    <X className="size-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-            <Button
-              onClick={() => {
-                if (brandMessaging.keyMessages.length < 5) {
-                  setBrandMessaging({ ...brandMessaging, keyMessages: [...brandMessaging.keyMessages, ""] })
-                }
-              }}
-              variant="outline"
-              className="w-full border-dashed dark:border-[#2DCE73] bg-transparent"
-              disabled={brandMessaging.keyMessages.length >= 5}
-            >
-              <Plus className="size-4 mr-2" />
-              Add Key Message
-            </Button>
-            {brandMessaging.keyMessages.length >= 5 && (
-              <p className="text-xs text-muted-foreground dark:text-gray-400">Maximum of 5 key messages reached.</p>
-            )}
-          </div>
+          {/* REMOVED Key Messages section from Brand Messaging Framework as it exists as a separate card below */}
         </CardContent>
       </Card>
 
