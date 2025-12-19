@@ -199,9 +199,8 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
       setIsDataLoaded(true)
     }
 
-    checkSectionCompletion(projectId, showAssetsOnly ? "assets" : "content").then((complete) => {
-      setIsComplete(complete)
-    })
+    const complete = checkSectionCompletion(projectId, showAssetsOnly ? "assets" : "content")
+    setIsComplete(complete)
   }, [projectId, showAssetsOnly])
 
   useEffect(() => {
