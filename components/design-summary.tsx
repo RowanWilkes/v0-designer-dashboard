@@ -1287,8 +1287,8 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
 
                             <div className="grid md:grid-cols-2 gap-4">
                               {Object.entries(summaryData.content.brandMessaging).map(([key, value]: [string, any]) => {
-                                // Skip mission statement as it's already displayed full width above
-                                if (key === "missionStatement" || !hasContent(value)) return null
+                                if (key === "missionStatement" || key === "keyMessages" || !hasContent(value))
+                                  return null
                                 return (
                                   <div key={key} className="bg-rose-50 p-3 rounded-lg border border-rose-200">
                                     <p className="text-xs font-semibold text-rose-700 uppercase mb-1.5">
