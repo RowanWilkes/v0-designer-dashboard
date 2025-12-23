@@ -43,9 +43,6 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
     constraints: "",
     successMetrics: "",
     kpis: "",
-    targetMetrics: "",
-    trackingMethods: "",
-    measurementTimeline: "",
     kickoffDate: "",
     priorityLevel: "Medium",
     estimatedDevTime: "",
@@ -101,9 +98,6 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
         constraints: parsedData.constraints || "",
         successMetrics: parsedData.successMetrics || "",
         kpis: parsedData.kpis || "",
-        targetMetrics: parsedData.targetMetrics || "",
-        trackingMethods: parsedData.trackingMethods || "",
-        measurementTimeline: parsedData.measurementTimeline || "",
         kickoffDate: parsedData.kickoffDate || "",
         priorityLevel: parsedData.priorityLevel || "Medium",
         estimatedDevTime: parsedData.estimatedDevTime || "",
@@ -478,51 +472,9 @@ export function ProjectOverview({ projectId }: ProjectOverviewProps) {
                   id="kpis"
                   value={projectData.kpis}
                   onChange={(e) => setProjectData({ ...projectData, kpis: e.target.value })}
-                  placeholder="Specific metrics to track (e.g., Monthly Active Users, Average Order Value, Bounce Rate, Page Load Time...)"
-                  rows={4}
-                  className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="targetMetrics" className="font-medium dark:text-gray-300">
-                  Target Metrics
-                </Label>
-                <Textarea
-                  id="targetMetrics"
-                  value={projectData.targetMetrics}
-                  onChange={(e) => setProjectData({ ...projectData, targetMetrics: e.target.value })}
-                  placeholder="Numerical goals to achieve (e.g., 10,000 users in 3 months, 5% conversion rate, <2s page load...)"
-                  rows={4}
-                  className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="trackingMethods" className="font-medium dark:text-gray-300">
-                  Tracking Methods
-                </Label>
-                <Textarea
-                  id="trackingMethods"
-                  value={projectData.trackingMethods}
-                  onChange={(e) => setProjectData({ ...projectData, trackingMethods: e.target.value })}
-                  placeholder="How will metrics be monitored? (e.g., Google Analytics, Hotjar, Custom Dashboard, A/B Testing Tools...)"
+                  placeholder="Specific metrics to track (e.g., Bounce rate, Time on site, Newsletter signups, Cart abandonment...)"
                   rows={3}
                   className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="measurementTimeline" className="font-medium dark:text-gray-300">
-                  Measurement Timeline
-                </Label>
-                <Input
-                  id="measurementTimeline"
-                  type="text"
-                  value={projectData.measurementTimeline}
-                  onChange={(e) => setProjectData({ ...projectData, measurementTimeline: e.target.value })}
-                  placeholder="When to review metrics (e.g., Weekly reports, 30/60/90 day reviews...)"
-                  className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
                 />
               </div>
             </div>
