@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
+import { Check } from "lucide-react"
 
 export function SiteFooter() {
   return (
@@ -10,9 +11,9 @@ export function SiteFooter() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#003A33] via-primary to-[#002724]"></div>
       </div>
 
-      <div className="container mx-auto px-6 pt-24 pb-8 relative z-10">
+      <div className="container mx-auto px-6 pt-24 pb-8 relative z-0">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-accent p-12 rounded-3xl shadow-2xl relative overflow-hidden">
+          <div className="bg-accent p-12 rounded-3xl shadow-2xl relative overflow-hidden z-0">
             <div className="absolute inset-0 bg-gradient-radial from-emerald-300/20 via-transparent to-transparent"></div>
             <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-emerald-400/30 rounded-full blur-3xl"></div>
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl"></div>
@@ -20,9 +21,20 @@ export function SiteFooter() {
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
               <div className="flex-1 space-y-4">
                 <h2 className="text-4xl lg:text-5xl font-bold text-white">Transform your design workflow</h2>
-                <p className="text-white/90 text-base">
-                  Your first project is free — upgrade whenever you're ready to take on more.
-                </p>
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+                  <div className="flex items-center gap-2 text-white">
+                    <Check className="size-5" />
+                    <span className="text-sm font-medium">Free for your first project</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-white">
+                    <Check className="size-5" />
+                    <span className="text-sm font-medium">No credit card required</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-white">
+                    <Check className="size-5" />
+                    <span className="text-sm font-medium">Upgrade only when you need more</span>
+                  </div>
+                </div>
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -47,7 +59,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 pb-12 pt-18 relative z-10 text-white">
+      <div className="container mx-auto px-6 pb-12 pt-18 relative z-0 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12">
             <Image

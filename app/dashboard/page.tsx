@@ -64,12 +64,14 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { checkSectionCompletion, setSectionCompletion } from "@/lib/completion-tracker"
 import React from "react"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 type UserServiceUser = {
   id: string
   email: string
   fullName: string
   plan?: string
+  lifetimeProjectCount?: number // Added for new user check
 }
 
 export type Project = {
@@ -193,7 +195,7 @@ function DashboardContent() {
       const parsedUser: UserServiceUser = JSON.parse(userData)
       setUser(parsedUser)
 
-      const storedProjects = localStorage.getItem("design-studio-projects")
+      const storedProjects = getUserItem("design-studio-projects")
       if (storedProjects) {
         const parsedProjects: Project[] = JSON.parse(storedProjects)
         setProjects(parsedProjects)
@@ -209,8 +211,7 @@ function DashboardContent() {
         setCurrentProjectId(null)
       }
 
-      // Load downloaded summaries from localStorage
-      const storedSummaries = localStorage.getItem("downloadedSummaries")
+      const storedSummaries = getUserItem("downloadedSummaries")
       if (storedSummaries) {
         setDownloadedSummaries(JSON.parse(storedSummaries))
       }
@@ -224,13 +225,12 @@ function DashboardContent() {
 
   useEffect(() => {
     if (projects.length > 0) {
-      localStorage.setItem("design-studio-projects", JSON.stringify(projects))
+      setUserItem("design-studio-projects", JSON.stringify(projects))
     }
   }, [projects])
 
-  // Save downloaded summaries to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem("downloadedSummaries", JSON.stringify(downloadedSummaries))
+    setUserItem("downloadedSummaries", JSON.stringify(downloadedSummaries))
   }, [downloadedSummaries])
 
   useEffect(() => {
@@ -334,13 +334,13 @@ function DashboardContent() {
         className={cn(
           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all w-full relative",
           isActive
-            ? "bg-emerald-50 text-gray-900 font-medium border-l-4 border-emerald-500"
+            ? "bg-emerald-100 text-gray-900 font-medium border-l-4 border-emerald-600"
             : isDisabled
               ? "text-gray-400 cursor-not-allowed"
               : "text-gray-700 hover:bg-gray-50",
         )}
       >
-        <Icon className={cn("h-4 w-4", isActive && "text-emerald-600")} />
+        <Icon className={cn("h-4 w-4", isActive && "text-emerald-700")} />
         {!sidebarCollapsed && (
           <>
             <span className="flex-1 text-left">{label}</span>
@@ -960,7 +960,7 @@ function DashboardContent() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="text-gray-700 border-gray-300 hover:bg-gray-100 bg-transparent"
+                        className="text-gray-700 border-gray-300 hover:bg-gray-100 hover:text-gray-900 bg-transparent"
                         onClick={() => {
                           // Navigate to a project list or similar if it exists, otherwise do nothing
                           // For now, let's just log this action.
@@ -1094,7 +1094,9 @@ function DashboardContent() {
                                       <AlertCircle className="h-5 w-5 text-amber-500" />
                                     )}
                                     <span
-                                      className={`font-medium ${section.completed ? "text-gray-500" : "text-gray-900"}`}
+                                      className={`font-medium transition-colors ${
+                                        section.completed ? "text-gray-500" : "text-gray-900 hover:text-emerald-700"
+                                      }`}
                                     >
                                       {section.name}
                                     </span>
@@ -1106,7 +1108,7 @@ function DashboardContent() {
                                       size="sm"
                                       variant="outline"
                                       onClick={() => setActiveView(getSectionViewName(section.id))}
-                                      className="text-emerald-600 border-emerald-300 hover:bg-emerald-50"
+                                      className="text-emerald-600 border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700"
                                     >
                                       Complete
                                     </Button>
@@ -1223,10 +1225,10 @@ function DashboardContent() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Card
-                      className="cursor-pointer hover:shadow-md transition-all"
+                      className="cursor-pointer hover:shadow-md transition-all h-full"
                       onClick={() => setActiveView("account-profile")}
                     >
-                      <CardContent className="pt-6">
+                      <CardContent className="pt-6 min-h-[110px] flex items-start">
                         <div className="flex items-start gap-4">
                           <div className="h-12 w-12 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
                             <User className="h-6 w-6 text-blue-600" />
@@ -1242,10 +1244,10 @@ function DashboardContent() {
                     </Card>
 
                     <Card
-                      className="cursor-pointer hover:shadow-md transition-all"
+                      className="cursor-pointer hover:shadow-md transition-all h-full"
                       onClick={() => setActiveView("account-preferences")}
                     >
-                      <CardContent className="pt-6">
+                      <CardContent className="pt-6 min-h-[110px] flex items-start">
                         <div className="flex items-start gap-4">
                           <div className="h-12 w-12 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
                             <SlidersHorizontal className="h-6 w-6 text-purple-600" />
@@ -1259,10 +1261,10 @@ function DashboardContent() {
                     </Card>
 
                     <Card
-                      className="cursor-pointer hover:shadow-md transition-all"
+                      className="cursor-pointer hover:shadow-md transition-all h-full"
                       onClick={() => setActiveView("account-usage")}
                     >
-                      <CardContent className="pt-6">
+                      <CardContent className="pt-6 min-h-[110px] flex items-start">
                         <div className="flex items-start gap-4">
                           <div className="h-12 w-12 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
                             <BarChart2 className="h-6 w-6 text-emerald-600" />
@@ -1276,10 +1278,10 @@ function DashboardContent() {
                     </Card>
 
                     <Card
-                      className="cursor-pointer hover:shadow-md transition-all"
+                      className="cursor-pointer hover:shadow-md transition-all h-full"
                       onClick={() => setActiveView("account-help")}
                     >
-                      <CardContent className="pt-6">
+                      <CardContent className="pt-6 min-h-[110px] flex items-start">
                         <div className="flex items-start gap-4">
                           <div className="h-12 w-12 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
                             <HelpCircle className="h-6 w-6 text-orange-600" />

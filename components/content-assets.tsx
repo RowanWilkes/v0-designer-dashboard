@@ -26,21 +26,19 @@ import {
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
-import { setSectionCompletion } from "@/lib/completion-tracker"
+import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
-interface ContentItem {
-  id: string
-  type: "heading" | "cta" | "body" | "subheading" | "button" | "tagline" | string // Allow string for custom types
-  text: string
-}
-
+// Define interfaces for BrandMessaging, MessagingPillar, and ContentGuideline
 interface BrandMessaging {
   missionStatement: string
   visionStatement: string
   valueProposition: string
   brandPromise: string
-  targetAudience: string
+  tagline: string
+  brandVoice: string
+  keyMessages: string[]
 }
 
 interface MessagingPillar {
@@ -53,6 +51,12 @@ interface ContentGuideline {
   id: string
   category: string
   guideline: string
+}
+
+interface ContentItem {
+  id: string
+  type: "heading" | "cta" | "body" | "subheading" | "button" | "tagline" | string // Allow string for custom types
+  text: string
 }
 
 interface Asset {
@@ -88,11 +92,13 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     visionStatement: "",
     valueProposition: "",
     brandPromise: "",
-    targetAudience: "",
+    tagline: "",
+    brandVoice: "",
+    keyMessages: [],
   })
   const [messagingPillars, setMessagingPillars] = useState<MessagingPillar[]>([])
   const [contentGuidelines, setContentGuidelines] = useState<ContentGuideline[]>([])
-  const [keyMessages, setKeyMessages] = useState<string[]>([])
+  // const [keyMessages, setKeyMessages] = useState<string[]>([]) // REMOVED: Now part of BrandMessaging
   const [seoKeywords, setSeoKeywords] = useState<string[]>([])
   const [newKeyword, setNewKeyword] = useState("")
   const [metaTitle, setMetaTitle] = useState("")
@@ -137,7 +143,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     const section = showAssetsOnly ? "assets" : "content"
     const storageKey = `project-${projectId}-${section}`
     console.log("[v0] ContentAssets: Loading data from", storageKey)
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData)
@@ -148,7 +154,15 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           setAssets(parsed.assets || [])
           setToneNotes(parsed.toneNotes || "")
           if (parsed.brandMessaging) {
-            setBrandMessaging(parsed.brandMessaging)
+            setBrandMessaging({
+              missionStatement: parsed.brandMessaging.missionStatement || "",
+              visionStatement: parsed.brandMessaging.visionStatement || "",
+              valueProposition: parsed.brandMessaging.valueProposition || "",
+              brandPromise: parsed.brandMessaging.brandPromise || "",
+              tagline: parsed.brandMessaging.tagline || "",
+              brandVoice: parsed.brandMessaging.brandVoice || "",
+              keyMessages: parsed.brandMessaging.keyMessages || [],
+            })
           }
           if (parsed.messagingPillars) {
             setMessagingPillars(parsed.messagingPillars)
@@ -156,61 +170,42 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           if (parsed.contentGuidelines) {
             setContentGuidelines(parsed.contentGuidelines || [])
           }
-          if (parsed.keyMessages) {
-            setKeyMessages(parsed.keyMessages)
-          }
           if (parsed.seoKeywords) {
             setSeoKeywords(parsed.seoKeywords)
           }
-          setMetaTitle(parsed.metaTitle || "")
-          setMetaDescription(parsed.metaDescription || "")
-          setFocusKeyword(parsed.focusKeyword || "")
-          setKeywordDifficulty(parsed.keywordDifficulty || {})
-          setUploadedAssets(parsed.uploadedAssets || [])
-          setCompetitorAnalysis(parsed.competitorAnalysis || "")
-          setIsComplete(parsed.isComplete || false)
+          if (parsed.metaTitle) {
+            setMetaTitle(parsed.metaTitle)
+          }
+          if (parsed.metaDescription) {
+            setMetaDescription(parsed.metaDescription)
+          }
+          if (parsed.focusKeyword) {
+            setFocusKeyword(parsed.focusKeyword)
+          }
+          if (parsed.keywordDifficulty) {
+            setKeywordDifficulty(parsed.keywordDifficulty)
+          }
+          if (parsed.competitorAnalysis) {
+            setCompetitorAnalysis(parsed.competitorAnalysis)
+          }
+          if (parsed.uploadedAssets) {
+            setUploadedAssets(parsed.uploadedAssets)
+          }
           setIsDataLoaded(true)
         } else {
-          console.log("[v0] ContentAssets: No valid saved data found.")
-          // Fallback to defaults if parsed data is null or undefined
-          if (showAssetsOnly) {
-            setUploadedAssets([])
-          } else {
-            setContentItems([
-              { id: "example-1", type: "heading", text: "Transform Your Digital Experience" },
-              { id: "example-2", type: "cta", text: "Get Started Today" },
-              { id: "example-3", type: "subheading", text: "Join thousands of satisfied customers" },
-            ])
-            setAssets([
-              { id: "1", name: "Hero Image", url: "https://example.com/hero.jpg", type: "image" },
-              { id: "2", name: "Product Icons", url: "https://icons.com/set", type: "icon" },
-            ])
-            setToneNotes("Professional yet approachable. Use active voice and focus on benefits.")
-          }
           setIsDataLoaded(true)
         }
       } catch (error) {
-        console.error("[v0] Error loading data:", error)
+        console.error("[v0] ContentAssets: Error parsing saved data", error)
         setIsDataLoaded(true)
       }
     } else {
-      console.log("[v0] ContentAssets: No saved data, using defaults")
-      if (showAssetsOnly) {
-        setUploadedAssets([])
-      } else {
-        setContentItems([
-          { id: "example-1", type: "heading", text: "Transform Your Digital Experience" },
-          { id: "example-2", type: "cta", text: "Get Started Today" },
-          { id: "example-3", type: "subheading", text: "Join thousands of satisfied customers" },
-        ])
-        setAssets([
-          { id: "1", name: "Hero Image", url: "https://example.com/hero.jpg", type: "image" },
-          { id: "2", name: "Product Icons", url: "https://icons.com/set", type: "icon" },
-        ])
-        setToneNotes("Professional yet approachable. Use active voice and focus on benefits.")
-      }
+      console.log("[v0] ContentAssets: No saved data found")
       setIsDataLoaded(true)
     }
+
+    const complete = checkSectionCompletion(projectId, showAssetsOnly ? "assets" : "content")
+    setIsComplete(complete)
   }, [projectId, showAssetsOnly])
 
   useEffect(() => {
@@ -231,7 +226,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           brandMessaging,
           messagingPillars,
           contentGuidelines,
-          keyMessages,
+          // keyMessages, // REMOVED: Now part of BrandMessaging
           seoKeywords,
           metaTitle,
           metaDescription,
@@ -242,7 +237,7 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
         }
 
     console.log("[v0] ContentAssets: Saving to", storageKey, dataToSave)
-    localStorage.setItem(storageKey, JSON.stringify(dataToSave))
+    setUserItem(storageKey, JSON.stringify(dataToSave))
   }, [
     contentItems,
     assets,
@@ -250,19 +245,24 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     brandMessaging,
     messagingPillars,
     contentGuidelines,
-    keyMessages,
+    // keyMessages, // REMOVED: Now part of BrandMessaging
     seoKeywords,
     metaTitle,
     metaDescription,
     focusKeyword,
     keywordDifficulty,
+    competitorAnalysis, // <-- Added competitorAnalysis here
     uploadedAssets, // <-- Added uploadedAssets here
     projectId,
     isComplete,
     isDataLoaded,
     showAssetsOnly,
-    competitorAnalysis, // <-- Added competitorAnalysis here
   ])
+
+  // Add useEffect for checking completion status
+  useEffect(() => {
+    setIsComplete(checkSectionCompletion(projectId, showAssetsOnly ? "assets" : "content"))
+  }, [projectId, showAssetsOnly])
 
   const toggleCompletion = (checked: boolean) => {
     setIsComplete(checked)
@@ -330,19 +330,19 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
     setContentGuidelines(contentGuidelines.filter((g) => g.id !== id))
   }
 
-  const addKeyMessage = () => {
-    setKeyMessages([...keyMessages, "New key message"])
-  }
+  // const addKeyMessage = () => { // REMOVED: Now part of BrandMessaging
+  //   setKeyMessages([...keyMessages, "New key message"])
+  // }
 
-  const updateKeyMessage = (index: number, value: string) => {
-    const updated = [...keyMessages]
-    updated[index] = value
-    setKeyMessages(updated)
-  }
+  // const updateKeyMessage = (index: number, value: string) => { // REMOVED: Now part of BrandMessaging
+  //   const updated = [...keyMessages]
+  //   updated[index] = value
+  //   setKeyMessages(updated)
+  // }
 
-  const removeKeyMessage = (index: number) => {
-    setKeyMessages(keyMessages.filter((_, i) => i !== index))
-  }
+  // const removeKeyMessage = (index: number) => { // REMOVED: Now part of BrandMessaging
+  //   setKeyMessages(keyMessages.filter((_, i) => i !== index))
+  // }
 
   const setKeywordDifficultyLevel = (keyword: string, level: "easy" | "medium" | "hard") => {
     setKeywordDifficulty({ ...keywordDifficulty, [keyword]: level })
@@ -800,15 +800,27 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
           </div>
 
           <div className="space-y-2">
-            <Label className="text-foreground dark:text-gray-300">Target Audience</Label>
+            <Label className="text-foreground dark:text-gray-300">Tagline</Label>
+            <Input
+              value={brandMessaging.tagline}
+              onChange={(e) => setBrandMessaging({ ...brandMessaging, tagline: e.target.value })}
+              placeholder="Short, memorable phrase that encapsulates your brand."
+              className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-foreground dark:text-gray-300">Brand Voice</Label>
             <Textarea
-              value={brandMessaging.targetAudience}
-              onChange={(e) => setBrandMessaging({ ...brandMessaging, targetAudience: e.target.value })}
-              placeholder="Who are you creating this for? Demographics, psychographics, pain points..."
+              value={brandMessaging.brandVoice}
+              onChange={(e) => setBrandMessaging({ ...brandMessaging, brandVoice: e.target.value })}
+              placeholder="Describe the personality and tone of your brand's communication."
               rows={3}
               className="bg-background dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white resize-none"
             />
           </div>
+
+          {/* REMOVED Key Messages section from Brand Messaging Framework as it exists as a separate card below */}
         </CardContent>
       </Card>
 
@@ -898,32 +910,56 @@ export function ContentAssets({ projectId, showAssetsOnly = false }: ContentAsse
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className={`space-y-2 ${keyMessages.length > 5 ? "max-h-[250px] overflow-y-auto pr-2" : ""}`}>
-              {keyMessages.map((message, index) => (
+            <div
+              className={`space-y-2 ${brandMessaging.keyMessages.length > 5 ? "max-h-[250px] overflow-y-auto pr-2" : ""}`}
+            >
+              {brandMessaging.keyMessages.map((message, index) => (
                 <div
                   key={index}
                   className="flex items-center gap-2 p-3 rounded-lg bg-background dark:bg-[#013B34] border border-border dark:border-[#2DCE73]/50"
                 >
                   <Input
                     value={message}
-                    onChange={(e) => updateKeyMessage(index, e.target.value)}
+                    onChange={(e) => {
+                      const updatedMessages = [...brandMessaging.keyMessages]
+                      updatedMessages[index] = e.target.value
+                      setBrandMessaging({ ...brandMessaging, keyMessages: updatedMessages })
+                    }}
                     placeholder="Enter key message"
                     className="bg-card dark:bg-[#013B34] border-input dark:border-[#2DCE73] text-foreground dark:text-white"
                   />
-                  <Button variant="ghost" size="icon" onClick={() => removeKeyMessage(index)} className="shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setBrandMessaging({
+                        ...brandMessaging,
+                        keyMessages: brandMessaging.keyMessages.filter((_, i) => i !== index),
+                      })
+                    }}
+                    className="shrink-0"
+                  >
                     <X className="size-4" />
                   </Button>
                 </div>
               ))}
             </div>
             <Button
-              onClick={addKeyMessage}
+              onClick={() => {
+                if (brandMessaging.keyMessages.length < 5) {
+                  setBrandMessaging({ ...brandMessaging, keyMessages: [...brandMessaging.keyMessages, ""] })
+                }
+              }}
               variant="outline"
               className="w-full border-dashed dark:border-[#2DCE73] bg-transparent"
+              disabled={brandMessaging.keyMessages.length >= 5}
             >
               <Plus className="size-4 mr-2" />
               Add Key Message
             </Button>
+            {brandMessaging.keyMessages.length >= 5 && (
+              <p className="text-xs text-muted-foreground dark:text-gray-400">Maximum of 5 key messages reached.</p>
+            )}
           </CardContent>
         </Card>
 

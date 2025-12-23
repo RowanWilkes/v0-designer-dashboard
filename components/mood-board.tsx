@@ -1,5 +1,10 @@
 "use client"
 
+import { DialogTitle as DialogTitleComponent } from "@/components/ui/dialog"
+import { DialogHeader as DialogHeaderComponent } from "@/components/ui/dialog"
+import { DialogContent as DialogContentComponent } from "@/components/ui/dialog"
+import { Dialog } from "@/components/ui/dialog"
+import { Checkbox } from "@/components/ui/checkbox"
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,10 +12,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Plus, X, ImageIcon, Upload, ExternalLink, Globe } from "lucide-react"
-import { Checkbox } from "@/components/ui/checkbox"
-import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { ImageIcon, Plus, X, Link } from "lucide-react"
+import { checkSectionCompletion, setSectionCompletion } from "@/lib/completion-tracker"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 interface InspirationImage {
   id: string
@@ -53,7 +57,7 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
 
     const storageKey = `project-${projectId}-moodboard`
     console.log("[v0] MoodBoard: Loading data from", storageKey)
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     if (savedData) {
       const parsed = JSON.parse(savedData)
       console.log("[v0] MoodBoard: Loaded data:", parsed)
@@ -76,11 +80,11 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
     }
 
     const storageKey = `project-${projectId}-moodboard`
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     const parsed = savedData ? JSON.parse(savedData) : {}
     const dataToSave = { ...parsed, styleNotes, inspirationImages, websiteReferences }
     console.log("[v0] MoodBoard: Saving to", storageKey, dataToSave)
-    localStorage.setItem(storageKey, JSON.stringify(dataToSave))
+    setUserItem(storageKey, JSON.stringify(dataToSave))
   }, [styleNotes, inspirationImages, websiteReferences, projectId, isDataLoaded])
 
   useEffect(() => {
@@ -256,7 +260,7 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
       <Card className="border-gray-200 dark:border-[#2DCE73]/30 bg-white dark:bg-[#024039] shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
-            <Globe className="size-5 text-purple-600" />
+            <Link className="size-5 text-purple-600" />
             Website References
           </CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-300">
@@ -280,12 +284,11 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
 
                   <a href={site.url} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 mb-3">
                     <div className="size-10 rounded-lg bg-gray-100 dark:bg-[#013B34] flex items-center justify-center flex-shrink-0 border border-gray-200 dark:border-[#2DCE73]/20">
-                      <Globe className="size-5 text-purple-600" />
+                      <Link className="size-5 text-purple-600" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <p className="font-medium text-gray-900 dark:text-white text-sm truncate">{site.title}</p>
-                        <ExternalLink className="size-3 text-gray-600 dark:text-gray-300 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                       <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{site.url}</p>
                     </div>
@@ -377,7 +380,7 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
 
           {websiteReferences.length === 0 && (
             <div className="text-center py-8 text-gray-600 dark:text-gray-300">
-              <Globe className="size-12 mx-auto mb-3 opacity-50 text-purple-400" />
+              <Link className="size-12 mx-auto mb-3 opacity-50 text-purple-400" />
               <p className="text-sm">No website references yet. Add links to websites for design inspiration!</p>
             </div>
           )}
@@ -419,7 +422,7 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
                   isDragging ? "bg-[#86efac]/20 dark:bg-[#2DCE73]/20" : "bg-gray-100 dark:bg-[#013B34]"
                 }`}
               >
-                <Upload className={`size-6 ${isDragging ? "text-purple-600" : "text-purple-600"}`} />
+                <Plus className={`size-6 ${isDragging ? "text-purple-600" : "text-purple-600"}`} />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">
@@ -515,7 +518,7 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
 
           <div className="pt-4 border-t border-gray-200 dark:border-[#2DCE73]/30 space-y-3">
             <Label className="text-sm text-gray-900 dark:text-white font-medium flex items-center gap-2">
-              <Upload className="size-4 text-purple-600" />
+              <Plus className="size-4 text-purple-600" />
               Or add by URL
             </Label>
             <div className="space-y-3">
@@ -570,10 +573,10 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
       </Card>
 
       <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
-        <DialogContent className="max-w-5xl w-full p-2">
-          <DialogHeader>
-            <DialogTitle>{zoomedImage?.title}</DialogTitle>
-          </DialogHeader>
+        <DialogContentComponent className="max-w-5xl w-full p-2">
+          <DialogHeaderComponent>
+            <DialogTitleComponent>{zoomedImage?.title}</DialogTitleComponent>
+          </DialogHeaderComponent>
           <div className="relative w-full max-h-[80vh] flex items-center justify-center bg-gray-100 dark:bg-[#013B34] rounded-lg overflow-hidden">
             <img
               src={zoomedImage?.url || "/placeholder.svg"}
@@ -589,7 +592,7 @@ export function MoodBoard({ projectId }: MoodBoardProps) {
               <p className="text-sm text-gray-700 dark:text-gray-300">{zoomedImage.notes}</p>
             </div>
           )}
-        </DialogContent>
+        </DialogContentComponent>
       </Dialog>
     </div>
   )

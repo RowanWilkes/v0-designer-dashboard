@@ -5,37 +5,41 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Server, Link2, Shield, Database, Globe, Zap } from "lucide-react"
+import { Server, Link2, Globe, Zap, FileText } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 type TechnicalSpecsProps = {
   projectId: string
 }
 
 export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
-  const [technicalData, setTechnicalData] = useState({
+  const defaultData = {
     currentHosting: "",
     hostingNotes: "",
     proposedHosting: "",
     cms: "",
+    contentUpdateFrequency: "",
+    contentManagers: "",
+    editableContent: "",
     thirdPartyIntegrations: "",
-    apiIntegrations: "",
-    securityRequirements: "",
     technicalRequirements: "",
-    database: "",
     performanceRequirements: "",
     browserSupport: "",
     seoRequirements: "",
-  })
+  }
+
+  const [technicalData, setTechnicalData] = useState(defaultData)
 
   const [isComplete, setIsComplete] = useState(false)
 
   useEffect(() => {
     const storageKey = `project-${projectId}-technical`
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     if (savedData) {
-      setTechnicalData(JSON.parse(savedData))
+      const parsedData = JSON.parse(savedData)
+      setTechnicalData({ ...defaultData, ...parsedData })
     }
   }, [projectId])
 
@@ -45,7 +49,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
 
   useEffect(() => {
     const storageKey = `project-${projectId}-technical`
-    localStorage.setItem(storageKey, JSON.stringify(technicalData))
+    setUserItem(storageKey, JSON.stringify(technicalData))
   }, [technicalData, projectId])
 
   const toggleCompletion = (checked: boolean) => {
@@ -127,14 +131,14 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
           </CardContent>
         </Card>
 
-        {/* Platform & CMS */}
+        {/* Content Management */}
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Database className="size-5 text-blue-600" />
-              Platform & Database
+              <FileText className="size-5 text-blue-600" />
+              Content Management
             </CardTitle>
-            <CardDescription>Content management and data storage</CardDescription>
+            <CardDescription>CMS and content editing requirements</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -150,15 +154,40 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="database" className="font-medium text-gray-900">
-                Database
+              <Label htmlFor="contentManagers" className="font-medium text-gray-900">
+                Who Will Update Content?
               </Label>
               <Input
-                id="database"
-                value={technicalData.database}
-                onChange={(e) => setTechnicalData({ ...technicalData, database: e.target.value })}
-                placeholder="e.g., PostgreSQL, MySQL, MongoDB, Firebase"
+                id="contentManagers"
+                value={technicalData.contentManagers}
+                onChange={(e) => setTechnicalData({ ...technicalData, contentManagers: e.target.value })}
+                placeholder="e.g., Client, Agency, Marketing Team, Both"
                 className="bg-white border-gray-300 text-gray-900"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="contentUpdateFrequency" className="font-medium text-gray-900">
+                Update Frequency
+              </Label>
+              <Input
+                id="contentUpdateFrequency"
+                value={technicalData.contentUpdateFrequency}
+                onChange={(e) => setTechnicalData({ ...technicalData, contentUpdateFrequency: e.target.value })}
+                placeholder="e.g., Daily, Weekly, Monthly, Rarely"
+                className="bg-white border-gray-300 text-gray-900"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="editableContent" className="font-medium text-gray-900">
+                Editable Content Types
+              </Label>
+              <Textarea
+                id="editableContent"
+                value={technicalData.editableContent}
+                onChange={(e) => setTechnicalData({ ...technicalData, editableContent: e.target.value })}
+                placeholder="List what needs to be editable (e.g., blog posts, product pages, team members, testimonials, FAQs, pricing, images, videos...)"
+                rows={3}
+                className="bg-white border-gray-300 text-gray-900 resize-none"
               />
             </div>
           </CardContent>
@@ -171,68 +200,27 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
               <Link2 className="size-5 text-blue-600" />
-              Integrations & APIs
+              Third-Party Integrations
             </CardTitle>
-            <CardDescription>Third-party services and connections</CardDescription>
+            <CardDescription>External services and connections</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
               <Label htmlFor="thirdPartyIntegrations" className="font-medium text-gray-900">
-                Third-Party Integrations
+                Integrations & Services
               </Label>
               <Textarea
                 id="thirdPartyIntegrations"
                 value={technicalData.thirdPartyIntegrations}
                 onChange={(e) => setTechnicalData({ ...technicalData, thirdPartyIntegrations: e.target.value })}
-                placeholder="List all third-party services (e.g., Google Analytics, Mailchimp, Stripe, Zapier, HubSpot...)"
-                rows={4}
-                className="bg-white border-gray-300 text-gray-900 resize-none"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="apiIntegrations" className="font-medium text-gray-900">
-                API Integrations
-              </Label>
-              <Textarea
-                id="apiIntegrations"
-                value={technicalData.apiIntegrations}
-                onChange={(e) => setTechnicalData({ ...technicalData, apiIntegrations: e.target.value })}
-                placeholder="Custom APIs, webhooks, data sources..."
-                rows={4}
+                placeholder="List all third-party services (e.g., Google Analytics, Mailchimp, Stripe, Zapier, HubSpot, payment processors, social media APIs, marketing tools...)"
+                rows={8}
                 className="bg-white border-gray-300 text-gray-900 resize-none"
               />
             </div>
           </CardContent>
         </Card>
 
-        {/* Security */}
-        <Card className="border-gray-200 bg-white shadow-sm">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Shield className="size-5 text-blue-600" />
-              Security & Compliance
-            </CardTitle>
-            <CardDescription>Security requirements and compliance needs</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label htmlFor="securityRequirements" className="font-medium text-gray-900">
-                Security Requirements
-              </Label>
-              <Textarea
-                id="securityRequirements"
-                value={technicalData.securityRequirements}
-                onChange={(e) => setTechnicalData({ ...technicalData, securityRequirements: e.target.value })}
-                placeholder="SSL certificate, GDPR compliance, user authentication, data encryption, backup strategy..."
-                rows={9}
-                className="bg-white border-gray-300 text-gray-900 resize-none"
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
         {/* Performance & Browser Support */}
         <Card className="border-gray-200 bg-white shadow-sm">
           <CardHeader>
@@ -303,7 +291,7 @@ export function TechnicalSpecs({ projectId }: TechnicalSpecsProps) {
                 id="technicalRequirements"
                 value={technicalData.technicalRequirements}
                 onChange={(e) => setTechnicalData({ ...technicalData, technicalRequirements: e.target.value })}
-                placeholder="Accessibility standards, multilingual support, email setup, analytics tracking, cookie consent..."
+                placeholder="Accessibility standards, multilingual support, email setup, analytics tracking, cookie consent, security requirements..."
                 rows={3}
                 className="bg-white border-gray-300 text-gray-900 resize-none"
               />
