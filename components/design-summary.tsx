@@ -18,7 +18,6 @@ import {
   ImageIcon,
   Code,
   CheckCircle2,
-  Users,
   Briefcase,
   Clock,
   DollarSign,
@@ -27,11 +26,8 @@ import {
   Package,
   TrendingUp,
   Server,
-  Database,
   Link2,
-  Shield,
   Zap,
-  Globe,
   MessageCircle,
   Layers,
   Sparkles,
@@ -39,6 +35,7 @@ import {
   Search,
 } from "lucide-react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { getUserItem } from "@/lib/storage-utils"
 
 interface DesignSummaryProps {
   projectId: string
@@ -68,13 +65,13 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
 
   const loadData = () => {
     try {
-      const overview = JSON.parse(localStorage.getItem(`project-${projectId}-overview`) || "{}")
-      const moodBoardRaw = JSON.parse(localStorage.getItem(`project-${projectId}-moodboard`) || "{}")
-      const styleGuideRaw = JSON.parse(localStorage.getItem(`styleguide_${projectId}`) || "{}")
-      const sitemap = JSON.parse(localStorage.getItem(`project-${projectId}-sitemap`) || "[]")
-      const technical = JSON.parse(localStorage.getItem(`project-${projectId}-technical`) || "{}")
-      const content = JSON.parse(localStorage.getItem(`project-${projectId}-content`) || "{}")
-      const assetsRaw = JSON.parse(localStorage.getItem(`project-${projectId}-assets`) || "{}")
+      const overview = JSON.parse(getUserItem(`project-${projectId}-overview`) || "{}")
+      const moodBoardRaw = JSON.parse(getUserItem(`project-${projectId}-moodboard`) || "{}")
+      const styleGuideRaw = JSON.parse(getUserItem(`styleguide_${projectId}`) || "{}")
+      const sitemap = JSON.parse(getUserItem(`project-${projectId}-sitemap`) || "[]")
+      const technical = JSON.parse(getUserItem(`project-${projectId}-technical`) || "{}")
+      const content = JSON.parse(getUserItem(`project-${projectId}-content`) || "{}")
+      const assetsRaw = JSON.parse(getUserItem(`project-${projectId}-assets`) || "{}")
 
       const moodBoard = {
         inspirationImages: moodBoardRaw.inspirationImages || [],
@@ -127,6 +124,25 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
     if (Array.isArray(value)) return value.length > 0
     if (typeof value === "object") return Object.keys(value).length > 0
     return false
+  }
+
+  const hasStyleGuideBeenEdited = (styleGuide: any) => {
+    // Check if any colors have been set (non-empty values)
+    const hasColors =
+      styleGuide?.colors && Object.values(styleGuide.colors).some((color: any) => color && color.trim() !== "")
+    const hasCustomColors = styleGuide?.customColors && styleGuide.customColors.length > 0
+
+    // Check if typography has been modified from defaults
+    const hasModifiedTypography =
+      styleGuide?.typography &&
+      styleGuide.typography.some((typo: any) => {
+        // Check if any field is different from defaults (e.g., not Inter font or default values)
+        return typo.fontFamily !== "Inter" || typo.color !== "#000000" || typo.description !== typo.label // Any custom description
+      })
+
+    const hasButtonStyles = styleGuide?.buttonStyles && Object.keys(styleGuide.buttonStyles).length > 0
+
+    return hasColors || hasCustomColors || hasModifiedTypography || hasButtonStyles
   }
 
   const isDefaultSitemap = (pages: any[]): boolean => {
@@ -233,10 +249,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
     {
       name: "Style Guide",
       icon: Palette,
-      hasData:
-        hasContent(summaryData.styleGuide?.colors) ||
-        hasContent(summaryData.styleGuide?.typography) ||
-        hasContent(summaryData.styleGuide?.buttonStyles), // Changed from 'buttons' to 'buttonStyles'
+      hasData: hasStyleGuideBeenEdited(summaryData.styleGuide), // Use new function instead of hasContent checks
       color: "pink",
     },
     {
@@ -481,6 +494,32 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                           </div>
                         )}
 
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {hasContent(summaryData.overview.projectType) && (
+                            <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200 shadow-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Package className="size-4 text-emerald-600" />
+                                <h3 className="font-semibold text-emerald-900 text-sm uppercase tracking-wide">
+                                  Project Type
+                                </h3>
+                              </div>
+                              <p className="text-gray-700 font-medium">{summaryData.overview.projectType}</p>
+                            </div>
+                          )}
+
+                          {hasContent(summaryData.overview.primaryAction) && (
+                            <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200 shadow-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Target className="size-4 text-emerald-600" />
+                                <h3 className="font-semibold text-emerald-900 text-sm uppercase tracking-wide">
+                                  Primary Action
+                                </h3>
+                              </div>
+                              <p className="text-gray-700 font-medium">{summaryData.overview.primaryAction}</p>
+                            </div>
+                          )}
+                        </div>
+
                         {/* Goals & Audience Section - Color Coded Boxes */}
                         <div className="grid md:grid-cols-2 gap-4">
                           {hasContent(summaryData.overview.goal) && (
@@ -497,49 +536,68 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             </div>
                           )}
 
-                          {hasContent(summaryData.overview.audience) && (
+                          {hasContent(summaryData.overview.websiteFeatures) && (
                             <div className="bg-emerald-50 rounded-lg p-5 border border-emerald-200">
                               <div className="flex items-center gap-2 mb-3">
-                                <Users className="size-5 text-emerald-600" />
+                                <Package className="size-5 text-emerald-600" />
                                 <h3 className="font-bold text-emerald-900 text-sm uppercase tracking-wide">
-                                  Target Audience
+                                  Website Features Required
+                                </h3>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {summaryData.overview.websiteFeatures.map((feature: string, index: number) => (
+                                  <span
+                                    key={index}
+                                    className="px-3 py-1 bg-emerald-600 text-white text-sm rounded-full"
+                                  >
+                                    {feature}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Deliverables & Success Metrics - Highlighted Sections */}
+                          {hasContent(summaryData.overview.deliverables) && (
+                            <div className="bg-emerald-50 rounded-lg p-5 border border-emerald-200">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Package className="size-5 text-emerald-600" />
+                                <h3 className="font-bold text-emerald-900 text-sm uppercase tracking-wide">
+                                  Deliverables
                                 </h3>
                               </div>
                               <p className="text-emerald-800 leading-relaxed whitespace-pre-wrap">
-                                {summaryData.overview.audience}
+                                {summaryData.overview.deliverables}
                               </p>
                             </div>
                           )}
+
+                          {(hasContent(summaryData.overview.successMetrics) ||
+                            hasContent(summaryData.overview.kpis)) && (
+                            <div className="bg-emerald-50 rounded-lg p-5 border border-emerald-200">
+                              <div className="flex items-center gap-2 mb-3">
+                                <TrendingUp className="size-5 text-emerald-600" />
+                                <h3 className="font-bold text-emerald-900 text-sm uppercase tracking-wide">
+                                  Success Metrics
+                                </h3>
+                              </div>
+                              <div className="space-y-3 text-emerald-800">
+                                {hasContent(summaryData.overview.successMetrics) && (
+                                  <div>
+                                    <span className="font-semibold">Success Criteria: </span>
+                                    <span className="whitespace-pre-wrap">{summaryData.overview.successMetrics}</span>
+                                  </div>
+                                )}
+                                {hasContent(summaryData.overview.kpis) && (
+                                  <div>
+                                    <span className="font-semibold">KPIs: </span>
+                                    <span className="whitespace-pre-wrap">{summaryData.overview.kpis}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
                         </div>
-
-                        {/* Deliverables & Success Metrics - Highlighted Sections */}
-                        {hasContent(summaryData.overview.deliverables) && (
-                          <div className="bg-emerald-50 rounded-lg p-5 border border-emerald-200">
-                            <div className="flex items-center gap-2 mb-3">
-                              <Package className="size-5 text-emerald-600" />
-                              <h3 className="font-bold text-emerald-900 text-sm uppercase tracking-wide">
-                                Deliverables
-                              </h3>
-                            </div>
-                            <p className="text-emerald-800 leading-relaxed whitespace-pre-wrap">
-                              {summaryData.overview.deliverables}
-                            </p>
-                          </div>
-                        )}
-
-                        {hasContent(summaryData.overview.successMetrics) && (
-                          <div className="bg-emerald-50 rounded-lg p-5 border border-emerald-200">
-                            <div className="flex items-center gap-2 mb-3">
-                              <TrendingUp className="size-5 text-emerald-600" />
-                              <h3 className="font-bold text-emerald-900 text-sm uppercase tracking-wide">
-                                Success Metrics
-                              </h3>
-                            </div>
-                            <p className="text-emerald-800 leading-relaxed whitespace-pre-wrap">
-                              {summaryData.overview.successMetrics}
-                            </p>
-                          </div>
-                        )}
                       </>
                     )}
                   </CardContent>
@@ -1031,7 +1089,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                       </p>
                     ) : (
                       <div className="space-y-6">
-                        {/* Top Row: Hosting & Platform/Database side by side */}
+                        {/* Top Row: Hosting & Content Management side by side */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                           {/* Hosting Information */}
                           {(summaryData.technical?.currentHosting ||
@@ -1040,7 +1098,7 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
                               <div className="flex items-center gap-2 mb-3">
                                 <Server className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Hosting</h4>
+                                <h4 className="font-bold text-blue-900 text-sm uppercase tracking-wide">Hosting</h4>
                               </div>
                               <div className="space-y-2">
                                 {summaryData.technical.currentHosting && (
@@ -1071,12 +1129,17 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                             </div>
                           )}
 
-                          {/* Platform & Database */}
-                          {(summaryData.technical?.cms || summaryData.technical?.database) && (
+                          {/* Content Management */}
+                          {(summaryData.technical?.cms ||
+                            summaryData.technical?.contentManagers ||
+                            summaryData.technical?.contentUpdateFrequency ||
+                            summaryData.technical?.editableContent) && (
                             <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
                               <div className="flex items-center gap-2 mb-3">
-                                <Database className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Platform & Database</h4>
+                                <FileText className="size-5 text-blue-600" />
+                                <h4 className="font-bold text-blue-900 text-sm uppercase tracking-wide">
+                                  Content Management
+                                </h4>
                               </div>
                               <div className="space-y-2">
                                 {summaryData.technical.cms && (
@@ -1085,10 +1148,28 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                                     <span className="text-sm text-gray-900">{summaryData.technical.cms}</span>
                                   </div>
                                 )}
-                                {summaryData.technical.database && (
+                                {summaryData.technical.contentManagers && (
                                   <div>
-                                    <span className="text-xs font-medium text-blue-700">Database: </span>
-                                    <span className="text-sm text-gray-900">{summaryData.technical.database}</span>
+                                    <span className="text-xs font-medium text-blue-700">Managed By: </span>
+                                    <span className="text-sm text-gray-900">
+                                      {summaryData.technical.contentManagers}
+                                    </span>
+                                  </div>
+                                )}
+                                {summaryData.technical.contentUpdateFrequency && (
+                                  <div>
+                                    <span className="text-xs font-medium text-blue-700">Update Frequency: </span>
+                                    <span className="text-sm text-gray-900">
+                                      {summaryData.technical.contentUpdateFrequency}
+                                    </span>
+                                  </div>
+                                )}
+                                {summaryData.technical.editableContent && (
+                                  <div>
+                                    <span className="text-xs font-medium text-blue-700">Editable Content: </span>
+                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
+                                      {summaryData.technical.editableContent}
+                                    </span>
                                   </div>
                                 )}
                               </div>
@@ -1096,111 +1177,49 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
                           )}
                         </div>
 
-                        {/* Second Row: Integrations & Security side by side */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                          {/* Integrations & APIs */}
-                          {(summaryData.technical?.thirdPartyIntegrations ||
-                            summaryData.technical?.apiIntegrations) && (
-                            <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Link2 className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Integrations & APIs</h4>
-                              </div>
-                              <div className="space-y-2">
-                                {summaryData.technical.thirdPartyIntegrations && (
-                                  <div>
-                                    <span className="text-xs font-medium text-blue-700">Third-Party: </span>
-                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
-                                      {summaryData.technical.thirdPartyIntegrations}
-                                    </span>
-                                  </div>
-                                )}
-                                {summaryData.technical.apiIntegrations && (
-                                  <div>
-                                    <span className="text-xs font-medium text-blue-700">APIs: </span>
-                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
-                                      {summaryData.technical.apiIntegrations}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Security & Compliance */}
-                          {summaryData.technical?.securityRequirements && (
-                            <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Shield className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Security & Compliance</h4>
-                              </div>
-                              <div>
-                                <p className="text-sm text-gray-900 whitespace-pre-wrap">
-                                  {summaryData.technical.securityRequirements}
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Third Row: Performance & SEO side by side */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                          {/* Performance & Browser Support */}
-                          {(summaryData.technical?.performanceRequirements ||
-                            summaryData.technical?.browserSupport) && (
-                            <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Zap className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">Performance & Compatibility</h4>
-                              </div>
-                              <div className="space-y-2">
-                                {summaryData.technical.performanceRequirements && (
-                                  <div>
-                                    <span className="text-xs font-medium text-blue-700">Performance: </span>
-                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
-                                      {summaryData.technical.performanceRequirements}
-                                    </span>
-                                  </div>
-                                )}
-                                {summaryData.technical.browserSupport && (
-                                  <div>
-                                    <span className="text-xs font-medium text-blue-700">Browser Support: </span>
-                                    <span className="text-sm text-gray-900 whitespace-pre-wrap">
-                                      {summaryData.technical.browserSupport}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* SEO Requirements */}
-                          {summaryData.technical?.seoRequirements && (
-                            <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Globe className="size-5 text-blue-600" />
-                                <h4 className="font-semibold text-blue-900">SEO Requirements</h4>
-                              </div>
-                              <div>
-                                <p className="text-sm text-gray-900 whitespace-pre-wrap">
-                                  {summaryData.technical.seoRequirements}
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Full Width: Additional Technical Requirements */}
-                        {summaryData.technical?.technicalRequirements && (
+                        {/* Third-Party Integrations (full width if alone) */}
+                        {summaryData.technical?.thirdPartyIntegrations && (
                           <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
                             <div className="flex items-center gap-2 mb-3">
-                              <FileText className="size-5 text-blue-600" />
-                              <h4 className="font-semibold text-blue-900">Additional Requirements</h4>
+                              <Link2 className="size-5 text-blue-600" />
+                              <h4 className="font-bold text-blue-900 text-sm uppercase tracking-wide">
+                                Third-Party Integrations
+                              </h4>
                             </div>
                             <div>
                               <p className="text-sm text-gray-900 whitespace-pre-wrap">
-                                {summaryData.technical.technicalRequirements}
+                                {summaryData.technical.thirdPartyIntegrations}
                               </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Performance & Browser Support (full width) */}
+                        {(summaryData.technical?.performanceRequirements || summaryData.technical?.browserSupport) && (
+                          <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Zap className="size-5 text-blue-600" />
+                              <h4 className="font-bold text-blue-900 text-sm uppercase tracking-wide">
+                                Performance & Compatibility
+                              </h4>
+                            </div>
+                            <div className="space-y-2">
+                              {summaryData.technical.performanceRequirements && (
+                                <div>
+                                  <span className="text-xs font-medium text-blue-700">Performance: </span>
+                                  <span className="text-sm text-gray-900 whitespace-pre-wrap">
+                                    {summaryData.technical.performanceRequirements}
+                                  </span>
+                                </div>
+                              )}
+                              {summaryData.technical.browserSupport && (
+                                <div>
+                                  <span className="text-xs font-medium text-blue-700">Browser Support: </span>
+                                  <span className="text-sm text-gray-900 whitespace-pre-wrap">
+                                    {summaryData.technical.browserSupport}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           </div>
                         )}
@@ -1268,8 +1287,8 @@ export function DesignSummary({ projectId }: DesignSummaryProps) {
 
                             <div className="grid md:grid-cols-2 gap-4">
                               {Object.entries(summaryData.content.brandMessaging).map(([key, value]: [string, any]) => {
-                                // Skip mission statement as it's already displayed full width above
-                                if (key === "missionStatement" || !hasContent(value)) return null
+                                if (key === "missionStatement" || key === "keyMessages" || !hasContent(value))
+                                  return null
                                 return (
                                   <div key={key} className="bg-rose-50 p-3 rounded-lg border border-rose-200">
                                     <p className="text-xs font-semibold text-rose-700 uppercase mb-1.5">
