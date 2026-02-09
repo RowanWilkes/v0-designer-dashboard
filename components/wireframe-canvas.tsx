@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Plus, Home, Trash2, ChevronRight, ChevronDown, FileText, Edit2, Check, X } from "lucide-react"
+import { Plus, Home, Trash2, ChevronRight, ChevronDown, FileText, Edit2, Check, X, Puzzle, PenLine } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Dialog,
   DialogContent,
@@ -111,6 +113,16 @@ const BLOCK_LIBRARY = [
   },
 ]
 
+const CUSTOM_CATEGORIES = ["Content", "Feature", "Conversion", "Custom"]
+
+type CustomBlock = {
+  id: string
+  category: string
+  label: string
+  description: string
+  isCustom: true
+}
+
 type SitemapPage = {
   id: string
   name: string
@@ -120,6 +132,7 @@ type SitemapPage = {
     blockId: string
     label: string
     description: string
+    isCustom?: boolean
   }[]
   children: SitemapPage[]
   expanded?: boolean
@@ -140,6 +153,27 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
   const [isCompleted, setIsCompleted] = useState(false)
   const [draggedPageId, setDraggedPageId] = useState<string | null>(null)
   const [dragOverPageId, setDragOverPageId] = useState<string | null>(null)
+
+  // Custom section state
+  const [customBlocks, setCustomBlocks] = useState<CustomBlock[]>([])
+  const [showCustomForm, setShowCustomForm] = useState(false)
+  const [customName, setCustomName] = useState("")
+  const [customDescription, setCustomDescription] = useState("")
+  const [customCategory, setCustomCategory] = useState("Custom")
+  const [editingCustomId, setEditingCustomId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const customKey = `project-${projectId}-custom-blocks`
+    const savedCustom = getUserItem(customKey)
+    if (savedCustom) {
+      setCustomBlocks(JSON.parse(savedCustom))
+    }
+  }, [projectId])
+
+  useEffect(() => {
+    const customKey = `project-${projectId}-custom-blocks`
+    setUserItem(customKey, JSON.stringify(customBlocks))
+  }, [customBlocks, projectId])
 
   useEffect(() => {
     const storageKey = `project-${projectId}-sitemap`
@@ -169,10 +203,11 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
     setUserItem(storageKey, JSON.stringify(pages))
   }, [pages, projectId])
 
-  const categories = ["All", ...Array.from(new Set(BLOCK_LIBRARY.map((b) => b.category)))]
+  const allBlocks = [...BLOCK_LIBRARY, ...customBlocks]
+  const categories = ["All", ...Array.from(new Set(allBlocks.map((b) => b.category)))]
 
   const filteredBlocks =
-    selectedCategory === "All" ? BLOCK_LIBRARY : BLOCK_LIBRARY.filter((b) => b.category === selectedCategory)
+    selectedCategory === "All" ? allBlocks : allBlocks.filter((b) => b.category === selectedCategory)
 
   const addPage = (parentId?: string) => {
     if (!newPageName.trim()) return
@@ -223,12 +258,14 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
     setPages(toggleExpanded(pages))
   }
 
-  const addBlockToPage = (pageId: string, block: (typeof BLOCK_LIBRARY)[0]) => {
+  const addBlockToPage = (pageId: string, block: (typeof BLOCK_LIBRARY)[0] | CustomBlock) => {
+    const isCustom = "isCustom" in block && block.isCustom
     const newBlock: SitemapPage["blocks"][0] = {
       id: Date.now().toString(),
       blockId: block.id,
       label: block.label,
       description: block.description,
+      isCustom: isCustom || undefined,
     }
 
     const addBlock = (pageList: SitemapPage[]): SitemapPage[] => {
@@ -331,6 +368,54 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
     }
 
     setPages(reorderInList(pages))
+  }
+
+  const saveCustomBlock = () => {
+    if (!customName.trim()) return
+
+    if (editingCustomId) {
+      setCustomBlocks(
+        customBlocks.map((b) =>
+          b.id === editingCustomId
+            ? { ...b, label: customName.trim(), description: customDescription.trim(), category: customCategory }
+            : b,
+        ),
+      )
+      setEditingCustomId(null)
+    } else {
+      const newBlock: CustomBlock = {
+        id: `custom-${Date.now()}`,
+        category: customCategory,
+        label: customName.trim(),
+        description: customDescription.trim(),
+        isCustom: true,
+      }
+      setCustomBlocks([...customBlocks, newBlock])
+    }
+
+    setCustomName("")
+    setCustomDescription("")
+    setCustomCategory("Custom")
+    setShowCustomForm(false)
+  }
+
+  const startEditCustomBlock = (block: CustomBlock) => {
+    setEditingCustomId(block.id)
+    setCustomName(block.label)
+    setCustomDescription(block.description)
+    setCustomCategory(block.category)
+    setShowCustomForm(true)
+  }
+
+  const deleteCustomBlock = (blockId: string) => {
+    setCustomBlocks(customBlocks.filter((b) => b.id !== blockId))
+    if (editingCustomId === blockId) {
+      setEditingCustomId(null)
+      setCustomName("")
+      setCustomDescription("")
+      setCustomCategory("Custom")
+      setShowCustomForm(false)
+    }
   }
 
   const renderPageTree = (pageList: SitemapPage[], depth = 0) => {
@@ -573,7 +658,15 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-sm text-gray-900 dark:text-white mb-0.5">{block.label}</p>
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <p className="font-semibold text-sm text-gray-900 dark:text-white">{block.label}</p>
+                            {block.isCustom && (
+                              <span className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+                                <Puzzle className="size-2.5" />
+                                Custom
+                              </span>
+                            )}
+                          </div>
                           <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{block.description}</p>
                         </div>
                         <Button
@@ -623,19 +716,143 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
 
             {/* Block List */}
             <div className="space-y-2 max-h-[600px] overflow-y-auto">
-              {filteredBlocks.map((block) => (
+              {filteredBlocks.map((block) => {
+                const isCustom = "isCustom" in block && block.isCustom
+                return (
+                  <div key={block.id} className="relative group/block">
+                    <button
+                      onClick={() => selectedPage && addBlockToPage(selectedPage, block)}
+                      disabled={!selectedPage}
+                      className="w-full text-left p-2.5 rounded-lg border border-gray-200 dark:border-[#2DCE73]/50 bg-white dark:bg-[#013B34] hover:bg-gray-50 dark:hover:bg-[#024039] hover:shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+                    >
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <p className="font-medium text-xs text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                          {block.label}
+                        </p>
+                        {isCustom && (
+                          <span className="inline-flex items-center gap-0.5 text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+                            <Puzzle className="size-2.5" />
+                            Custom
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{block.description}</p>
+                    </button>
+                    {isCustom && (
+                      <div className="absolute top-1.5 right-1.5 flex items-center gap-0.5 opacity-0 group-hover/block:opacity-100 transition-opacity">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            startEditCustomBlock(block as CustomBlock)
+                          }}
+                          className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                          title="Edit custom section"
+                        >
+                          <PenLine className="size-3 text-gray-400 hover:text-blue-500" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            if (confirm(`Remove custom section "${block.label}"?`)) {
+                              deleteCustomBlock(block.id)
+                            }
+                          }}
+                          className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                          title="Remove custom section"
+                        >
+                          <Trash2 className="size-3 text-gray-400 hover:text-red-500" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Custom Section Divider & Button */}
+            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+              {!showCustomForm ? (
                 <button
-                  key={block.id}
-                  onClick={() => selectedPage && addBlockToPage(selectedPage, block)}
-                  disabled={!selectedPage}
-                  className="w-full text-left p-2.5 rounded-lg border border-gray-200 dark:border-[#2DCE73]/50 bg-white dark:bg-[#013B34] hover:bg-gray-50 dark:hover:bg-[#024039] hover:shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+                  onClick={() => {
+                    setEditingCustomId(null)
+                    setCustomName("")
+                    setCustomDescription("")
+                    setCustomCategory("Custom")
+                    setShowCustomForm(true)
+                  }}
+                  className="w-full flex items-center justify-center gap-2 p-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-500 text-gray-500 dark:text-gray-400 hover:border-emerald-400 hover:text-emerald-600 dark:hover:border-emerald-500 dark:hover:text-emerald-400 transition-colors"
                 >
-                  <p className="font-medium text-xs text-gray-900 dark:text-white mb-0.5 group-hover:text-primary transition-colors">
-                    {block.label}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{block.description}</p>
+                  <Plus className="size-4" />
+                  <span className="text-xs font-medium">Custom Section</span>
                 </button>
-              ))}
+              ) : (
+                <div className="space-y-3 p-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-[#013B34]">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      {editingCustomId ? "Edit Custom Section" : "New Custom Section"}
+                    </p>
+                    <button
+                      onClick={() => {
+                        setShowCustomForm(false)
+                        setEditingCustomId(null)
+                        setCustomName("")
+                        setCustomDescription("")
+                        setCustomCategory("Custom")
+                      }}
+                      className="p-0.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    >
+                      <X className="size-3.5 text-gray-400" />
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 -mt-1">
+                    Use this if your layout includes a unique or non-standard section.
+                  </p>
+                  <div>
+                    <Label className="text-xs dark:text-gray-300">
+                      Section Name <span className="text-red-400">*</span>
+                    </Label>
+                    <Input
+                      placeholder="e.g., Team Gallery, Map Embed"
+                      value={customName}
+                      onChange={(e) => setCustomName(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && saveCustomBlock()}
+                      className="h-8 text-xs dark:bg-[#024039] dark:border-[#2DCE73] dark:text-white mt-1"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-xs dark:text-gray-300">Description / Notes</Label>
+                    <Textarea
+                      placeholder="What is this section for?"
+                      value={customDescription}
+                      onChange={(e) => setCustomDescription(e.target.value)}
+                      className="text-xs min-h-[56px] dark:bg-[#024039] dark:border-[#2DCE73] dark:text-white mt-1 resize-none"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-xs dark:text-gray-300">Category</Label>
+                    <Select value={customCategory} onValueChange={setCustomCategory}>
+                      <SelectTrigger className="h-8 text-xs dark:bg-[#024039] dark:border-[#2DCE73] dark:text-white mt-1">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CUSTOM_CATEGORIES.map((cat) => (
+                          <SelectItem key={cat} value={cat} className="text-xs">
+                            {cat}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button
+                    onClick={saveCustomBlock}
+                    disabled={!customName.trim()}
+                    size="sm"
+                    className="w-full text-xs h-8"
+                  >
+                    {editingCustomId ? "Save Changes" : "Add Section"}
+                  </Button>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
