@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { setSectionCompletion, checkSectionCompletion } from "@/lib/completion-tracker"
+import { getUserItem, setUserItem } from "@/lib/storage-utils"
 
 const BLOCK_LIBRARY = [
   {
@@ -137,10 +138,12 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
   const [editingPageId, setEditingPageId] = useState<string | null>(null)
   const [editingPageName, setEditingPageName] = useState("")
   const [isCompleted, setIsCompleted] = useState(false)
+  const [draggedPageId, setDraggedPageId] = useState<string | null>(null)
+  const [dragOverPageId, setDragOverPageId] = useState<string | null>(null)
 
   useEffect(() => {
     const storageKey = `project-${projectId}-sitemap`
-    const savedData = localStorage.getItem(storageKey)
+    const savedData = getUserItem(storageKey)
     if (savedData) {
       setPages(JSON.parse(savedData))
     } else {
@@ -163,7 +166,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
 
   useEffect(() => {
     const storageKey = `project-${projectId}-sitemap`
-    localStorage.setItem(storageKey, JSON.stringify(pages))
+    setUserItem(storageKey, JSON.stringify(pages))
   }, [pages, projectId])
 
   const categories = ["All", ...Array.from(new Set(BLOCK_LIBRARY.map((b) => b.category)))]
@@ -307,13 +310,68 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
     setEditingPageName("")
   }
 
+  const reorderPages = (draggedId: string, targetId: string) => {
+    if (draggedId === targetId || draggedId === "home") return
+
+    const reorderInList = (pageList: SitemapPage[]): SitemapPage[] => {
+      const draggedIndex = pageList.findIndex((p) => p.id === draggedId)
+      const targetIndex = pageList.findIndex((p) => p.id === targetId)
+
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        const newList = [...pageList]
+        const [removed] = newList.splice(draggedIndex, 1)
+        newList.splice(targetIndex, 0, removed)
+        return newList
+      }
+
+      return pageList.map((page) => ({
+        ...page,
+        children: reorderInList(page.children),
+      }))
+    }
+
+    setPages(reorderInList(pages))
+  }
+
   const renderPageTree = (pageList: SitemapPage[], depth = 0) => {
     return pageList.map((page) => (
       <div key={page.id} style={{ marginLeft: `${depth * 20}px` }}>
         <div
-          className={`flex items-center gap-2 p-3 rounded-lg hover:bg-accent/50 dark:hover:bg-[#013B34] cursor-pointer transition-colors group ${
-            selectedPage === page.id ? "bg-accent dark:bg-[#013B34]" : ""
-          }`}
+          className={`flex items-center gap-2 p-3 rounded-lg transition-colors group border-l-4 ${
+            selectedPage === page.id
+              ? "bg-emerald-100 dark:bg-emerald-950/30 border-l-emerald-600 dark:border-l-emerald-500"
+              : "bg-white dark:bg-gray-800 border-l-gray-300 dark:border-l-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700/50"
+          } ${dragOverPageId === page.id ? "ring-2 ring-emerald-400" : ""}`}
+          draggable={page.id !== "home"}
+          onDragStart={(e) => {
+            if (page.id !== "home") {
+              setDraggedPageId(page.id)
+              e.dataTransfer.effectAllowed = "move"
+            }
+          }}
+          onDragOver={(e) => {
+            e.preventDefault()
+            if (draggedPageId && draggedPageId !== page.id) {
+              e.dataTransfer.dropEffect = "move"
+              setDragOverPageId(page.id)
+            }
+          }}
+          onDragLeave={() => {
+            setDragOverPageId(null)
+          }}
+          onDrop={(e) => {
+            e.preventDefault()
+            if (draggedPageId && draggedPageId !== page.id) {
+              reorderPages(draggedPageId, page.id)
+            }
+            setDraggedPageId(null)
+            setDragOverPageId(null)
+          }}
+          onDragEnd={() => {
+            setDraggedPageId(null)
+            setDragOverPageId(null)
+          }}
+          onClick={() => setSelectedPage(page.id)}
         >
           {page.children.length > 0 && (
             <button
@@ -373,9 +431,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
             </div>
           ) : (
             <>
-              <span className="font-medium text-sm flex-1" onClick={() => setSelectedPage(page.id)}>
-                {page.name}
-              </span>
+              <span className="font-medium text-sm flex-1">{page.name}</span>
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Button
                   size="sm"
@@ -427,10 +483,9 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
         <p className="text-sm text-gray-600 mt-1 mb-3">Build your website structure by adding pages and blocks</p>
 
         <div
-          className={`p-3 border rounded-lg flex items-center gap-3 cursor-pointer transition-colors ${
+          className={`flex items-center gap-2 mt-4 p-3 rounded-lg border transition-all ${
             isCompleted ? "bg-emerald-50 border-emerald-200" : "bg-gray-50 border-gray-200"
           }`}
-          onClick={() => handleCompletionToggle(!isCompleted)}
         >
           <Checkbox
             id="sitemap-complete"
