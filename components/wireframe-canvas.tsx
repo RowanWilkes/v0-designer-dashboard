@@ -828,21 +828,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
                       className="text-xs min-h-[56px] dark:bg-[#024039] dark:border-[#2DCE73] dark:text-white mt-1 resize-none"
                     />
                   </div>
-                  <div>
-                    <Label className="text-xs dark:text-gray-300">Category</Label>
-                    <Select value={customCategory} onValueChange={setCustomCategory}>
-                      <SelectTrigger className="h-8 text-xs dark:bg-[#024039] dark:border-[#2DCE73] dark:text-white mt-1">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {CUSTOM_CATEGORIES.map((cat) => (
-                          <SelectItem key={cat} value={cat} className="text-xs">
-                            {cat}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+
                   <Button
                     onClick={saveCustomBlock}
                     disabled={!customName.trim()}
