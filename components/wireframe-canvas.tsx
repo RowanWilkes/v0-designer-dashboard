@@ -584,7 +584,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-[280px_1fr_320px] gap-6 h-[calc(100vh-220px)] max-h-[1100px]">
+      <div className="grid grid-cols-[280px_1fr_320px] gap-6 h-[calc(100vh-220px)]">
         {/* Pages Sidebar */}
         <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm flex flex-col overflow-hidden">
           <CardHeader>
@@ -770,7 +770,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
             </div>
 
             {/* Custom Section - pinned to bottom */}
-            <div className={`mt-3 pt-3 border-t border-gray-200 dark:border-gray-600 ${showCustomForm ? "min-h-0 overflow-y-auto shrink" : "shrink-0"}`}>
+            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600 shrink-0">
               {!showCustomForm ? (
                 <button
                   onClick={() => {
