@@ -584,7 +584,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-[280px_1fr_320px] gap-6 h-[calc(100vh-300px)] max-h-[850px]">
+      <div className="grid grid-cols-[280px_1fr_320px] gap-6 h-[calc(100vh-300px)] max-h-[1100px]">
         {/* Pages Sidebar */}
         <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm flex flex-col overflow-hidden">
           <CardHeader>
