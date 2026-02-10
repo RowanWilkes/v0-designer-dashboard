@@ -696,7 +696,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
             <CardTitle className="text-foreground dark:text-white text-base">Block Library</CardTitle>
             <CardDescription className="text-xs dark:text-gray-400">Click to add to page</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1 min-h-0 flex flex-col overflow-hidden">
+          <CardContent className="flex-1 min-h-0 flex flex-col">
             {/* Category Filter */}
             <div className="flex flex-wrap gap-1 mb-4">
               {categories.map((cat) => (
