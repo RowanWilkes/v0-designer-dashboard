@@ -770,7 +770,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
             </div>
 
             {/* Custom Section - pinned to bottom */}
-            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600 shrink-0">
+            <div className={`mt-3 pt-3 border-t border-gray-200 dark:border-gray-600 ${showCustomForm ? "min-h-0 overflow-y-auto shrink" : "shrink-0"}`}>
               {!showCustomForm ? (
                 <button
                   onClick={() => {
