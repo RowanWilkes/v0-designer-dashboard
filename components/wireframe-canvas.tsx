@@ -584,7 +584,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-[280px_1fr_320px] gap-6 h-[calc(100vh-220px)]">
+      <div className="grid grid-cols-[280px_1fr_320px] gap-6 h-[calc(100vh-160px)]">
         {/* Pages Sidebar */}
         <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm flex flex-col overflow-hidden">
           <CardHeader>
@@ -691,7 +691,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
         </Card>
 
         {/* Block Library */}
-        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm flex flex-col overflow-hidden">
+        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm flex flex-col">
           <CardHeader>
             <CardTitle className="text-foreground dark:text-white text-base">Block Library</CardTitle>
             <CardDescription className="text-xs dark:text-gray-400">Click to add to page</CardDescription>
