@@ -696,9 +696,9 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
             <CardTitle className="text-foreground dark:text-white text-base">Block Library</CardTitle>
             <CardDescription className="text-xs dark:text-gray-400">Click to add to page</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1 min-h-0 overflow-y-auto">
+          <CardContent className="flex-1 min-h-0 flex flex-col overflow-hidden">
             {/* Category Filter */}
-            <div className="flex flex-wrap gap-1 mb-4 sticky top-0 bg-card dark:bg-[#024039] z-10 pb-2">
+            <div className="flex flex-wrap gap-1 mb-4">
               {categories.map((cat) => (
                 <button
                   key={cat}
@@ -714,8 +714,8 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
               ))}
             </div>
 
-            {/* Block List */}
-            <div className="space-y-2">
+            {/* Block List - scrollable */}
+            <div className="space-y-2 overflow-y-auto flex-1 min-h-0">
               {filteredBlocks.map((block) => {
                 const isCustom = "isCustom" in block && block.isCustom
                 return (
@@ -769,8 +769,8 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
               })}
             </div>
 
-            {/* Custom Section Divider & Button */}
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+            {/* Custom Section - pinned to bottom */}
+            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600 shrink-0">
               {!showCustomForm ? (
                 <button
                   onClick={() => {
@@ -780,7 +780,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
                     setCustomCategory("Custom")
                     setShowCustomForm(true)
                   }}
-                  className="w-full flex items-center justify-center gap-2 p-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-500 text-gray-500 dark:text-gray-400 hover:border-emerald-400 hover:text-emerald-600 dark:hover:border-emerald-500 dark:hover:text-emerald-400 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 p-2.5 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-500 text-gray-500 dark:text-gray-400 hover:border-emerald-400 hover:text-emerald-600 dark:hover:border-emerald-500 dark:hover:text-emerald-400 transition-colors"
                 >
                   <Plus className="size-4" />
                   <span className="text-xs font-medium">Custom Section</span>
