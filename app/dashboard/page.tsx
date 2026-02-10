@@ -699,35 +699,35 @@ function DashboardContent() {
                   {/* Stats Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <Card>
-                      <CardContent className="p-6">
+                      <CardContent className="p-3">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Total Projects</p>
                             <p className="text-2xl font-bold text-gray-900">{projects.length}</p>
                           </div>
-                          <div className="h-12 w-12 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <Folder className="h-6 w-6 text-emerald-600" />
+                          <div className="h-10 w-10 rounded-lg bg-emerald-100 flex items-center justify-center">
+                            <Folder className="h-5 w-5 text-emerald-600" />
                           </div>
                         </div>
                       </CardContent>
                     </Card>
 
                     <Card>
-                      <CardContent className="p-6">
+                      <CardContent className="p-3">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Active Tasks</p>
                             <p className="text-2xl font-bold text-gray-900">{activeTasks}</p>
                           </div>
-                          <div className="h-12 w-12 rounded-lg bg-blue-100 flex items-center justify-center">
-                            <CheckSquare className="h-6 w-6 text-blue-600" />
+                          <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                            <CheckSquare className="h-5 w-5 text-blue-600" />
                           </div>
                         </div>
                       </CardContent>
                     </Card>
 
                     <Card>
-                      <CardContent className="p-6">
+                      <CardContent className="p-3">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Completion</p>
@@ -749,22 +749,22 @@ function DashboardContent() {
                               })()}
                             </p>
                           </div>
-                          <div className="h-12 w-12 rounded-lg bg-purple-100 flex items-center justify-center">
-                            <TrendingUp className="h-6 w-6 text-purple-600" />
+                          <div className="h-10 w-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                            <TrendingUp className="h-5 w-5 text-purple-600" />
                           </div>
                         </div>
                       </CardContent>
                     </Card>
 
                     <Card>
-                      <CardContent className="p-6">
+                      <CardContent className="p-3">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm text-gray-600">Plan Status</p>
                             <p className="text-2xl font-bold text-gray-900 capitalize">{user?.plan || "Free"}</p>
                           </div>
-                          <div className="h-12 w-12 rounded-lg bg-yellow-100 flex items-center justify-center">
-                            <Crown className="h-6 w-6 text-yellow-600" />
+                          <div className="h-10 w-10 rounded-lg bg-yellow-100 flex items-center justify-center">
+                            <Crown className="h-5 w-5 text-yellow-600" />
                           </div>
                         </div>
                       </CardContent>
