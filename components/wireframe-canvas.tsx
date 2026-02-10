@@ -584,14 +584,14 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-[280px_1fr_320px] gap-6">
+      <div className="grid grid-cols-[280px_1fr_320px] gap-6 max-h-[calc(100vh-260px)]">
         {/* Pages Sidebar */}
-        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm">
+        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm flex flex-col overflow-hidden">
           <CardHeader>
             <CardTitle className="text-foreground dark:text-white text-base">Pages</CardTitle>
             <CardDescription className="text-xs dark:text-gray-400">Your site structure</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-2 overflow-y-auto flex-1 min-h-0">
             {renderPageTree(pages)}
 
             <Dialog open={showAddPage} onOpenChange={setShowAddPage}>
@@ -633,7 +633,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
         </Card>
 
         {/* Page Canvas */}
-        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm">
+        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm flex flex-col overflow-hidden">
           <CardHeader>
             <CardTitle className="text-foreground dark:text-white">
               {selectedPageData ? selectedPageData.name : "Select a page"}
@@ -642,9 +642,9 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
               {selectedPageData ? `${selectedPageData.blocks.length} sections` : "Choose a page to view its structure"}
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-y-auto flex-1 min-h-0">
             {selectedPageData ? (
-              <div className="space-y-3 min-h-96">
+              <div className="space-y-3">
                 {selectedPageData.blocks.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-64 text-muted-foreground dark:text-gray-400 border-2 border-dashed dark:border-[#2DCE73] rounded-lg">
                     <FileText className="size-12 mb-3 opacity-50 text-orange-400" />
@@ -691,12 +691,12 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
         </Card>
 
         {/* Block Library */}
-        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm">
+        <Card className="border-border dark:border-[#2DCE73] bg-card dark:bg-[#024039] shadow-sm flex flex-col overflow-hidden">
           <CardHeader>
             <CardTitle className="text-foreground dark:text-white text-base">Block Library</CardTitle>
             <CardDescription className="text-xs dark:text-gray-400">Click to add to page</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 min-h-0 flex flex-col overflow-hidden">
             {/* Category Filter */}
             <div className="flex flex-wrap gap-1 mb-4">
               {categories.map((cat) => (
@@ -715,7 +715,7 @@ export function WireframeCanvas({ projectId }: WireframeCanvasProps) {
             </div>
 
             {/* Block List */}
-            <div className="space-y-2 max-h-[600px] overflow-y-auto">
+            <div className="space-y-2 overflow-y-auto flex-1 min-h-0">
               {filteredBlocks.map((block) => {
                 const isCustom = "isCustom" in block && block.isCustom
                 return (
