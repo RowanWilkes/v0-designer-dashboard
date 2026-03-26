@@ -1,19 +1,18 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Poppins, JetBrains_Mono } from "next/font/google"
+import { Plus_Jakarta_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const poppins = Poppins({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins",
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-plus-jakarta-sans",
 })
-const _jetbrainsMono = JetBrains_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Design Studio - Project Planning Dashboard",
-  description: "Turn your design ideas into structured projects with comprehensive planning tools",
+  title: "Troov Studio - Project Planning for Web Designers",
+  description: "Troov Studio gives you a structured workspace to plan, track and deliver client projects — without the chaos.",
   generator: "v0.app",
   icons: {
     icon: [
@@ -41,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans antialiased ${poppins.className}`}>
+      <body className={`font-sans antialiased ${plusJakartaSans.className}`}>
         {children}
         <Analytics />
       </body>
