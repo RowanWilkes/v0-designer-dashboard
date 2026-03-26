@@ -30,9 +30,12 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
 
-      {/* Hero Section - Enhanced with green glow */}
-      <section className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 bg-primary">
+      {/* Hero Section - Enhanced with green glow and gradient fade */}
+      <section className="relative pt-32 pb-48 lg:pt-40 lg:pb-56 bg-primary">
         <div className="absolute inset-0 bg-gradient-to-br from-[#003A33] to-[#002724] opacity-80" />
+        
+        {/* Bottom gradient fade to background */}
+        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-[#002724]/50 to-background" />
 
         {/* Green glow effects */}
         <div className="absolute top-1/2 right-1/3 w-72 h-72 bg-accent/10 rounded-full blur-3xl" />
@@ -87,7 +90,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Grid Section - Apollo spacing and styling */}
-      <section className="py-24 lg:py-32 pt-48 lg:pt-56 bg-background">
+      <section className="py-24 lg:py-32 pt-24 lg:pt-32 bg-background">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center space-y-4 mb-16">
