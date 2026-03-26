@@ -102,13 +102,13 @@ export function FeaturesShowcase() {
     <section className="py-24 lg:py-32 bg-background">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
-            <h2 className="text-4xl lg:text-5xl font-semibold text-foreground tracking-tight text-balance">
+          {/* Header - Two column layout like reference */}
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-16 mb-20">
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground tracking-tight leading-tight">
               Get to know<br />Troov Studio
             </h2>
-            <div className="space-y-4">
-              <p className="text-lg text-muted-foreground leading-relaxed">
+            <div className="lg:max-w-md space-y-4 lg:pt-2">
+              <p className="text-muted-foreground leading-relaxed">
                 Replace scattered tools with Troov Studio, the only design planning platform built to help designers and clients collaborate seamlessly.
               </p>
               <a 
@@ -123,12 +123,12 @@ export function FeaturesShowcase() {
 
           {/* Main Content */}
           <div 
-            className="grid lg:grid-cols-2 gap-8 lg:gap-12"
+            className="flex flex-col lg:flex-row gap-12 lg:gap-16"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
-            {/* Feature List */}
-            <div className="space-y-0">
+            {/* Feature List - Left side */}
+            <div className="lg:w-[380px] flex-shrink-0">
               {features.map((feature, index) => {
                 const Icon = feature.icon
                 const isActive = index === activeIndex
@@ -137,45 +137,45 @@ export function FeaturesShowcase() {
                   <div key={feature.id} className="relative">
                     <button
                       onClick={() => goToFeature(index)}
-                      className={`w-full text-left py-5 transition-all duration-300 ${
-                        isActive ? "opacity-100" : "opacity-60 hover:opacity-80"
-                      }`}
+                      className="w-full text-left py-4 transition-all duration-200"
                     >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4">
-                          <Icon className={`size-5 mt-0.5 transition-colors ${
-                            isActive ? "text-accent" : "text-muted-foreground"
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <Icon className={`size-5 transition-colors duration-200 ${
+                            isActive ? "text-accent" : "text-muted-foreground/50"
                           }`} />
-                          <div>
-                            <h3 className={`text-lg font-medium transition-colors ${
-                              isActive ? "text-foreground" : "text-muted-foreground"
-                            }`}>
-                              {feature.title}
-                            </h3>
-                            {isActive && (
-                              <p className="text-muted-foreground mt-3 leading-relaxed text-sm max-w-md animate-fade-in">
-                                {feature.description}
-                              </p>
-                            )}
-                          </div>
+                          <span className={`text-base font-medium transition-colors duration-200 ${
+                            isActive ? "text-foreground" : "text-muted-foreground/70"
+                          }`}>
+                            {feature.title}
+                          </span>
                         </div>
-                        <div className={`size-9 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
+                        <div className={`size-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
                           isActive 
-                            ? "border-accent/30 bg-accent/5" 
-                            : "border-border bg-transparent"
+                            ? "bg-muted/80" 
+                            : "bg-transparent"
                         }`}>
-                          <ArrowRight className={`size-4 transition-colors ${
-                            isActive ? "text-accent" : "text-muted-foreground"
+                          <ArrowRight className={`size-4 transition-colors duration-200 ${
+                            isActive ? "text-foreground" : "text-muted-foreground/40"
                           }`} />
                         </div>
                       </div>
+                      
+                      {/* Description - only show when active */}
+                      <div className={`overflow-hidden transition-all duration-300 ${
+                        isActive ? "max-h-40 opacity-100 mt-3" : "max-h-0 opacity-0"
+                      }`}>
+                        <p className="text-muted-foreground text-sm leading-relaxed pl-8">
+                          {feature.description}
+                        </p>
+                      </div>
                     </button>
                     
-                    {/* Progress bar - only show on active item */}
-                    <div className="absolute bottom-0 left-0 right-0 h-px bg-border">
+                    {/* Thin progress bar at the bottom of each item */}
+                    <div className="h-px bg-border/60">
                       {isActive && (
                         <div 
-                          className="h-full bg-accent transition-all duration-75 ease-linear"
+                          className="h-full bg-accent/70 transition-all duration-75 ease-linear"
                           style={{ width: `${progress}%` }}
                         />
                       )}
@@ -185,26 +185,26 @@ export function FeaturesShowcase() {
               })}
             </div>
 
-            {/* Feature Preview Image */}
-            <div className="relative">
+            {/* Feature Preview Image - Right side */}
+            <div className="flex-1 lg:pt-0">
               <div className="sticky top-24">
-                <div className="relative rounded-xl overflow-hidden border border-border shadow-xl bg-white">
+                <div className="relative rounded-2xl overflow-hidden border border-border/50 shadow-2xl shadow-black/5 bg-white">
                   {/* Browser Chrome */}
-                  <div className="bg-muted/30 border-b border-border px-4 py-3 flex items-center gap-2">
+                  <div className="bg-muted/20 border-b border-border/50 px-4 py-3 flex items-center gap-2">
                     <div className="flex items-center gap-1.5">
-                      <div className="size-2.5 rounded-full bg-red-400" />
-                      <div className="size-2.5 rounded-full bg-yellow-400" />
-                      <div className="size-2.5 rounded-full bg-green-400" />
+                      <div className="size-2.5 rounded-full bg-muted-foreground/20" />
+                      <div className="size-2.5 rounded-full bg-muted-foreground/20" />
+                      <div className="size-2.5 rounded-full bg-muted-foreground/20" />
                     </div>
                     <div className="flex-1 flex justify-center">
-                      <div className="bg-background rounded-md px-3 py-1 text-xs text-muted-foreground border border-border">
+                      <div className="bg-background/80 rounded px-3 py-1 text-xs text-muted-foreground">
                         app.troovstudio.com
                       </div>
                     </div>
                   </div>
                   
                   {/* Feature Image */}
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-muted/5">
                     {features.map((feature, index) => (
                       <div
                         key={feature.id}
