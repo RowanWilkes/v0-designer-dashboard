@@ -129,45 +129,18 @@ export function FeatureCarousel() {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Tab Navigation */}
-      <div className="flex items-center justify-center gap-2 mb-6">
-        {/* Left Arrow with Progress Ring */}
+      <div className="flex items-center justify-center gap-3 mb-6">
+        {/* Left Arrow - Simple, no progress ring */}
         <button
           onClick={goToPrev}
-          className="relative size-10 rounded-full bg-white border border-border flex items-center justify-center hover:border-accent/50 transition-colors shadow-sm"
+          className="size-11 rounded-full bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/80 transition-colors"
           aria-label="Previous feature"
         >
-          {/* Progress Ring SVG */}
-          <svg 
-            className="absolute inset-0 size-10 -rotate-90"
-            viewBox="0 0 40 40"
-          >
-            <circle
-              cx="20"
-              cy="20"
-              r="18"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="text-border"
-            />
-            <circle
-              cx="20"
-              cy="20"
-              r="18"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeDasharray={`${2 * Math.PI * 18}`}
-              strokeDashoffset={`${2 * Math.PI * 18 * (1 - progress / 100)}`}
-              className="text-accent transition-all duration-100"
-              strokeLinecap="round"
-            />
-          </svg>
-          <ChevronLeft className="size-4 text-muted-foreground relative z-10" />
+          <ChevronLeft className="size-5 text-muted-foreground/60" />
         </button>
 
         {/* Feature Tabs */}
-        <div className="flex items-center gap-1 bg-white/80 backdrop-blur rounded-full px-2 py-1.5 border border-border shadow-sm">
+        <div className="flex items-center gap-0.5 bg-muted/40 backdrop-blur-sm rounded-full px-1.5 py-1.5">
           {visibleFeatures.map((feature) => {
             const Icon = feature.icon
             const isActive = feature.id === activeFeature.id
@@ -179,8 +152,8 @@ export function FeatureCarousel() {
                 onClick={() => goToIndex(featureIndex)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   isActive 
-                    ? "bg-accent text-white shadow-sm" 
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    ? "bg-accent text-white" 
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <Icon className="size-4" />
@@ -191,40 +164,42 @@ export function FeatureCarousel() {
         </div>
 
         {/* Right Arrow with Progress Ring */}
-        <button
-          onClick={goToNext}
-          className="relative size-10 rounded-full bg-white border border-border flex items-center justify-center hover:border-accent/50 transition-colors shadow-sm"
-          aria-label="Next feature"
-        >
-          {/* Progress Ring SVG */}
+        <div className="relative size-11">
+          {/* Progress Ring SVG - positioned behind button */}
           <svg 
-            className="absolute inset-0 size-10 -rotate-90"
-            viewBox="0 0 40 40"
+            className="absolute inset-0 size-11 -rotate-90"
+            viewBox="0 0 44 44"
           >
             <circle
-              cx="20"
-              cy="20"
-              r="18"
+              cx="22"
+              cy="22"
+              r="20"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
-              className="text-border"
+              strokeWidth="1.5"
+              className="text-muted-foreground/10"
             />
             <circle
-              cx="20"
-              cy="20"
-              r="18"
+              cx="22"
+              cy="22"
+              r="20"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
-              strokeDasharray={`${2 * Math.PI * 18}`}
-              strokeDashoffset={`${2 * Math.PI * 18 * (1 - progress / 100)}`}
-              className="text-accent transition-all duration-100"
+              strokeWidth="1.5"
+              strokeDasharray={`${2 * Math.PI * 20}`}
+              strokeDashoffset={`${2 * Math.PI * 20 * (1 - progress / 100)}`}
+              className="text-accent transition-all duration-75"
               strokeLinecap="round"
             />
           </svg>
-          <ChevronRight className="size-4 text-muted-foreground relative z-10" />
-        </button>
+          <button
+            onClick={goToNext}
+            className="absolute inset-[3px] rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-colors"
+            aria-label="Next feature"
+          >
+            <ChevronRight className="size-5 text-muted-foreground/70" />
+          </button>
+        </div>
       </div>
 
       {/* Feature Preview Card */}
