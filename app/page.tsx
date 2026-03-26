@@ -5,18 +5,13 @@ import { SiteFooter } from "@/components/site-footer"
 import { Card } from "@/components/ui/card"
 import {
   Sparkles,
-  Palette,
-  Layout,
-  CheckSquare,
   Check,
-  FileText,
-  PenTool,
-  Database,
   Star,
   Download,
   Zap,
 } from "lucide-react"
 import { FeatureCarousel } from "@/components/feature-carousel"
+import { FeaturesShowcase } from "@/components/features-showcase"
 import { useEffect, useState } from "react"
 
 export default function HomePage() {
@@ -89,68 +84,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Grid Section - Apollo spacing and styling */}
-      <section className="py-24 lg:py-32 pt-24 lg:pt-32 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center space-y-4 mb-16">
-              <p className="text-sm font-semibold text-accent uppercase tracking-wider">Features</p>
-              <h2 className="text-5xl font-semibold text-foreground tracking-tight">
-                Everything you need to plan & design
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                All the tools modern designers need to go from concept to launch, in one unified platform.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: Palette,
-                  title: "Visual Mood Boards",
-                  desc: "Upload inspiration images, create color palettes, define typography, and add website references. Build the visual direction for your project.",
-                },
-                {
-                  icon: PenTool,
-                  title: "Complete Style Guides",
-                  desc: "Define your design system with color palettes, typography scales, button styles, and UI components with live website previews.",
-                },
-                {
-                  icon: Layout,
-                  title: "Interactive Sitemaps",
-                  desc: "Build comprehensive site structures with our block library containing 35+ pre-designed page sections. Plan your entire website architecture.",
-                },
-                {
-                  icon: FileText,
-                  title: "Technical Specifications",
-                  desc: "Document hosting, platform, database, integrations, security, performance, and SEO requirements in organized sections.",
-                },
-                {
-                  icon: Database,
-                  title: "Content & Asset Management",
-                  desc: "Organize brand messaging, content guidelines, SEO strategy, competitor analysis, and all your project assets in one place.",
-                },
-                {
-                  icon: CheckSquare,
-                  title: "Task Management & Summary",
-                  desc: "Track design tasks with priorities and categories, then export comprehensive project summaries as professional PDFs.",
-                },
-              ].map((feature, i) => (
-                <Card
-                  key={i}
-                  className="p-8 space-y-4 hover:border-accent/40 transition-all duration-200 bg-white border-border shadow-sm"
-                >
-                  <div className="size-12 rounded-lg bg-accent/10 flex items-center justify-center">
-                    <feature.icon className="size-6 text-accent" />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-foreground">{feature.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{feature.desc}</p>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Features Showcase Section */}
+      <FeaturesShowcase />
 
       {/* Benefits Section - Clean neutrals background */}
       <section className="py-24 lg:py-32 bg-[#F8FAF9]">
